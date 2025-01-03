@@ -161,18 +161,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build ]
     steps:
-      # Set platform as env for use later
-      - name: Prepare Platform
-        run: |
-          platform=${{ matrix.platform }}
-          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
-
       # Get previous data
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: digests-${{ env.PLATFORM_PAIR}}
+          pattern: digests-
           merge-multiple: true
 
       - name: Set up Docker Buildx
@@ -224,18 +218,12 @@ jobs:
         platform:
           - linux/amd64
     steps:
-      # Set platform as env for use later
-      - name: Prepare Platform
-        run: |
-          platform=${{ matrix.platform }}
-          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
-
       # Get data from past steps
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: digests-${{ env.PLATFORM_PAIR }}
+          pattern: digests-
           merge-multiple: true
 
       #ENV Subst for deployment
