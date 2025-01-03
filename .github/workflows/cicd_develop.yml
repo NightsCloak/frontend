@@ -211,8 +211,12 @@ jobs:
           docker buildx imagetools inspect ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:${{ steps.meta.outputs.version }}
 
   deploy:
+    needs:
+      - build
+      - merge
     runs-on: ubuntu-latest
     strategy:
+
       matrix:
         php: [ 8.3.9 ]
         platform:
