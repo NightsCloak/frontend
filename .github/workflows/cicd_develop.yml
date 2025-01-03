@@ -209,16 +209,21 @@ jobs:
 
   deploy:
     needs:
-      - build
       - merge
     runs-on: ubuntu-latest
     strategy:
-
       matrix:
         php: [ 8.3.9 ]
         platform:
           - linux/amd64
     steps:
+      # Get data from past steps
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-*
+          merge-multiple: true
       #ENV Subst for deployment
       - name: Generate Kubectl Deployment File
         env:
