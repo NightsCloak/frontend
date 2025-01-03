@@ -221,7 +221,6 @@ jobs:
         php: [ 8.3.9 ]
         platform:
           - linux/amd64
-          - linux/arm64
     steps:
       #ENV Subst for deployment
       - name: Generate Kubectl Deployment File
