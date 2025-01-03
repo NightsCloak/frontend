@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: prod
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      tolerations:
+        - key: sku
+          value: prod
+          operator: Equal
+          effect: NoSchedule
+      containers:
+        - name: frontend
+          image: 573377737753.dkr.ecr.us-east-1.amazonaws.com/intract/nginx/prod:a47812d1feaecb0d95fe4e01784ff3c105c951e6
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/templates/default.conf.template
+              subPath: default.conf
+            - name: storage-blob
+              mountPath: /var/www/storage/app
+            - name: std-storage-blob
+              mountPath: /var/www/html/storage/standard
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /healthz
+            periodSeconds: 4
+            timeoutSeconds: 5
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sleep","60" ]
+      volumes:
+        - name: config
+          configMap:
+            name: intract
+        - name: storage-blob
+          persistentVolumeClaim:
+            claimName: pvc-prod
+        - name: std-storage-blob
+          persistentVolumeClaim:
+            claimName: std-pvc-prod
+      terminationGracePeriodSeconds: 90
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: prod
+spec:
+  #  type: NodePort
+  #  externalTrafficPolicy: Local
+  ports:
+    - port: 80
+  selector:
+    app: frontend
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: develop-ingress
+  namespace: develop
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 16m
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - intract.dev
+      secretName: develop-tls
+  rules:
+    - host: intract.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

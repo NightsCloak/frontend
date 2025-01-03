@@ -1,0 +1,13 @@
+import { MetricType, onCLS, onFCP, onFID, onLCP, onTTFB } from 'web-vitals';
+
+const reportWebVitals = (onPerfEntry?: (metric: MetricType) => void) => {
+    if (onPerfEntry && onPerfEntry) {
+        onCLS(onPerfEntry);
+        onFID(onPerfEntry);
+        onFCP(onPerfEntry);
+        onLCP(onPerfEntry);
+        onTTFB(onPerfEntry);
+    }
+};
+
+export default reportWebVitals;

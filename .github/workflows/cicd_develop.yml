@@ -1,0 +1,134 @@
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  AWS_REGION: "us-east-1"
+  REGISTRY_URI: 573377737753.dkr.ecr.us-east-1.amazonaws.com
+  REGISTRY_NAME: intract
+  NAMESPACE: develop
+  APP_NAME: frontend
+  KUBECTL_PATH: ./docker/frontend.develop.yaml
+  ENVIRONMENT: develop
+  NODE_VERSION: 20.x
+  NODE_OPTIONS: "--max_old_space_size=8192"
+  VITE_SCHEMA: "https"
+  VITE_URI: "intract.dev"
+  VITE_PREFIX: "api/v1"
+  VITE_CLIENT_SECRET: "6Yr0widLfM0QTLIJua7ooUREqPOOdeZwKYR4lQmz"
+  VITE_CLIENT_ID: "9545aa14-48f1-49bf-8835-552e3a63e9de"
+  VITE_STRIPE_PK: "pk_test_51OK4TCLpmBnJBh8WjK8NGIuQsPaR58tLUbL6KF79OW3puFOjqLRxOMyNaBO5hc4nacrRH7diPZ4NoXgzwVv0BDxE00UNLkuZl3"
+  VITE_PUSHER_APP_KEY: "YmV0YS5pbnRyYWN0LmRldg"
+  VITE_PUSHER_APP_WSS_PORT: "443"
+  VITE_PUSHER_APP_WS_PORT: "80"
+  VITE_PUSHER_APP_PATH: "/socket"
+  VITE_DEPLOY_ENV: "development"
+  VITE_SENTRY: "true"
+  VITE_SENTRY_TELEMETRY: "true"
+  VITE_SENTRY_SOURCE_MAPS: "true"
+  VITE_REG_OPEN: "true"
+  VITE_ANALYTICS_ID: "G-NR826HGLJP"
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@main
+
+      - name: Sentry Release Management
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: development
+
+      # Setup Yarn
+      - name: Yarn Setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+
+      # Get Yarn Cache Folder
+      - name: Get Yarn Cache Dir
+        id: yarn-cache-dir
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      # Cache Yarn
+      - name: Cache Yarn Install
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-
+
+      # Install Deps
+      - name: Install Dependencies
+        run: yarn
+
+      # Build
+      - name: Yarn Build
+        run: yarn build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
+
+     # Assume AWS Role and set kubectl
+      - name: Configure Aws Creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::573377737753:role/GithubECR
+          role-session-name: GitHub_AWS_ODIC
+          aws-region: ${{ env.AWS_REGION }}
+      - name: STS GetCallerIdentity
+        run: | 
+          aws sts get-caller-identity
+          mkdir -p $HOME/.kube
+          echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
+          aws eks update-kubeconfig --name intract
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Setup Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Container build and push to an Azure Container Registry (ACR)
+      - name: Build and Push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:frontend-${{ github.sha }},${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:latest
+          cache-from: type=registry,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:cache
+          cache-to: type=registry,image-manifest=true,oci-mediaTypes=true,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:cache,mode=max
+          file: ./docker/Dockerfile
+
+      #ENV Subst for deployment
+      - name: Generate Kubectl Deployment File
+        env:
+          COMMIT: ${{ github.sha }}
+        run: |
+          set -e
+          envsubst < ${{ env.KUBECTL_PATH }} > ./docker/deploy.yaml
+
+      # Deploy app to AKS
+      - name: Deploy to AKS
+        uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            docker/deploy.yaml
+          images: |
+            ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:frontend-${{ github.sha }}
+          namespace: ${{ env.NAMESPACE }}

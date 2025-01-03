@@ -1,0 +1,161 @@
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..3668dc8caa1be49b34fc98168c78130654458b10
+--- /dev/null
++++ b/.idea/misc.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="JavaScriptSettings">
++    <option name="languageLevel" value="FLOW" />
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..d9fb14e4d06a030cba3cd105982c4f196e0718a0
+--- /dev/null
++++ b/.idea/modules.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/user.iml" filepath="$PROJECT_DIR$/.idea/user.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/.idea/user.iml b/.idea/user.iml
+new file mode 100644
+index 0000000000000000000000000000000000000000..c956989b29ad0767edc6cf3a202545927c3d1e76
+--- /dev/null
++++ b/.idea/user.iml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="WEB_MODULE" version="4">
++  <component name="NewModuleRootManager">
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..0e0384f8711006d20eb19b6cee195d74541a3ed5
+--- /dev/null
++++ b/.idea/workspace.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectViewState">
++    <option name="autoscrollFromSource" value="true" />
++    <option name="autoscrollToSource" value="true" />
++    <option name="hideEmptyMiddlePackages" value="true" />
++    <option name="showLibraryContents" value="true" />
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/types/createMigrate.d.ts b/types/createMigrate.d.ts
+index 2c1329dae61cbd004898b017cc462b0b1c91a0e7..2e4cd576dfdfd6f6cd968dd13ec1d501c054248e 100644
+--- a/types/createMigrate.d.ts
++++ b/types/createMigrate.d.ts
+@@ -11,7 +11,7 @@ declare module "redux-persist/es/createMigrate" {
+    * @param config migration configuration
+    */
+   // tslint:disable-next-line: strict-export-declare-modifiers
+-  export default function createMigrate(migrations: MigrationManifest, config?: MigrationConfig): PersistMigrate;
++  export default function createMigrate<T extends {}>(migrations: MigrationManifest<T>, config?: MigrationConfig): PersistMigrate;
+ }
+ 
+ declare module "redux-persist/lib/createMigrate" {
+diff --git a/types/types.d.ts b/types/types.d.ts
+index b3733bc8b696f07e791158b0afcfb29c30fa6836..44654c91280f1db00f53078c44d68d96c8e47a3e 100644
+--- a/types/types.d.ts
++++ b/types/types.d.ts
+@@ -53,7 +53,9 @@ declare module "redux-persist/es/types" {
+ 
+   interface Storage {
+     getItem(key: string, ...args: Array<any>): any;
++
+     setItem(key: string, value: any, ...args: Array<any>): any;
++
+     removeItem(key: string, ...args: Array<any>): any;
+   }
+ 
+@@ -62,19 +64,22 @@ declare module "redux-persist/es/types" {
+      * @desc Fetches key and returns item in a promise.
+      */
+     getItem(key: string): Promise<string | null>;
++
+     /**
+      * @desc Sets value for key and returns item in a promise.
+      */
+     setItem(key: string, item: string): Promise<void>;
++
+     /**
+      * @desc Removes value for key.
+      */
+     removeItem(key: string): Promise<void>;
+   }
+ 
+-  interface MigrationManifest {
+-    [key: string]: (state: PersistedState) => PersistedState;
+-  }
++  type MigrationFunction<T extends {}, U extends {} = T> = T extends infer V ? U extends infer W ? (state: V) => W | Promise<W> : never : never;
++
++  type MigrationManifest<T extends {}> = Record<string, MigrationFunction<T>>;
++
+ 
+   /**
+    * @desc
+@@ -102,7 +107,7 @@ declare module "redux-persist/es/types" {
+   type RehydrateErrorType = any;
+ 
+   interface RehydrateAction {
+-    type: 'persist/REHYDRATE';
++    type: "persist/REHYDRATE";
+     key: string;
+     payload?: object | null;
+     err?: RehydrateErrorType | null;
+@@ -110,18 +115,19 @@ declare module "redux-persist/es/types" {
+ 
+   interface Persistoid {
+     update(state: object): void;
++
+     flush(): Promise<any>;
+   }
+ 
+   interface RegisterAction {
+-    type: 'persist/REGISTER';
++    type: "persist/REGISTER";
+     key: string;
+   }
+ 
+   type PersistorAction =
+     | RehydrateAction
+     | RegisterAction
+-  ;
++    ;
+ 
+   interface PersistorState {
+     registry: Array<string>;
+@@ -136,11 +142,17 @@ declare module "redux-persist/es/types" {
+    */
+   interface Persistor {
+     pause(): void;
++
+     persist(): void;
++
+     purge(): Promise<any>;
++
+     flush(): Promise<any>;
++
+     dispatch(action: PersistorAction): PersistorAction;
++
+     getState(): PersistorState;
++
+     subscribe(callback: PersistorSubscribeCallback): () => any;
+   }
+ }

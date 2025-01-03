@@ -1,0 +1,9 @@
+node_modules
+# Ignore artifacts:
+build
+coverage
+docker
+pathces
+public
+.yarn
+.github

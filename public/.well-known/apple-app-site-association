@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "485EU55P63.com.possiblereality.facescan"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [ "485EU55P63.com.possiblereality.facescan" ]
+  }
+}

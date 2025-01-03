@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: intract-prod-crt
+  namespace: prod
+spec:
+  secretName: prod-tls
+  dnsNames:
+    - www.intract.com
+    - intract.com
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
