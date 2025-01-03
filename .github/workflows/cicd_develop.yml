@@ -100,21 +100,17 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      # Build Base
-      - name: Yarn Build
-        run: yarn workspace @intractinc/base build
-
       # Build App
       - name: Yarn Build
         if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
-        run: yarn build
+        run: yarn build:app
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       # Build App for non k8s platform (local dev testing)
       - name: Yarn Build
         if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
-        run: yarn build
+        run: yarn build:app
 
       # Set Docker image tag for build
       - name: Docker Meta
