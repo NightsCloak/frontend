@@ -30,15 +30,12 @@
     "forceConsistentCasingInFileNames": false,
     "emitDeclarationOnly": false,
     "baseUrl": "./",
-    "rootDir": "./src/",
+    "rootDir": "./src",
     "paths": {
       "@/*": [
         "src/*",
         "src/components/*"
       ],
-      "@intractinc/base/*": [
-        "intract/base/lib/*"
-      ]
     }
   },
   "include": [
@@ -52,9 +49,6 @@
   "references": [
     {
       "path": "./intract/base/tsconfig.json"
-    },
-    {
-      "path": "./intract/engine/tsconfig.json"
     }
   ]
 }
