@@ -30,25 +30,20 @@
     "forceConsistentCasingInFileNames": false,
     "emitDeclarationOnly": false,
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "./src/",
     "paths": {
       "@/*": [
-        "src/*",
-        "src/components/*"
+        "./src/*",
+        "./src/components/*"
       ],
     }
   },
   "include": [
-    "intract/base/lib/types/**/*.d.ts",
-    "src/**/*"
+    "./intract/base/lib/types/**/*.d.ts",
+    "./src/**/*"
   ],
   "exclude": [
     "**/node_modules",
     "build"
-  ],
-  "references": [
-    {
-      "path": "./intract/base/tsconfig.json"
-    }
   ]
 }
