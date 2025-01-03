@@ -1,20 +1,20 @@
 on:
   push:
     branches:
-      - develop
+      - feat/workspace
 
 env:
   AWS_REGION: "us-east-1"
   REGISTRY_URI: 573377737753.dkr.ecr.us-east-1.amazonaws.com
   REGISTRY_NAME: intract
   NAMESPACE: develop
-  APP_NAME: frontend
-  KUBECTL_PATH: ./docker/frontend.develop.yaml
+  APP_NAME: admin
+  KUBECTL_PATH: ./docker/admin.develop.yaml
   ENVIRONMENT: develop
-  NODE_VERSION: 20.x
-  NODE_OPTIONS: "--max_old_space_size=8192"
+  NODE_VERSION: 23.x
+  NODE_OPTIONS: "--max_old_space_size=4096"
   VITE_SCHEMA: "https"
-  VITE_URI: "intract.dev"
+  VITE_URI: "admin.intract.dev"
   VITE_PREFIX: "api/v1"
   VITE_CLIENT_SECRET: "6Yr0widLfM0QTLIJua7ooUREqPOOdeZwKYR4lQmz"
   VITE_CLIENT_ID: "9545aa14-48f1-49bf-8835-552e3a63e9de"
@@ -37,18 +37,24 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 8.3.9 ]
+        platform:
+          - linux/amd64
+          - linux/arm64
     steps:
+      # Set platform as env for use later
+      - name: Prepare Platform
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
       - name: Clone Repo
         uses: actions/checkout@main
-
-      - name: Sentry Release Management
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
-          environment: development
+          submodules: 'true'
+          token: ${{ secrets.CICD_PAT }}
 
       # Setup Yarn
       - name: Yarn Setup
@@ -58,39 +64,17 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
 
-      # Get Yarn Cache Folder
-      - name: Get Yarn Cache Dir
-        id: yarn-cache-dir
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-      # Cache Yarn
-      - name: Cache Yarn Install
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.yarn-cache-dir.outputs.dir }}
-          key: intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-
-
-      # Install Deps
-      - name: Install Dependencies
-        run: yarn
-
-      # Build
-      - name: Yarn Build
-        run: yarn build
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN}}
-
-     # Assume AWS Role and set kubectl
+      # Assume AWS Role and set kubectl
       - name: Configure Aws Creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::573377737753:role/GithubECR
           role-session-name: GitHub_AWS_ODIC
           aws-region: ${{ env.AWS_REGION }}
+
+      # Assume AWS Role and set Kubectl
       - name: STS GetCallerIdentity
-        run: | 
+        run: |
           aws sts get-caller-identity
           mkdir -p $HOME/.kube
           echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
@@ -100,21 +84,141 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # Setup Sentry, only for x86 atm
+      - name: Sentry Release Management
+        uses: getsentry/action-release@v1
+        if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: development
+
+      # Install Deps
+      - name: Install Dependencies
+        run: yarn
+
+      # Build Base
+      - name: Yarn Build
+        run: yarn workspace @intractinc/base build
+
+      # Build App
+      - name: Yarn Build
+        if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
+        run: yarn build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+      # Build App for non k8s platform (local dev testing)
+      - name: Yarn Build
+        if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
+        run: yarn build
+
+      # Set Docker image tag for build
+      - name: Docker Meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          flavor: |
+            latest=true
+          tags: |
+            type=raw,value=${{ env.ENVIRONMENT }}-${{ github.sha }}
+          images: ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}
+
+      - name: Setup Qemu for multiplatform
+        uses: docker/setup-qemu-action@v3
+
       # Setup Docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Container build and push to an Azure Container Registry (ACR)
+      # Container build and push to a Container Registry (ACR)
       - name: Build and Push
-        uses: docker/build-push-action@v4
+        id: build
+        uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
-          tags: ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:frontend-${{ github.sha }},${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:latest
-          cache-from: type=registry,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:cache
-          cache-to: type=registry,image-manifest=true,oci-mediaTypes=true,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:cache,mode=max
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }},push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=registry,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:cache-${{ env.ENVIRONMENT }}-${{ env.PLATFORM_PAIR }}
+          cache-to: type=registry,image-manifest=true,oci-mediaTypes=true,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:cache-${{ env.ENVIRONMENT }}-${{ env.PLATFORM_PAIR }},mode=max
           file: ./docker/Dockerfile
 
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-*
+          merge-multiple: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          flavor: |
+            latest=true
+          tags: |
+            type=raw,value=${{ env.ENVIRONMENT }}-${{ github.sha }}
+          images: ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}
+
+      # Set AWS Credentials
+      - name: Configure Aws Creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::573377737753:role/GithubECR
+          role-session-name: GitHub_AWS_ODIC
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: STS GetCallerIdentity
+        run: |
+          aws sts get-caller-identity
+
+      # Connect to Container Registry
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}@sha256:%s ' *)
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:${{ steps.meta.outputs.version }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 8.3.9 ]
+        platform:
+          - linux/amd64
+          - linux/arm64
+    steps:
       #ENV Subst for deployment
       - name: Generate Kubectl Deployment File
         env:
