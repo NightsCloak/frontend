@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - feat/workspace
+      - develop
 
 env:
   AWS_REGION: "us-east-1"
