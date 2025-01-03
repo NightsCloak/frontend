@@ -241,5 +241,5 @@ jobs:
           manifests: |
             docker/deploy.yaml
           images: |
-            ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}/${{ env.ENVIRONMENT }}:frontend-${{ github.sha }}
+            ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:${{ env.ENVIRONMENT }}-${{ github.sha }}
           namespace: ${{ env.NAMESPACE }}
