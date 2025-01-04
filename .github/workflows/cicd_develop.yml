@@ -93,7 +93,7 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
-          environment: development
+          environment: ${{ env.ENVIRONMENT }}
           ignore_missing: true
 
       # Install Deps
@@ -232,6 +232,7 @@ jobs:
           COMMIT: ${{ github.sha }}
         run: |
           set -e
+          ls -al
           envsubst < ${{ env.KUBECTL_PATH }} > ./docker/deploy.yaml
 
       # Deploy app to AKS
