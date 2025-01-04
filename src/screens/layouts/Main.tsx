@@ -81,9 +81,11 @@ const Main: FC = () => {
                     <>
                         <Link to={'/'}>
                             <Stack spacing={2} direction={'row'} alignItems={'center'}>
-                                <IconButton onClick={toggleDrawer} color="inherit">
-                                    <MenuIcon sx={{ color: 'white' }} />
-                                </IconButton>
+                                {auth && (
+                                    <IconButton onClick={toggleDrawer} color="inherit">
+                                        <MenuIcon sx={{ color: 'white' }} />
+                                    </IconButton>
+                                )}
                                 <img width={32} height={32} src={imagePaths.iconLogo} alt={'Logo'} />
                                 <img
                                     height={32}
@@ -111,7 +113,7 @@ const Main: FC = () => {
                     </>
                 )}
             </AppBar>
-            <Sidebar open={drawerOpen} />
+            {auth && <Sidebar open={drawerOpen} />}
             <Box component={'main'} sx={{ flexGrow: 1, p: 2, flexDirection: 'column' }}>
                 <DrawerHeader />
                 <Suspense fallback={<Holding {...{ spinner: true }} />}>

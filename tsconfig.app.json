@@ -33,8 +33,11 @@
     "rootDir": "./src/",
     "paths": {
       "@/*": [
-        "./src/*",
+        "./src/*"
       ],
+      "@intractinc/base/*": [
+        "./intract/base/lib"
+      ]
     }
   },
   "include": [
@@ -44,5 +47,9 @@
   "exclude": [
     "**/node_modules",
     "build"
+  ],
+  "references": [{
+    "path": "./intract/base/tsconfig.json"
+  }
   ]
 }
