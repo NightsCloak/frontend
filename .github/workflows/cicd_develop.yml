@@ -157,7 +157,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-  merge:
+  Deploy:
     runs-on: ubuntu-latest
     needs: [ build ]
     steps:
@@ -207,33 +207,6 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:${{ steps.meta.outputs.version }}
-
-#      # Add export and upload of digest for deploy
-#      - name: Export digest
-#        run: |
-#          mkdir -p /tmp/digests
-#          digest="${{ steps.build.outputs.digest }}"
-#          touch "/tmp/digests/${digest#sha256:}"
-#
-      - name: Upload digest
-        uses: actions/upload-artifact@v4
-        with:
-          name: digests-${{ env.PLATFORM_PAIR }}
-          path: /tmp/digests/*
-          if-no-files-found: error
-          retention-days: 1
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [ merge ]
-    steps:
-      # Get data from past steps
-      - name: Download digests
-        uses: actions/download-artifact@v4
-        with:
-          path: /tmp/digests
-          pattern: digests-*
-          merge-multiple: true
 
       #ENV Subst for deployment
       - name: Generate Kubectl Deployment File
