@@ -69,7 +69,7 @@
     "start": "yarn vite --host",
     "start:watch": "yarn workspaces foreach -Ap --exclude '{@intractinc/admin}' run build:watch",
     "build": "tsc -b && vite build",
-    "prebuild": "yarn workspaces foreach -Rpt --exclude '${intractinc/admin}' run build",
+    "prebuild": "yarn workspaces foreach -Rpt --exclude @intractinc/admin run build",
     "build:app": "yarn workspaces foreach -Rpt run build",
     "preview": "yarn build & vite preview"
   },
