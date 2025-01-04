@@ -133,7 +133,7 @@ jobs:
       # Container build and push to a Container Registry (ACR)
       - name: Build and Push
         if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
-        id: build
+        id: build x64
         uses: docker/build-push-action@v6
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -149,7 +149,7 @@ jobs:
       # Container build and push to a Container Registry (ACR) ARM
       - name: Build and Push
         if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
-        id: build
+        id: build arm64
         uses: docker/build-push-action@v6
         with:
           context: .
