@@ -208,22 +208,31 @@ jobs:
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:${{ steps.meta.outputs.version }}
 
+#      # Add export and upload of digest for deploy
+#      - name: Export digest
+#        run: |
+#          mkdir -p /tmp/digests
+#          digest="${{ steps.build.outputs.digest }}"
+#          touch "/tmp/digests/${digest#sha256:}"
+#
+#      - name: Upload digest
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: digests-${{ env.PLATFORM_PAIR }}
+#          path: /tmp/digests/*
+#          if-no-files-found: error
+#          retention-days: 1
+
   deploy:
-    needs:
-      - merge
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [ 8.3.9 ]
-        platform:
-          - linux/amd64
+    needs: [ merge ]
     steps:
       # Get data from past steps
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: digests-
+          pattern: digests-*
           merge-multiple: true
 
       #ENV Subst for deployment
@@ -232,7 +241,6 @@ jobs:
           COMMIT: ${{ github.sha }}
         run: |
           set -e
-          ls -al
           envsubst < ${{ env.KUBECTL_PATH }} > ./docker/deploy.yaml
 
       # Deploy app to AKS
