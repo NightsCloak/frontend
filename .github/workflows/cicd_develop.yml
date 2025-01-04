@@ -132,7 +132,7 @@ jobs:
 
       # Container build and push to a Container Registry (ACR)
       - name: Build and Push
-        id: build_amd64
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -215,13 +215,13 @@ jobs:
 #          digest="${{ steps.build.outputs.digest }}"
 #          touch "/tmp/digests/${digest#sha256:}"
 #
-#      - name: Upload digest
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: digests-${{ env.PLATFORM_PAIR }}
-#          path: /tmp/digests/*
-#          if-no-files-found: error
-#          retention-days: 1
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
 
   deploy:
     runs-on: ubuntu-latest
