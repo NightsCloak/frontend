@@ -218,6 +218,26 @@ jobs:
           submodules: 'true'
           token: ${{ secrets.CICD_PAT }}
 
+      # Assume AWS Role and set kubectl
+      - name: Configure Aws Creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::573377737753:role/GithubECR
+          role-session-name: GitHub_AWS_ODIC
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Assume AWS Role and set Kubectl
+      - name: STS GetCallerIdentity
+        run: |
+          aws sts get-caller-identity
+          mkdir -p $HOME/.kube
+          echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
+          aws eks update-kubeconfig --name intract
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
       #ENV Subst for deployment
       - name: Generate Kubectl Deployment File
         env:
