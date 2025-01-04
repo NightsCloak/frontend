@@ -1,8 +1,10 @@
 FROM 573377737753.dkr.ecr.us-east-1.amazonaws.com/intract/nginx:latest
 
+RUN printenv
 
 #Build App
-#RUN yarn build:app
+RUN yarn build:app
+
 
 #Pull latest version
 COPY --chown=www-data:www-data ./build/ /var/www/html

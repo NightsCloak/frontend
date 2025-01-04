@@ -96,21 +96,21 @@ jobs:
           environment: ${{ env.ENVIRONMENT }}
           ignore_missing: true
 
-      # Install Deps
-      - name: Install Dependencies
-        run: yarn
-
-      # Build App
-      - name: Yarn Build
-        if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
-        run: yarn build:app
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
-      # Build App for non k8s platform (local dev testing)
-      - name: Yarn Build
-        if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
-        run: yarn build:app
+#      # Install Deps
+#      - name: Install Dependencies
+#        run: yarn
+#
+#      # Build App
+#      - name: Yarn Build
+#        if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
+#        run: yarn build:app
+#        env:
+#          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+#
+#      # Build App for non k8s platform (local dev testing)
+#      - name: Yarn Build
+#        if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
+#        run: yarn build:app
 
       # Set Docker image tag for build
       - name: Docker Meta
@@ -132,6 +132,23 @@ jobs:
 
       # Container build and push to a Container Registry (ACR)
       - name: Build and Push
+        if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
+        id: build
+        uses: docker/build-push-action@v6
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        with:
+          context: .
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }},push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=registry,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:cache-${{ env.ENVIRONMENT }}-${{ env.PLATFORM_PAIR }}
+          cache-to: type=registry,image-manifest=true,oci-mediaTypes=true,ref=${{ env.REGISTRY_URI }}/${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:cache-${{ env.ENVIRONMENT }}-${{ env.PLATFORM_PAIR }},mode=max
+          file: ./docker/Dockerfile
+
+      # Container build and push to a Container Registry (ACR) ARM
+      - name: Build and Push
+        if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
         id: build
         uses: docker/build-push-action@v6
         with:
