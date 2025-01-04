@@ -1,7 +1,7 @@
 import { FC, Suspense, useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { Badge, Breadcrumbs, Divider, IconButton, Stack, Theme, useTheme } from '@mui/material';
+import { AppBar, Badge, Box, Breadcrumbs, Divider, IconButton, Stack, Theme, useTheme } from '@mui/material';
 import { useTools } from '@intractinc/base/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -11,6 +11,8 @@ import Holding from '@intractinc/base/layout/Holding';
 import imagePaths from '@intractinc/base/hooks/imagePaths';
 import useScreenSize from '@intractinc/base/hooks/useScreenSize';
 import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
+import Sidebar from '@/components/Sidebar';
+import DrawerHeader from '@/components/Drawer/DrawerHeader';
 
 const Main: FC = () => {
     const auth = useAppSelector((state) => state.auth.status);
@@ -23,6 +25,7 @@ const Main: FC = () => {
     const { tools, breadcrumbs, modal } = useTools();
 
     const toggleDrawer = () => {
+        console.log('drawerOpen', drawerOpen);
         setDrawerOpen((prevState) => !prevState);
     };
 
@@ -39,7 +42,11 @@ const Main: FC = () => {
     return (
         <div className={classes.root}>
             {maintenance && <MaintenanceScreen />}
-            <div className={classes.appBar}>
+            <AppBar
+                position="fixed"
+                className={classes.appBar}
+                sx={{ zIndex: (theme: Theme) => theme.zIndex.drawer + 1 }}
+            >
                 {isSmallScreen ? (
                     <Stack
                         spacing={1}
@@ -55,11 +62,7 @@ const Main: FC = () => {
                                 (user?.pending_organization_members_count ?? 0)
                             }
                             max={99}
-                        >
-                            <IconButton onClick={toggleDrawer}>
-                                <MenuIcon />
-                            </IconButton>
-                        </Badge>
+                        />
                         <Link to={auth ? '/home' : '/'}>
                             <img
                                 style={{
@@ -69,15 +72,18 @@ const Main: FC = () => {
                                 }}
                                 width={32}
                                 height={32}
-                                src={imagePaths.iconLogo}
+                                src={theme.palette.mode === 'dark' ? imagePaths.lightLogo : imagePaths.darkLogo}
                                 alt={'Logo'}
                             />
                         </Link>
                     </Stack>
                 ) : (
                     <>
-                        <Link to={auth ? '/home' : '/'}>
-                            <Stack spacing={2} direction={'row'}>
+                        <Link to={'/'}>
+                            <Stack spacing={2} direction={'row'} alignItems={'center'}>
+                                <IconButton onClick={toggleDrawer} color="inherit">
+                                    <MenuIcon sx={{ color: 'white' }} />
+                                </IconButton>
                                 <img width={32} height={32} src={imagePaths.iconLogo} alt={'Logo'} />
                                 <img
                                     height={32}
@@ -101,16 +107,17 @@ const Main: FC = () => {
                             <Breadcrumbs separator={<NavigateNextIcon fontSize={'small'} />}>{breadcrumbs}</Breadcrumbs>
                         </div>
                         <div className={classes.tools}>{tools}</div>
+                        <div className={classes.adminTools}>Admin Tools</div>
                     </>
                 )}
-            </div>
-            <div className={classes.main}>
-                <div className={classes.content}>
-                    <Suspense fallback={<Holding {...{ spinner: true }} />}>
-                        <Outlet />
-                    </Suspense>
-                </div>
-            </div>
+            </AppBar>
+            <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer} />
+            <Box component={'main'} sx={{ flexGrow: 1, p: 2, flexDirection: 'column' }}>
+                <DrawerHeader />
+                <Suspense fallback={<Holding {...{ spinner: true }} />}>
+                    <Outlet />
+                </Suspense>
+            </Box>
             {modal}
         </div>
     );
@@ -119,20 +126,15 @@ const Main: FC = () => {
 const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean }>()((theme: Theme, { isSmallScreen, auth }) => {
     return {
         root: {
-            backgroundColor: theme.palette.background.default,
             display: 'flex',
             flex: 1,
-            flexDirection: 'column',
-            height: '100%',
-            width: '100%',
+            flexDirection: 'row',
         },
         appBar: {
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
             height: auth ? 48 : 64,
-            marginBottom: auth ? theme.spacing(1) : 0,
-            marginTop: auth ? theme.spacing(1) : 0,
             paddingLeft: isSmallScreen ? theme.spacing(1) : theme.spacing(2),
             width: '100%',
             ...(!auth && {
@@ -149,7 +151,7 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean }>()((theme
         breadcrumbs: {
             display: 'flex',
             justifyContent: 'left',
-            width: '100%',
+            flex: 1,
             alignItems: 'center',
             marginLeft: isSmallScreen ? 0 : theme.spacing(20),
         },
@@ -158,11 +160,15 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean }>()((theme
             flex: 1,
             justifyContent: 'flex-end',
             paddingRight: theme.spacing(3),
+            border: '1px solid red',
+        },
+        adminTools: {
+            display: 'flex',
+            flex: 1,
+            border: '1px solid red',
         },
         main: {
             display: 'flex',
-            // flex: 1,
-            // width: 'calc(100% - 280)',
             height: `calc(100% - ${theme.spacing(8)})`,
         },
         content: {

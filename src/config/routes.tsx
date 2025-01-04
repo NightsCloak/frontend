@@ -4,6 +4,7 @@ import Main from '@/screens/layouts/Main';
 import ErrorScreen from '@/screens/error/ErrorScreen';
 import LoginScreen from '@intractinc/base/layout/screens/LoginScreen';
 import App from '@/App';
+import RootIndex from '@/screens/RootIndex';
 
 /* eslint-disable react-refresh/only-export-components */
 const AdminAllAiImagesScreen = lazy(() => import('@/screens/admin/AllAiImagesScreen'));
@@ -70,7 +71,7 @@ const routes: RouteObject[] = [
                             />
                         ),
                     },
-                    { path: '/', element: <div>Root</div> },
+                    { path: '/', element: <RootIndex /> },
                     { path: '/maintenance', element: <MaintenanceScreen /> },
                     { path: '/login', element: <LoginScreen /> },
                     { path: 'auth/callback', element: <AuthCallback /> },

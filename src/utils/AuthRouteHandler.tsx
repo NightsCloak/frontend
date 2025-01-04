@@ -40,10 +40,10 @@ const AuthRouteHandler = (searchParams: URLSearchParams) => {
             if (
                 user.settings.verified !== null &&
                 !user.settings.verified &&
-                location.pathname !== '/home/account' &&
+                location.pathname !== '/account' &&
                 !location.pathname.includes('email/verify')
             ) {
-                navigate('/home/account');
+                navigate('/account');
                 return;
             }
 
@@ -61,7 +61,7 @@ const AuthRouteHandler = (searchParams: URLSearchParams) => {
                     window.location.href = intended;
                     return;
                 } else {
-                    navigate('/home');
+                    navigate('/');
                 }
             }
             //Passed All
