@@ -28,6 +28,7 @@ env:
   VITE_SENTRY_TELEMETRY: "true"
   VITE_SENTRY_SOURCE_MAPS: "true"
   VITE_REG_OPEN: "true"
+  VITE_AUTH_FLOW: "auth"
   VITE_ANALYTICS_ID: "G-NR826HGLJP"
 
 permissions:

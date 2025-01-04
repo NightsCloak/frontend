@@ -1,16 +1,16 @@
 import { FC, Suspense, useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { Badge, Breadcrumbs, Divider, Drawer, IconButton, Stack, Theme, useTheme } from '@mui/material';
+import { Badge, Breadcrumbs, Divider, IconButton, Stack, Theme, useTheme } from '@mui/material';
 import { useTools } from '@intractinc/base/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
-import Sidebar from '@intractinc/base/layout/sidebar/Sidebar';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useAppSelector } from '@intractinc/base/redux/hooks';
 import GuestMenu from '@intractinc/base/layout/navbar/GuestMenu';
 import Holding from '@intractinc/base/layout/Holding';
 import imagePaths from '@intractinc/base/hooks/imagePaths';
 import useScreenSize from '@intractinc/base/hooks/useScreenSize';
+import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
 
 const Main: FC = () => {
     const auth = useAppSelector((state) => state.auth.status);
@@ -38,6 +38,7 @@ const Main: FC = () => {
 
     return (
         <div className={classes.root}>
+            {maintenance && <MaintenanceScreen />}
             <div className={classes.appBar}>
                 {isSmallScreen ? (
                     <Stack
@@ -104,24 +105,6 @@ const Main: FC = () => {
                 )}
             </div>
             <div className={classes.main}>
-                {!maintenance &&
-                    (isSmallScreen ? (
-                        <Drawer
-                            PaperProps={{ sx: { borderTopRightRadius: (theme) => theme.spacing(1) } }}
-                            open={drawerOpen}
-                            onClose={toggleDrawer}
-                            ModalProps={{ keepMounted: true }}
-                            transitionDuration={theme.transitions.duration.complex}
-                        >
-                            {auth ? (
-                                <Sidebar {...{ inDrawer: true, toggleDrawer }} />
-                            ) : (
-                                <GuestMenu {...{ inSidebar: true, toggleDrawer }} />
-                            )}
-                        </Drawer>
-                    ) : (
-                        <Sidebar {...{ toggleDrawer }} />
-                    ))}
                 <div className={classes.content}>
                     <Suspense fallback={<Holding {...{ spinner: true }} />}>
                         <Outlet />

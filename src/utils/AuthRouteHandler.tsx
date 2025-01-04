@@ -47,10 +47,6 @@ const AuthRouteHandler = (searchParams: URLSearchParams) => {
                 return;
             }
 
-            if (location.pathname === '/') {
-                navigate('/home');
-                return;
-            }
             const authCheck = [
                 '/login',
                 '/register',
