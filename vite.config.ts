@@ -23,7 +23,7 @@ export default defineConfig({
         svgrPlugin(),
         checker({
             typescript: {
-                tsconfigPath: 'tsconfig.app.json',
+                tsconfigPath: 'tsconfig.build.json',
                 buildMode: false,
             },
         }),
