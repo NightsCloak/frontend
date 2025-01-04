@@ -12,7 +12,7 @@ env:
   KUBECTL_PATH: ./docker/admin.develop.yaml
   ENVIRONMENT: develop
   NODE_VERSION: 23.x
-  NODE_OPTIONS: "--max_old_space_size=4096"
+  NODE_OPTIONS: "--max_old_space_size=6144"
   VITE_SCHEMA: "https"
   VITE_URI: "admin.intract.dev"
   VITE_PREFIX: "api/v1"
