@@ -111,7 +111,7 @@ const Main: FC = () => {
                     </>
                 )}
             </AppBar>
-            <Sidebar open={drawerOpen} toggleDrawer={toggleDrawer} />
+            <Sidebar open={drawerOpen} />
             <Box component={'main'} sx={{ flexGrow: 1, p: 2, flexDirection: 'column' }}>
                 <DrawerHeader />
                 <Suspense fallback={<Holding {...{ spinner: true }} />}>
