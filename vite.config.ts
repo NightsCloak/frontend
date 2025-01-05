@@ -11,7 +11,9 @@ process.env = { ...process.env, ...loadEnv(process.env.NODE_ENV ?? 'development'
 
 export default defineConfig({
     define: {
-        'import.meta.env.GITHUB_SHA': JSON.stringify(process.env.GITHUB_SHA),
+        // 'process.env': 'import.meta.env',
+        // 'process.meta': 'import.meta',
+        // 'import.meta.env.GITHUB_SHA': JSON.stringify(process.env.GITHUB_SHA),
     },
     plugins: [
         react({
