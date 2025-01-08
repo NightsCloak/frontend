@@ -14,13 +14,14 @@ import AppError from '@intractinc/base/errors/AppError';
 import { ErrorBoundary } from 'react-error-boundary';
 import AuthRouteHandler from '@/utils/AuthRouteHandler';
 import * as Sentry from '@sentry/react';
-import { useHeartbeatQuery } from '@intractinc/base/redux/features/auth';
 import { useGetUserQuery } from '@intractinc/base/redux/features/user';
 import useTabSync from '@intractinc/base/hooks/useTabSync';
+import BaseProvider from '@intractinc/base/BaseProvider';
+import theme from '@/config/theme';
+import { CssBaseline } from '@mui/material';
 
 function App() {
     //Init Redux
-    useHeartbeatQuery(undefined, { pollingInterval: 300000 });
     const dispatch = useAppDispatch();
     const maintenance = useAppSelector((state) => state.app.maintenance);
     usePageTracking();
@@ -83,11 +84,14 @@ function App() {
                 alignContent: 'center',
             }}
         >
-            <ErrorBoundary FallbackComponent={AppError}>
-                <Suspense fallback={null}>
-                    <Outlet />
-                </Suspense>
-            </ErrorBoundary>
+            <BaseProvider configTheme={theme}>
+                <CssBaseline />
+                <ErrorBoundary FallbackComponent={AppError}>
+                    <Suspense fallback={null}>
+                        <Outlet />
+                    </Suspense>
+                </ErrorBoundary>
+            </BaseProvider>
         </div>
     );
 }

@@ -13,6 +13,7 @@ env:
   ENVIRONMENT: develop
   NODE_VERSION: 23.x
   NODE_OPTIONS: "--max_old_space_size=6144"
+  VITE_APP: "admin"
   VITE_SCHEMA: "https"
   VITE_URI: "admin.intract.dev"
   VITE_PREFIX: "api/v1"
@@ -102,14 +103,14 @@ jobs:
         run: yarn
 
       # Build App
-      - name: Yarn Build
+      - name: Yarn Build amd64
         if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
         run: yarn build:app
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       # Build App for non k8s platform (local dev testing)
-      - name: Yarn Build
+      - name: Yarn Build arm64
         if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
         run: yarn build:app
 
