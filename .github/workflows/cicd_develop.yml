@@ -86,7 +86,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Setup Sentry, only for x86 atm
+      # Setup Sentry, only for x86
       - name: Sentry Release Management
         uses: getsentry/action-release@v1
         if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
