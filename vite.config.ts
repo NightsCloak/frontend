@@ -57,7 +57,7 @@ export default defineConfig({
             project: 'frontend',
             authToken: process.env.SENTRY_AUTH_TOKEN,
             // Generate Srcmaps for Develop and Production (false locally)
-            disable: process.env.VITE_SENRTY === 'false',
+            disable: process.env.VITE_SENRTY === 'false' || process.env.SENTRY_AUTH_TOKEN === undefined,
             telemetry: process.env.VITE_SENTRY_TELEMETRY === 'true',
             sourcemaps: {
                 // Allow for toggle of Sentry srcmaps,
