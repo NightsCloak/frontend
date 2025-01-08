@@ -192,23 +192,32 @@ const AllRobloxAvatarDecks: FC = () => {
                                             </TableCell>
                                             <TableCell>
                                                 {deck.user && (
-                                                    <Stack alignItems={'center'} direction={'row'} spacing={1}>
-                                                        <ImageAvatar
-                                                            {...{
-                                                                type: 'user',
-                                                                avatar: deck.user.avatar_route,
-                                                                name: deck.user.name,
-                                                                size: 35,
-                                                            }}
-                                                        />
-                                                        <Typography
-                                                            sx={{ cursor: 'pointer' }}
-                                                            noWrap={true}
-                                                            variant={'body1'}
-                                                        >
-                                                            {deck.user.name}
-                                                        </Typography>
-                                                    </Stack>
+                                                    <Link
+                                                        component={RouterLink}
+                                                        to={`/admin/users/${deck.user_id}`}
+                                                        sx={(theme) => ({
+                                                            color: theme.palette.text.primary,
+                                                            textDecoration: 'none',
+                                                        })}
+                                                    >
+                                                        <Stack alignItems={'center'} direction={'row'} spacing={1}>
+                                                            <ImageAvatar
+                                                                {...{
+                                                                    type: 'user',
+                                                                    avatar: deck.user.avatar_route,
+                                                                    name: deck.user.name,
+                                                                    size: 35,
+                                                                }}
+                                                            />
+                                                            <Typography
+                                                                sx={{ cursor: 'pointer' }}
+                                                                noWrap={true}
+                                                                variant={'body1'}
+                                                            >
+                                                                {deck.user.name}
+                                                            </Typography>
+                                                        </Stack>
+                                                    </Link>
                                                 )}
                                             </TableCell>
                                             <TableCell>

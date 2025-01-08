@@ -75,6 +75,7 @@ const UsersScreen: FC = () => {
                                     <TableCell>Textures</TableCell>
                                     <TableCell>A.I. Textures</TableCell>
                                     <TableCell>Logins</TableCell>
+                                    <TableCell>Last Active</TableCell>
                                     <TableCell>Joined</TableCell>
                                     {showTrashed && <TableCell>Archived</TableCell>}
                                     <TableCell align={'right'}>Actions</TableCell>
@@ -84,7 +85,7 @@ const UsersScreen: FC = () => {
                                 {!users ? (
                                     [...Array(25)].map((el, i) => (
                                         <TableRow key={i}>
-                                            <TableCell colSpan={showTrashed ? 16 : 15}>
+                                            <TableCell colSpan={showTrashed ? 17 : 16}>
                                                 <Skeleton
                                                     style={{ flexGrow: 1 }}
                                                     animation={'wave'}
@@ -168,6 +169,19 @@ const UsersScreen: FC = () => {
                                             <TableCell>{user.logins_count}</TableCell>
                                             <TableCell>
                                                 <Typography noWrap={true} variant={'body2'}>
+                                                    {user.last_active_at ? (
+                                                        <ReactTimeAgo
+                                                            key={`${user.id}_last_active`}
+                                                            date={new Date(user.last_active_at)}
+                                                            title={toLocaleDateString(user.last_active_at)}
+                                                        />
+                                                    ) : (
+                                                        'N/A'
+                                                    )}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography noWrap={true} variant={'body2'}>
                                                     <ReactTimeAgo
                                                         key={`${user.id}_created`}
                                                         date={new Date(user.created_at)}
@@ -193,7 +207,7 @@ const UsersScreen: FC = () => {
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={15}>No users.</TableCell>
+                                        <TableCell colSpan={showTrashed ? 17 : 16}>No users.</TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>

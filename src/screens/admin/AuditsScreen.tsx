@@ -66,7 +66,7 @@ const AuditsScreen: FC = () => {
                                         <TableRow hover={true} key={audit.id}>
                                             <TableCell>
                                                 <Typography variant={'caption'} noWrap={true}>
-                                                    {audit.event ?? audit.action}
+                                                    {audit.event}
                                                 </Typography>
                                             </TableCell>
                                             <TableCell>
