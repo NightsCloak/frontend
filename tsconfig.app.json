@@ -48,8 +48,9 @@
     "**/node_modules",
     "build"
   ],
-  "references": [{
-    "path": "intract/base/tsconfig.app.json"
-  }
+  "references": [
+    {
+      "path": "intract/base/tsconfig.app.json"
+    }
   ]
 }

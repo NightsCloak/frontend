@@ -21,7 +21,6 @@ import theme from '@/config/theme';
 import { CssBaseline } from '@mui/material';
 
 function App() {
-    //Init Redux
     const dispatch = useAppDispatch();
     const maintenance = useAppSelector((state) => state.app.maintenance);
     usePageTracking();
