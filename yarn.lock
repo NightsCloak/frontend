@@ -2980,7 +2980,7 @@ __metadata:
     "@vitejs/plugin-basic-ssl": "npm:^1.1.0"
     "@vitejs/plugin-legacy": "npm:^5.4.3"
     "@vitejs/plugin-react": "npm:^4.3.3"
-    babel-plugin-react-compiler: "npm:19.0.0-beta-37ed2a7-20241206"
+    babel-plugin-react-compiler: "npm:19.0.0-beta-b2e8e9c-20241220"
     babylonjs-gltf2interface: "npm:7.24.0"
     browserlist: "npm:^1.0.1"
     browserslist: "npm:^4.24.2"
@@ -2993,7 +2993,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
     eslint-plugin-react: "npm:^7.37.2"
-    eslint-plugin-react-compiler: "npm:19.0.0-beta-37ed2a7-20241206"
+    eslint-plugin-react-compiler: "npm:19.0.0-beta-63e3235-20250105"
     eslint-plugin-react-hooks: "npm:^5.0.0"
     eslint-plugin-react-refresh: "npm:^0.4.14"
     eslint-plugin-storybook: "npm:^0.11.1"
@@ -3109,7 +3109,7 @@ __metadata:
     "@vitejs/plugin-basic-ssl": "npm:^1.1.0"
     "@vitejs/plugin-legacy": "npm:^5.4.3"
     "@vitejs/plugin-react": "npm:^4.3.3"
-    babel-plugin-react-compiler: "npm:19.0.0-beta-37ed2a7-20241206"
+    babel-plugin-react-compiler: "npm:19.0.0-beta-b2e8e9c-20241220"
     babylonjs-gltf2interface: "npm:7.24.0"
     browserlist: "npm:^1.0.1"
     browserslist: "npm:^4.24.2"
@@ -3122,7 +3122,7 @@ __metadata:
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
     eslint-plugin-react: "npm:^7.37.2"
-    eslint-plugin-react-compiler: "npm:19.0.0-beta-37ed2a7-20241206"
+    eslint-plugin-react-compiler: "npm:19.0.0-beta-63e3235-20250105"
     eslint-plugin-react-hooks: "npm:^5.0.0"
     eslint-plugin-react-refresh: "npm:^0.4.14"
     eslint-plugin-storybook: "npm:^0.11.1"
@@ -5957,6 +5957,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-react-compiler@npm:19.0.0-beta-b2e8e9c-20241220":
+  version: 19.0.0-beta-b2e8e9c-20241220
+  resolution: "babel-plugin-react-compiler@npm:19.0.0-beta-b2e8e9c-20241220"
+  dependencies:
+    "@babel/types": "npm:^7.19.0"
+  checksum: 10c0/e4903f63bfe0e900927411e6ac5942798293fe85df0ae402bec6300c5b666089dc819ea071e0ac86929e12249cd7bda8acbc599728f03cfc1519eead79df083c
+  languageName: node
+  linkType: hard
+
 "babylonjs-gltf2interface@npm:7.24.0":
   version: 7.24.0
   resolution: "babylonjs-gltf2interface@npm:7.24.0"
@@ -7553,6 +7562,22 @@ __metadata:
   peerDependencies:
     eslint: ">=7"
   checksum: 10c0/072413c7a9a4959fc5e7bb65e1107498c0d940acd993112be338719138fada20f3dcf21900e6a17978a3de6a700ad8f1b9073f873b97ed6ca5be9c63ca32ed06
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react-compiler@npm:19.0.0-beta-63e3235-20250105":
+  version: 19.0.0-beta-63e3235-20250105
+  resolution: "eslint-plugin-react-compiler@npm:19.0.0-beta-63e3235-20250105"
+  dependencies:
+    "@babel/core": "npm:^7.24.4"
+    "@babel/parser": "npm:^7.24.4"
+    "@babel/plugin-proposal-private-methods": "npm:^7.18.6"
+    hermes-parser: "npm:^0.25.1"
+    zod: "npm:^3.22.4"
+    zod-validation-error: "npm:^3.0.3"
+  peerDependencies:
+    eslint: ">=7"
+  checksum: 10c0/0a623a9771a2dcb8087063f3b094c037030b504f41d44be63ac6120bb7205145463f6dcad6ff1cde36ab762e89c8db8bd5bb2a2b30fa554ae280daf310974635
   languageName: node
   linkType: hard
 
