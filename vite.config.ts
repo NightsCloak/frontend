@@ -15,7 +15,7 @@ export default defineConfig({
             'process.env': 'import.meta.env',
             'process.meta': 'import.meta',
         }),
-        // 'import.meta.env.GITHUB_SHA': JSON.stringify(process.env.GITHUB_SHA),
+        'import.meta.env.GITHUB_SHA': JSON.stringify(process.env.GITHUB_SHA),
     },
     plugins: [
         react({
