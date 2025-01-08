@@ -9,6 +9,7 @@ import apiSlice from '@intractinc/base/redux/apiSlice';
 import { persistor } from '@intractinc/base/redux/store';
 import { useLogoutMutation } from '@intractinc/base/redux/features/auth';
 import { logout as userLogout } from '@intractinc/base/redux/reducers/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 type SidebarProps = {
     open: boolean;
@@ -19,6 +20,7 @@ const Sidebar: FC<SidebarProps> = ({ open }) => {
     const dispatch = useAppDispatch();
     const [logoutTrigger, { isSuccess }] = useLogoutMutation();
     const { classes } = useStyles();
+    const navigate = useNavigate();
 
     const logoutHandler = async () => {
         await dispatch(userLogout());
@@ -35,6 +37,7 @@ const Sidebar: FC<SidebarProps> = ({ open }) => {
             console.log('logout auth');
             logoutTrigger();
         }
+        navigate('/');
     }, []);
 
     useEffect(() => {
