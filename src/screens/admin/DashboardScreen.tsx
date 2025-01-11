@@ -2,7 +2,7 @@ import { Grid, Paper, Theme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { FC, useEffect } from 'react';
 import { useTools } from '@intractinc/base/contexts/ToolsContext';
-import StatsPanel from '@intractinc/base/components/Admin/StatsPanel';
+import StatsPanel from '@/components/StatsPanel';
 import UsersPanel from '@intractinc/base/components/Admin/Users/UsersPanel';
 import OrganizationSubscriptionsPanel from '@intractinc/base/components/Admin/Organizations/OrganizationSubscriptionsPanel';
 import UserSubscriptionsPanel from '@intractinc/base/components/Admin/Users/UserSubscriptionsPanel';

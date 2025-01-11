@@ -11,7 +11,8 @@ import Holding from '@intractinc/base/layout/Holding';
 import imagePaths from '@intractinc/base/hooks/imagePaths';
 import useScreenSize from '@intractinc/base/hooks/useScreenSize';
 import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/sidebar';
+import SidebarProvider from '@/providers/SidebarProvider';
 import DrawerHeader from '@/components/Drawer/DrawerHeader';
 
 const Main: FC = () => {
@@ -25,7 +26,6 @@ const Main: FC = () => {
     const { tools, breadcrumbs, modal } = useTools();
 
     const toggleDrawer = () => {
-        console.log('drawerOpen', drawerOpen);
         setDrawerOpen((prevState) => !prevState);
     };
 
@@ -113,8 +113,12 @@ const Main: FC = () => {
                     </>
                 )}
             </AppBar>
-            {auth && <Sidebar open={drawerOpen} />}
-            <Box component={'main'} sx={{ flexGrow: 1, p: 2, flexDirection: 'column' }}>
+            {auth && (
+                <SidebarProvider open={drawerOpen} setOpen={toggleDrawer}>
+                    <Sidebar />
+                </SidebarProvider>
+            )}
+            <Box component={'main'} sx={{ flex: 1, p: 2 }} className={classes.content}>
                 <DrawerHeader />
                 <Suspense fallback={<Holding {...{ spinner: true }} />}>
                     <Outlet />
@@ -131,6 +135,7 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean }>()((theme
             display: 'flex',
             flex: 1,
             flexDirection: 'row',
+            scrollbarWidth: 'thin',
         },
         appBar: {
             alignItems: 'center',
@@ -162,12 +167,10 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean }>()((theme
             flex: 1,
             justifyContent: 'flex-end',
             paddingRight: theme.spacing(3),
-            border: '1px solid red',
         },
         adminTools: {
             display: 'flex',
             flex: 1,
-            border: '1px solid red',
         },
         main: {
             display: 'flex',

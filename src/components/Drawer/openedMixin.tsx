@@ -1,6 +1,6 @@
 import { CSSObject } from '@mui/material/styles';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,

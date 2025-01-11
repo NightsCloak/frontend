@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Typography } from '@mui/material';
-import { FC, useCallback, useEffect } from 'react';
+import { FC, use, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@intractinc/base/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import DrawerHeader from '@/components/Drawer/DrawerHeader';
@@ -9,19 +9,18 @@ import apiSlice from '@intractinc/base/redux/apiSlice';
 import { persistor } from '@intractinc/base/redux/store';
 import { useLogoutMutation } from '@intractinc/base/redux/features/auth';
 import { logout as userLogout } from '@intractinc/base/redux/reducers/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Home from '@/components/sidebar/Home';
+import SidebarContext from '@/contexts/SidebarContext';
 
-type SidebarProps = {
-    open: boolean;
-};
-
-const Sidebar: FC<SidebarProps> = ({ open }) => {
+const Index = () => {
     const user = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
     const [logoutTrigger, { isSuccess }] = useLogoutMutation();
     const { classes } = useStyles();
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const { open } = use(SidebarContext);
     const logoutHandler = async () => {
         await dispatch(userLogout());
         await dispatch(apiSlice.util.resetApiState());
@@ -37,8 +36,24 @@ const Sidebar: FC<SidebarProps> = ({ open }) => {
             console.log('logout auth');
             logoutTrigger();
         }
-        navigate('/');
+        console.log('import', import.meta);
+        if (import.meta.env.DEV) window.location.reload();
+        else {
+            navigate('/');
+        }
     }, []);
+
+    const SidebarSection: FC = useCallback(() => {
+        switch (location.pathname.split('/')[1]) {
+            case 'organization':
+                return <div>Organization</div>;
+            case 'project':
+                return <div>project</div>;
+            case 'user':
+                return <div>User</div>;
+        }
+        return <Home />;
+    }, [location]);
 
     useEffect(() => {
         console.log('isSuccess', isSuccess);
@@ -62,6 +77,7 @@ const Sidebar: FC<SidebarProps> = ({ open }) => {
                         </IconButton>
                     </div>
                 </div>
+                <SidebarSection />
             </div>
         </Drawer>
     );
@@ -69,7 +85,6 @@ const Sidebar: FC<SidebarProps> = ({ open }) => {
 
 const useStyles = makeStyles()(() => ({
     root: {
-        border: '1px solid red',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -77,7 +92,6 @@ const useStyles = makeStyles()(() => ({
     },
     avatar: {
         minHeight: 200,
-        border: '1px solid red',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
@@ -85,4 +99,4 @@ const useStyles = makeStyles()(() => ({
     },
 }));
 
-export default Sidebar;
+export default Index;

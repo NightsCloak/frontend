@@ -2861,6 +2861,7 @@ __metadata:
     browserslist-to-esbuild: "npm:^2.1.1"
     buffer: "npm:^6.0.3"
     chalk: "npm:^5.3.0"
+    chart.js: "npm:^4.4.7"
     cross-fetch: "npm:^4.0.0"
     dotenv: "npm:^16.4.5"
     dotenv-cli: "npm:^7.4.4"
@@ -2889,6 +2890,7 @@ __metadata:
     pusher-js: "npm:^8.4.0-rc2"
     react: "npm:^19.0.0"
     react-activity: "npm:^2.1.3"
+    react-chartjs-2: "npm:^5.3.0"
     react-color: "npm:^2.19.3"
     react-device-detect: "npm:^2.2.3"
     react-dom: "npm:^19.0.0"
@@ -3308,6 +3310,13 @@ __metadata:
     "@jridgewell/resolve-uri": "npm:^3.1.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
   checksum: 10c0/3d1ce6ebc69df9682a5a8896b414c6537e428a1d68b02fcc8363b04284a8ca0df04d0ee3013132252ab14f2527bc13bea6526a912ecb5658f0e39fd2860b4df4
+  languageName: node
+  linkType: hard
+
+"@kurkle/color@npm:^0.3.0":
+  version: 0.3.4
+  resolution: "@kurkle/color@npm:0.3.4"
+  checksum: 10c0/0e9fd55c614b005c5f0c4c755bca19ec0293bc7513b4ea3ec1725234f9c2fa81afbc78156baf555c8b9cb0d305619253c3f5bca016067daeebb3d00ebb4ea683
   languageName: node
   linkType: hard
 
@@ -6297,6 +6306,15 @@ __metadata:
   version: 0.0.2
   resolution: "charenc@npm:0.0.2"
   checksum: 10c0/a45ec39363a16799d0f9365c8dd0c78e711415113c6f14787a22462ef451f5013efae8a28f1c058f81fc01f2a6a16955f7a5fd0cd56247ce94a45349c89877d8
+  languageName: node
+  linkType: hard
+
+"chart.js@npm:^4.4.7":
+  version: 4.4.7
+  resolution: "chart.js@npm:4.4.7"
+  dependencies:
+    "@kurkle/color": "npm:^0.3.0"
+  checksum: 10c0/9db499993c561f11184112003956ba96cf00513e025f58846be36e75ebddc6cbab2f93626c3734c305bc801e9362a9ef193b9591e679c59903b2ecb48cfcb317
   languageName: node
   linkType: hard
 
@@ -10528,6 +10546,16 @@ __metadata:
     react: ">= 15.0.0"
     react-dom: ">= 15.0.0"
   checksum: 10c0/f011871c581064126b8fd5f8d89b6288431fc13cb77ef89388cc29ef45ace06af5d76189e6ed17e1d7e0604862189b9a8bf7cdf054ecadb6b9ef3d7b75dec211
+  languageName: node
+  linkType: hard
+
+"react-chartjs-2@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "react-chartjs-2@npm:5.3.0"
+  peerDependencies:
+    chart.js: ^4.1.1
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/4415d40217c084a49f9a936fbd30f67e0e705148e6f8359bec65601033d1076f31085c45793839fc29ec833e6c427b0bf9861a0c54c432c08d35bc9590ffa41a
   languageName: node
   linkType: hard
 
