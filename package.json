@@ -74,7 +74,7 @@
     "prebuild": "yarn workspaces foreach -Rpt --exclude @intractinc/admin run build",
     "build:app": "yarn workspaces foreach -Rpt run build",
     "build:base": "yarn workspace @intractinc/base build",
-    "preview": "yarn build && vite preview"
+    "preview": "yarn build:app && vite preview --host"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.4",

@@ -36,16 +36,31 @@ const RecentUsersChart = () => {
                 data: reverse.map((snapshot) => snapshot.recently_active),
                 borderColor: theme.palette.primary.main,
             },
+            {
+                label: `Total Users`,
+                data: reverse.map((snapshot) => snapshot.total),
+                borderColor: theme.palette.secondary.main,
+                hidden: true,
+            },
         ];
         return { labels, datasets };
     }, [data]);
 
     return (
         <>
-            <Typography variant={'h6'}>Recent Users: {recentUsers.datasets[0].data[0]}</Typography>
+            <Typography variant={'h6'}>Recent Users: {recentUsers.datasets?.[0]?.data[0]}</Typography>
             <Line
                 options={{
                     responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: false,
+                        },
+                    },
                 }}
                 data={recentUsers}
             />
