@@ -12,6 +12,7 @@ import { logout as userLogout } from '@intractinc/base/redux/reducers/userSlice'
 import { useLocation, useNavigate } from 'react-router-dom';
 import Home from '@/components/sidebar/Home';
 import SidebarContext from '@/contexts/SidebarContext';
+import Users from '@/components/sidebar/Users';
 
 const Index = () => {
     const user = useAppSelector((state) => state.user);
@@ -49,8 +50,8 @@ const Index = () => {
                 return <div>Organization</div>;
             case 'project':
                 return <div>project</div>;
-            case 'user':
-                return <div>User</div>;
+            case 'users':
+                return <Users />;
         }
         return <Home />;
     }, [location]);

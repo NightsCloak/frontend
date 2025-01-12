@@ -1,12 +1,12 @@
 import { useAppSelector } from '@intractinc/base/redux/hooks';
 import LandingScreen from '@/screens/LandingScreen';
-import AdminIndex from '@/screens/AdminIndex';
+import AdminDashboard from '@/screens/AdminDashboard';
 
 const RootIndex = () => {
     const auth = useAppSelector((state) => state.auth);
 
     if (auth.status) {
-        return <AdminIndex />;
+        return <AdminDashboard />;
     }
 
     return <LandingScreen />;

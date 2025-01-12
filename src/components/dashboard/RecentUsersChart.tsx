@@ -34,12 +34,30 @@ const RecentUsersChart = () => {
             {
                 label: `Recently Active Users`,
                 data: reverse.map((snapshot) => snapshot.recently_active),
+                borderColor: theme.palette.intract.main,
+            },
+            {
+                label: `Paid Users`,
+                data: reverse.map((snapshot) => snapshot.paid_member),
                 borderColor: theme.palette.primary.main,
+                hidden: true,
+            },
+            {
+                label: `Trashed Users`,
+                data: reverse.map((snapshot) => snapshot.trashed),
+                borderColor: theme.palette.error.main,
+                hidden: true,
+            },
+            {
+                label: `Unverified Users`,
+                data: reverse.map((snapshot) => snapshot.unverified),
+                borderColor: theme.palette.success.light,
+                hidden: true,
             },
             {
                 label: `Total Users`,
                 data: reverse.map((snapshot) => snapshot.total),
-                borderColor: theme.palette.secondary.main,
+                borderColor: theme.palette.info.main,
                 hidden: true,
             },
         ];

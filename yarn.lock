@@ -1816,6 +1816,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chromatic-com/storybook@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "@chromatic-com/storybook@npm:3.2.3"
+  dependencies:
+    chromatic: "npm:^11.15.0"
+    filesize: "npm:^10.0.12"
+    jsonfile: "npm:^6.1.0"
+    react-confetti: "npm:^6.1.0"
+    strip-ansi: "npm:^7.1.0"
+  peerDependencies:
+    storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+  checksum: 10c0/23c59b7d225347d4af8cb6a7596da3417dc3abc2d5036c4ef5cee2852b994a16b5996a1bd1a584bb56e97266d85ce9ae7daeeac296b3060d6b80b14cad10d9d1
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.13.5":
   version: 11.13.5
   resolution: "@emotion/babel-plugin@npm:11.13.5"
@@ -2820,6 +2835,7 @@ __metadata:
     "@babylonjs/loaders": "npm:7.24.0"
     "@babylonjs/materials": "npm:7.24.0"
     "@babylonjs/serializers": "npm:7.24.0"
+    "@chromatic-com/storybook": "npm:^3.2.3"
     "@emotion/react": "npm:^11.13.5"
     "@emotion/styled": "npm:^11.13.5"
     "@eslint/compat": "npm:^1.2.4"
@@ -2834,6 +2850,13 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.3.0"
     "@sentry/react": "npm:^8.40.0"
     "@sentry/vite-plugin": "npm:^2.22.6"
+    "@storybook/addon-essentials": "npm:^8.4.7"
+    "@storybook/addon-interactions": "npm:^8.4.7"
+    "@storybook/addon-onboarding": "npm:^8.4.7"
+    "@storybook/blocks": "npm:^8.4.7"
+    "@storybook/react": "npm:^8.4.7"
+    "@storybook/react-vite": "npm:^8.4.7"
+    "@storybook/test": "npm:^8.4.7"
     "@stripe/react-stripe-js": "npm:^2.8.1"
     "@stripe/stripe-js": "npm:^4.9.0"
     "@types/figlet": "npm:^1"
@@ -2872,6 +2895,7 @@ __metadata:
     eslint-plugin-react-compiler: "npm:19.0.0-beta-37ed2a7-20241206"
     eslint-plugin-react-hooks: "npm:^5.0.0"
     eslint-plugin-react-refresh: "npm:^0.4.14"
+    eslint-plugin-storybook: "npm:^0.11.2"
     eslint-plugin-tss-unused-classes: "npm:^1.0.2"
     eslint-plugin-unused-imports: "npm:^4.1.4"
     fast-glob: "npm:^3.3.2"
@@ -2909,6 +2933,7 @@ __metadata:
     restructure: "npm:^3.0.2"
     semver: "npm:7.6.3"
     slick-carousel: "npm:^1.8.1"
+    storybook: "npm:^8.4.7"
     terser: "npm:^5.37.0"
     tga: "npm:^1.0.7"
     tss-react: "npm:^4.9.13"
@@ -4248,6 +4273,17 @@ __metadata:
   peerDependencies:
     storybook: ^8.4.7
   checksum: 10c0/a9e87c91cbcade2d0059cdc471e8ba479ad6d9dee0c2558c3b706e37d58b4cb3d986924ea0ff623aa791300ee2a8d2429e8fb3ef32eeec9d49861f8677815ac2
+  languageName: node
+  linkType: hard
+
+"@storybook/addon-onboarding@npm:^8.4.7":
+  version: 8.4.7
+  resolution: "@storybook/addon-onboarding@npm:8.4.7"
+  dependencies:
+    react-confetti: "npm:^6.1.0"
+  peerDependencies:
+    storybook: ^8.4.7
+  checksum: 10c0/ed2cf7fc825bd6608a7ade9d1b8826be2955bb4c1f2a5e20ddd784b64ab62d8142896740c1dea23efa0ed831b9ecebeda8e80f3fe7f382340b188df84c00a3d7
   languageName: node
   linkType: hard
 
@@ -7657,6 +7693,19 @@ __metadata:
   peerDependencies:
     eslint: ">=6"
   checksum: 10c0/0520018311c6da25fe2d0db24a59e99ecefe74c4cadd4eba42ce3b1b0ce2c3cc6f88d48680389374f99e10151a7ef3da52386853d9d5a4058c41ae72e2184549
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-storybook@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "eslint-plugin-storybook@npm:0.11.2"
+  dependencies:
+    "@storybook/csf": "npm:^0.1.11"
+    "@typescript-eslint/utils": "npm:^8.8.1"
+    ts-dedent: "npm:^2.2.0"
+  peerDependencies:
+    eslint: ">=8"
+  checksum: 10c0/8ba697ec92282b747ba20d8759fd2999b9d35f7a0adb7a809fe36e7baaac142b0f2123f78a87c05b811868d7e62d828ded1855fac4913667c470540dfdf0b3dc
   languageName: node
   linkType: hard
 

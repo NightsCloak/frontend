@@ -42,3 +42,5 @@ stderr.log
 
 # Sentry Config File
 .env.old.sentry-build-plugin
+
+*storybook.log

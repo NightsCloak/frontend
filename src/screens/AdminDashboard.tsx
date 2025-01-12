@@ -1,9 +1,9 @@
 import { useAppSelector } from '@intractinc/base/redux/hooks';
 import { Grid2 as Grid, Paper, Typography } from '@mui/material';
-import StataPanel from '@/components/StatsPanel';
-import RecentUsersChart from '@/components/RecentUsersChart';
+import StataPanel from '@/components/dashboard/StatsPanel';
+import RecentUsersChart from '@/components/dashboard/RecentUsersChart';
 
-const AdminIndex = () => {
+const AdminDashboard = () => {
     const user = useAppSelector((state) => state.user);
 
     return (
@@ -29,4 +29,4 @@ const AdminIndex = () => {
     );
 };
 
-export default AdminIndex;
+export default AdminDashboard;

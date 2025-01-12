@@ -8,7 +8,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import IntractLink from '@intractinc/base/components/IntractLink';
 
-const Home = () => {
+const Users = () => {
     const sections = ['Dashboard', 'Users', 'Organizations', 'Projects'];
     const { open } = use(SidebarContext);
 
@@ -88,4 +88,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Users;

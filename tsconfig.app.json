@@ -30,7 +30,7 @@
     "forceConsistentCasingInFileNames": false,
     "emitDeclarationOnly": false,
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDirs": ["./src", "./stories"],
     "paths": {
       "@/*": [
         "./src/*"
@@ -42,7 +42,8 @@
   },
   "include": [
     "./intract/base/lib/types/**/*.d.ts",
-    "./src/**/*"
+    "./src/**/*",
+    "./stories/**/*"
   ],
   "exclude": [
     "**/node_modules",

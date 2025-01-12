@@ -74,11 +74,21 @@
     "prebuild": "yarn workspaces foreach -Rpt --exclude @intractinc/admin run build",
     "build:app": "yarn workspaces foreach -Rpt run build",
     "build:base": "yarn workspace @intractinc/base build",
-    "preview": "yarn build:app && vite preview --host"
+    "preview": "yarn build:app && vite preview --host",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.3",
     "@eslint/compat": "^1.2.4",
     "@eslint/js": "^9.15.0",
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/addon-onboarding": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/react": "^8.4.7",
+    "@storybook/react-vite": "^8.4.7",
+    "@storybook/test": "^8.4.7",
     "@types/figlet": "^1",
     "@types/jquery": "^3.5.32",
     "@types/node": "^22.9.1",
@@ -109,6 +119,7 @@
     "eslint-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
+    "eslint-plugin-storybook": "^0.11.2",
     "eslint-plugin-tss-unused-classes": "^1.0.2",
     "eslint-plugin-unused-imports": "^4.1.4",
     "fast-glob": "^3.3.2",
@@ -116,6 +127,7 @@
     "globals": "15.12.0",
     "javascript-obfuscator": "^4.1.1",
     "prettier": "^3.4.2",
+    "storybook": "^8.4.7",
     "terser": "^5.37.0",
     "tss-react": "^4.9.13",
     "tsx": "^4.19.2",
@@ -137,5 +149,10 @@
   "resolutions": {
     "redux-persist@^6.0.0": "patch:redux-persist@npm%3A6.0.0#./.yarn/patches/redux-persist-npm-6.0.0-56dad69feb.patch",
     "react-draggable@^4.4.5": "patch:react-draggable@npm%3A4.4.5#~/.yarn/patches/react-draggable-npm-4.4.5-f5c4c58302.patch"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }

@@ -6,7 +6,6 @@ import { useTools } from '@intractinc/base/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useAppSelector } from '@intractinc/base/redux/hooks';
-import GuestMenu from '@intractinc/base/layout/navbar/GuestMenu';
 import Holding from '@intractinc/base/layout/Holding';
 import imagePaths from '@intractinc/base/hooks/imagePaths';
 import useScreenSize from '@intractinc/base/hooks/useScreenSize';
@@ -14,6 +13,7 @@ import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
 import Sidebar from '@/components/sidebar';
 import SidebarProvider from '@/providers/SidebarProvider';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
+import AdminMenu from '@/components/AdminMenu';
 
 const Main: FC = () => {
     const auth = useAppSelector((state) => state.auth.status);
@@ -79,13 +79,13 @@ const Main: FC = () => {
                     </Stack>
                 ) : (
                     <>
+                        {auth && (
+                            <IconButton onClick={toggleDrawer} color="inherit">
+                                <MenuIcon sx={{ color: 'white' }} />
+                            </IconButton>
+                        )}
                         <Link to={'/'}>
-                            <Stack spacing={2} direction={'row'} alignItems={'center'}>
-                                {auth && (
-                                    <IconButton onClick={toggleDrawer} color="inherit">
-                                        <MenuIcon sx={{ color: 'white' }} />
-                                    </IconButton>
-                                )}
+                            <Stack spacing={2} sx={{ pl: 2 }} direction={'row'} alignItems={'center'}>
                                 <img width={32} height={32} src={imagePaths.iconLogo} alt={'Logo'} />
                                 <img
                                     height={32}
@@ -95,11 +95,6 @@ const Main: FC = () => {
                                 />
                             </Stack>
                         </Link>
-                        {!auth && (
-                            <div className={classes.guest}>
-                                <GuestMenu />
-                            </div>
-                        )}
                     </>
                 )}
                 {auth && (
@@ -109,9 +104,9 @@ const Main: FC = () => {
                             <Breadcrumbs separator={<NavigateNextIcon fontSize={'small'} />}>{breadcrumbs}</Breadcrumbs>
                         </div>
                         <div className={classes.tools}>{tools}</div>
-                        <div className={classes.adminTools}>Admin Tools</div>
                     </>
                 )}
+                <AdminMenu />
             </AppBar>
             {auth && (
                 <SidebarProvider open={drawerOpen} setOpen={toggleDrawer}>
@@ -147,13 +142,6 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean }>()((theme
             ...(!auth && {
                 backgroundColor: theme.palette.background.paper,
             }),
-        },
-        guest: {
-            display: 'flex',
-            // width: '100%',
-            flex: 1,
-            justifyContent: 'end',
-            marginRight: theme.spacing(1),
         },
         breadcrumbs: {
             display: 'flex',
