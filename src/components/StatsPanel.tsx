@@ -1,4 +1,4 @@
-import { useGetStatsQuery } from '@intractinc/base/redux/features/adminAudits';
+import { useGetStatsQuery } from '@intractinc/base/redux/features/adminStats';
 import { Spinner } from 'react-activity';
 import { Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
@@ -16,8 +16,8 @@ const StatsPanel = () => {
 
     return (
         <div className={classes.root}>
-            {Object.keys(stats).map((key) => (
-                <Typography style={{ overflow: 'auto' }}>
+            {Object.keys(stats).map((key, index) => (
+                <Typography variant={'body2'} style={{ overflow: 'auto' }} key={`stat_${key}`}>
                     {key}: {stats[key]}
                 </Typography>
             ))}
@@ -27,10 +27,14 @@ const StatsPanel = () => {
 
 const useStyles = makeStyles()((theme) => ({
     root: {
-        maxHeight: 400,
+        // display: 'flex',
+        // flex: 1,
+        maxHeight: 300,
         overflow: 'auto',
         marginBottom: theme.spacing(3),
         scrollbarWidth: 'none',
+        flexDirection: 'column',
+        paddingLeft: theme.spacing(1),
     },
 }));
 

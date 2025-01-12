@@ -13,7 +13,7 @@ import useScreenSize from '@intractinc/base/hooks/useScreenSize';
 import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
 import Sidebar from '@/components/sidebar';
 import SidebarProvider from '@/providers/SidebarProvider';
-import DrawerHeader from '@/components/Drawer/DrawerHeader';
+import DrawerHeader from '@/components/drawer/DrawerHeader';
 
 const Main: FC = () => {
     const auth = useAppSelector((state) => state.auth.status);

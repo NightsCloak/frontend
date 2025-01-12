@@ -1,5 +1,5 @@
-import openedMixin from '@/components/Drawer/openedMixin';
-import closedMixin from '@/components/Drawer/closedMixin';
+import openedMixin from '@/components/drawer/openedMixin';
+import closedMixin from '@/components/drawer/closedMixin';
 import styled from '@mui/material/styles/styled';
 import MuiDrawer from '@mui/material/Drawer';
 
