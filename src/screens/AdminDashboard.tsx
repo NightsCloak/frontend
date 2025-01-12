@@ -2,6 +2,8 @@ import { useAppSelector } from '@intractinc/base/redux/hooks';
 import { Grid2 as Grid, Paper, Typography } from '@mui/material';
 import StataPanel from '@/components/dashboard/StatsPanel';
 import RecentUsersChart from '@/components/dashboard/RecentUsersChart';
+import RecentUsersTable from '@/components/dashboard/RecentUsersTable';
+import RecentSubscriptions from '@/components/dashboard/RecentSubscriptions';
 
 const AdminDashboard = () => {
     const user = useAppSelector((state) => state.user);
@@ -15,14 +17,13 @@ const AdminDashboard = () => {
                     <RecentUsersChart />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }} sx={{ pl: 2 }} key={'records'}>
-                    Records
                     <StataPanel />
                 </Grid>
                 <Grid size={8} key={'recentUsers'}>
-                    Recent Users
+                    <RecentUsersTable />
                 </Grid>
                 <Grid size={'auto'} sx={{ pl: 2 }}>
-                    Recent Subscriptions
+                    <RecentSubscriptions />
                 </Grid>
             </Grid>
         </>

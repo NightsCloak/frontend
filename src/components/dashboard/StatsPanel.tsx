@@ -16,11 +16,16 @@ const StatsPanel = () => {
 
     return (
         <div className={classes.root}>
-            {Object.keys(stats).map((key, index) => (
-                <Typography variant={'body2'} style={{ overflow: 'auto' }} key={`stat_${key}`}>
-                    {key}: {stats[key]}
-                </Typography>
-            ))}
+            <Typography variant={'h6'} color={'intract.main'}>
+                Records
+            </Typography>
+            <main className={classes.main}>
+                {Object.keys(stats).map((key, index) => (
+                    <Typography variant={'body2'} style={{ overflow: 'auto' }} key={`stat_${key}`}>
+                        {key}: {stats[key]}
+                    </Typography>
+                ))}
+            </main>
         </div>
     );
 };
@@ -30,11 +35,15 @@ const useStyles = makeStyles()((theme) => ({
         // display: 'flex',
         // flex: 1,
         maxHeight: 300,
-        overflow: 'auto',
+        // overflow: 'auto',
         marginBottom: theme.spacing(3),
         scrollbarWidth: 'none',
         flexDirection: 'column',
         paddingLeft: theme.spacing(1),
+    },
+    main: {
+        overflow: 'auto',
+        maxHeight: 300,
     },
 }));
 

@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Typography } from '@mui/material';
-import { FC, use, useCallback, useEffect } from 'react';
+import { use, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@intractinc/base/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
@@ -10,9 +10,9 @@ import { persistor } from '@intractinc/base/redux/store';
 import { useLogoutMutation } from '@intractinc/base/redux/features/auth';
 import { logout as userLogout } from '@intractinc/base/redux/reducers/userSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Home from '@/components/sidebar/Home';
 import SidebarContext from '@/contexts/SidebarContext';
-import Users from '@/components/sidebar/Users';
+import SidebarMenu from '@/components/sidebar/SidebarMenu';
+import defaultMenu from '@/components/sidebar/defaultMenu';
 
 const Index = () => {
     const user = useAppSelector((state) => state.user);
@@ -44,17 +44,12 @@ const Index = () => {
         }
     }, []);
 
-    const SidebarSection: FC = useCallback(() => {
-        switch (location.pathname.split('/')[1]) {
-            case 'organization':
-                return <div>Organization</div>;
-            case 'project':
-                return <div>project</div>;
-            case 'users':
-                return <Users />;
-        }
-        return <Home />;
-    }, [location]);
+    const SidebarSection = (section: string = 'default') =>
+        ({
+            '': <SidebarMenu menuItems={defaultMenu} />,
+            users: <SidebarMenu menuItems={defaultMenu} />,
+            organizations: <div>test</div>,
+        })[section];
 
     useEffect(() => {
         console.log('isSuccess', isSuccess);
@@ -78,7 +73,7 @@ const Index = () => {
                         </IconButton>
                     </div>
                 </div>
-                <SidebarSection />
+                {SidebarSection(location.pathname.split('/')[1])}
             </div>
         </Drawer>
     );

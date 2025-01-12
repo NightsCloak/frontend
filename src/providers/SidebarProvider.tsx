@@ -11,8 +11,8 @@ type SidebarProviderProps = {
 const SidebarProvider: FC<SidebarProviderProps> = ({ children, open, setOpen }) => {
     const location = useLocation();
     const path = location.pathname.split('/')[1];
-
-    return <SidebarContext value={{ open, setOpen, path }}>{children}</SidebarContext>;
+    const sidebarOpen = open ?? false;
+    return <SidebarContext value={{ open: sidebarOpen, setOpen, path }}>{children}</SidebarContext>;
 };
 
 export default SidebarProvider;

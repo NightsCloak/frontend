@@ -1,5 +1,5 @@
 import { Line } from 'react-chartjs-2';
-import { Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography, useTheme } from '@mui/material';
 import {
     CategoryScale,
     Chart as ChartJS,
@@ -65,8 +65,13 @@ const RecentUsersChart = () => {
     }, [data]);
 
     return (
-        <>
-            <Typography variant={'h6'}>Recent Users: {recentUsers.datasets?.[0]?.data[0]}</Typography>
+        <Box component={Paper} elevation={4} p={2}>
+            <Typography variant={'h6'} color={'intract.main'} display={'flex'} flexDirection={'row'}>
+                Recent Users:{' '}
+                <Typography variant={'h6'} style={{ color: '#FFF' }}>
+                    &nbsp;{recentUsers.datasets?.[0]?.data[0]}
+                </Typography>
+            </Typography>
             <Line
                 options={{
                     responsive: true,
@@ -82,7 +87,7 @@ const RecentUsersChart = () => {
                 }}
                 data={recentUsers}
             />
-        </>
+        </Box>
     );
 };
 

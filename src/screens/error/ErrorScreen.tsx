@@ -28,7 +28,7 @@ const ErrorScreen: FC<ErrorProps> = ({ title, message, navigateTo, screenNotFoun
         }
 
         if (!screenNotFound || !organization) {
-            return '/home';
+            return '/';
         }
 
         if (project) {
