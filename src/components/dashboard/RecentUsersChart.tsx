@@ -73,8 +73,12 @@ const RecentUsersChart = () => {
                 </Typography>
             </Typography>
             <Line
+                height={'auto'}
+                width={'auto'}
+                style={{ maxHeight: 450 }}
                 options={{
                     responsive: true,
+                    maintainAspectRatio: true,
                     plugins: {
                         legend: {
                             display: true,

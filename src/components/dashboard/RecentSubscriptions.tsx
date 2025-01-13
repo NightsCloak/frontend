@@ -1,6 +1,6 @@
 import { useGetRecentUserSubscriptionsAdminQuery } from '@intractinc/base/redux/features/adminUserSubscription';
 import { makeStyles } from 'tss-react/mui';
-import { Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 const RecentSubscriptions = () => {
     const { classes } = useStyles();
@@ -12,12 +12,12 @@ const RecentSubscriptions = () => {
     // const { toLocaleDateString } = useDateUtils();
     console.log('subscriptions', subscriptions);
     return (
-        <div className={classes.root}>
+        <Box component={Paper} elevation={4} className={classes.root}>
             <Typography variant={'h6'} color={'intract.main'}>
                 Recent Subscriptions
             </Typography>{' '}
             {subscriptions?.map((subscription) => <Typography> {subscription?.user?.name}</Typography>)}
-        </div>
+        </Box>
     );
 };
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles()((theme) => ({
     root: {
         // display: 'flex',
         // flex: 1,
-        maxHeight: 350,
+        height: 350,
         // overflow: 'auto',
         marginBottom: theme.spacing(3),
         scrollbarWidth: 'none',
