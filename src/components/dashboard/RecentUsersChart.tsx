@@ -88,6 +88,11 @@ const RecentUsersChart = () => {
                             display: false,
                         },
                     },
+                    scales: {
+                        y: {
+                            min: 0,
+                        },
+                    },
                 }}
                 data={recentUsers}
             />
