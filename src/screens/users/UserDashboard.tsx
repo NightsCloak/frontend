@@ -80,13 +80,14 @@ const UserDashboard = () => {
                 onColumnVisibilityModelChange={handelColumnVisibilityChange}
                 columns={fields}
                 rows={users.data}
+                autoPageSize
             />
         </div>
     );
 };
 
 const useStyles = makeStyles()((theme) => ({
-    root: {},
+    root: { display: 'flex', flex: 1, flexDirection: 'column' },
     header: { marginBottom: theme.spacing(2) },
 }));
 
