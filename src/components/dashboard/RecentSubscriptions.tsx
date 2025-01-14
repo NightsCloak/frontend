@@ -1,6 +1,8 @@
 import { useGetRecentUserSubscriptionsAdminQuery } from '@intractinc/base/redux/features/adminUserSubscription';
 import { makeStyles } from 'tss-react/mui';
 import { Box, Paper, Typography } from '@mui/material';
+import ReactTimeAgo from 'react-timeago';
+import UserSubscriptionChip from '@intractinc/base/components/Billing/User/UserSubscriptionChip';
 
 const RecentSubscriptions = () => {
     const { classes } = useStyles();
@@ -10,13 +12,27 @@ const RecentSubscriptions = () => {
     });
 
     // const { toLocaleDateString } = useDateUtils();
-    console.log('subscriptions', subscriptions);
+    console.log('subs', subscriptions);
+    if (!subscriptions) return <Typography>No Recent Subscriptions</Typography>;
+
     return (
         <Box component={Paper} elevation={4} className={classes.root}>
             <Typography variant={'h6'} color={'intract.main'}>
                 Recent Subscriptions
             </Typography>{' '}
-            {subscriptions?.map((subscription) => <Typography> {subscription?.user?.name}</Typography>)}
+            {subscriptions.map((subscription) => {
+                if (subscription.user) {
+                    return (
+                        <div className={classes.main}>
+                            <Typography variant={'body1'}>
+                                {subscription.user.first} {subscription.user.last[0]}
+                            </Typography>
+                            <UserSubscriptionChip subscription={subscription} />
+                            <ReactTimeAgo date={new Date(subscription.created_at)} style={{ fontSize: 'small' }} />
+                        </div>
+                    );
+                }
+            })}
         </Box>
     );
 };
@@ -33,8 +49,11 @@ const useStyles = makeStyles()((theme) => ({
         paddingLeft: theme.spacing(1),
     },
     main: {
-        overflow: 'auto',
-        maxHeight: 350,
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        '& > *': {
+            marginBottom: theme.spacing(1),
+        },
     },
 }));
 

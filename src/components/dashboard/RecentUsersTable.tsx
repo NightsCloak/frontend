@@ -24,7 +24,7 @@ const RecentUsersTable = () => {
                     <Grid size={{ xs: 12, sm: 3 }} className={classes.gridHeaderName}>
                         Name
                     </Grid>
-                    <Grid size={5} className={classes.gridHeader}>
+                    <Grid size={4} className={classes.gridHeader}>
                         Email
                     </Grid>
                     <Grid size={2} className={classes.gridHeader}>
@@ -40,8 +40,15 @@ const RecentUsersTable = () => {
                             <Grid size={{ xs: 12, sm: 3 }} className={classes.gridRowName}>
                                 <Typography variant={'caption'}>{user.name}</Typography>
                             </Grid>
-                            <Grid size={5} className={classes.gridRow}>
-                                <Typography variant={'caption'}>{user.email}</Typography>
+                            <Grid size={4} className={classes.gridRow} overflow={'hidden'}>
+                                <Typography
+                                    variant={'caption'}
+                                    sx={{ maxWidth: 10, border: '1px solid red' }}
+                                    noWrap
+                                    // fontSize={'x-small'}
+                                >
+                                    {user.email}
+                                </Typography>
                             </Grid>
                             <Grid size={2} className={classes.gridRow}>
                                 <Typography variant={'caption'}>
@@ -53,7 +60,7 @@ const RecentUsersTable = () => {
                                 </Typography>
                             </Grid>
                             <Grid size={2} className={classes.gridRow}>
-                                <Typography variant={'caption'}>
+                                <Typography variant={'body2'} fontSize={'x-small'}>
                                     <ReactTimeAgo
                                         key={`${user.id}_created`}
                                         date={new Date(user.created_at)}
@@ -71,6 +78,9 @@ const RecentUsersTable = () => {
 
 const useStyles = makeStyles()((theme) => ({
     root: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
         height: 350,
         overflow: 'hidden',
     },
@@ -78,10 +88,9 @@ const useStyles = makeStyles()((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'flex-start',
-        height: 350,
     },
     content: {
-        height: 300,
+        maxHeight: 350,
         overflow: 'auto',
     },
     gridHeaderName: {},

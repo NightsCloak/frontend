@@ -1,7 +1,5 @@
-import { Grid2 } from '@mui/material';
-
 const UserDashboard = () => {
-    return <Grid2>User</Grid2>;
+    return <div style={{ display: 'flex', flex: 1, border: '1px solid blue' }}>User</div>;
 };
 
 export default UserDashboard;

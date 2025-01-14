@@ -12,12 +12,14 @@ import {
 } from 'chart.js';
 import { useGetUsersSnapshotQuery } from '@intractinc/base/redux/features/adminStats';
 import { useMemo } from 'react';
+import { makeStyles } from 'tss-react/mui';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const RecentUsersChart = () => {
+const RecentUsersChart = ({ dimensions }: { dimensions: { width: number; height: number } }) => {
     const theme = useTheme();
     const { data } = useGetUsersSnapshotQuery();
+    const { classes } = useStyles();
 
     const recentUsers = useMemo(() => {
         if (!data) return { labels: [new Date().toLocaleTimeString('en-US')], datasets: [] };
@@ -65,39 +67,58 @@ const RecentUsersChart = () => {
     }, [data]);
 
     return (
-        <Box component={Paper} elevation={4} p={2}>
+        <Box className={classes.root} component={Paper} elevation={4} p={2}>
             <Typography variant={'h6'} color={'intract.main'} display={'flex'} flexDirection={'row'}>
                 Recent Users:{' '}
                 <Typography variant={'h6'} style={{ color: '#FFF' }}>
-                    &nbsp;{recentUsers.datasets?.[0]?.data[0]}
+                    &nbsp;{recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1]}
                 </Typography>
             </Typography>
-            <Line
-                height={'auto'}
-                width={'auto'}
-                style={{ maxHeight: 450 }}
-                options={{
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
+            <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+                <Line
+                    style={{ maxHeight: dimensions.height - 64, maxWidth: dimensions.width - 32 }}
+                    options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: false,
+                            },
                         },
-                        title: {
-                            display: false,
+                        scales: {
+                            y: {
+                                min: 0,
+                                // Sets the Max to the next highest multiple of 10 (33 -> 40, 55 -> 60)
+                                max:
+                                    recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1] +
+                                    Math.ceil(
+                                        recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1] / 10
+                                    ) *
+                                        10 -
+                                    recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1],
+                                ticks: {
+                                    stepSize: 1,
+                                },
+                            },
                         },
-                    },
-                    scales: {
-                        y: {
-                            min: 0,
-                        },
-                    },
-                }}
-                data={recentUsers}
-            />
+                    }}
+                    data={recentUsers}
+                />
+            </div>
         </Box>
     );
 };
+
+const useStyles = makeStyles()((theme) => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+    },
+}));
 
 export default RecentUsersChart;

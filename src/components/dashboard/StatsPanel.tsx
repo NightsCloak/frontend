@@ -38,7 +38,6 @@ const useStyles = makeStyles()((theme) => ({
         // flex: 1,
         // maxHeight: 300,
         // overflow: 'auto',
-        marginBottom: theme.spacing(3),
         scrollbarWidth: 'none',
         flexDirection: 'column',
         paddingLeft: theme.spacing(1),

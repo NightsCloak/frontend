@@ -39,56 +39,60 @@ const Main: FC = () => {
     }, [isSmallScreen]);
 
     return (
-        <div className={classes.root}>
-            {maintenance && <MaintenanceScreen />}
-            <AppBar position="fixed" className={classes.appBar} sx={{ zIndex: theme.zIndex.drawer + 1 }}>
-                <>
+        <>
+            <DrawerHeader />
+            <div className={classes.root}>
+                {maintenance && <MaintenanceScreen />}
+                <AppBar position="fixed" className={classes.appBar} sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+                    <>
+                        {auth && (
+                            <IconButton onClick={toggleDrawer} color="inherit">
+                                <MenuIcon sx={{ color: 'white' }} />
+                            </IconButton>
+                        )}
+                        <Link to={'/'}>
+                            <Stack spacing={2} sx={{ pl: 2 }} direction={'row'} alignItems={'center'}>
+                                <img width={32} height={32} src={imagePaths.iconLogo} alt={'Logo'} />
+                                <img
+                                    height={32}
+                                    width={157}
+                                    src={theme.palette.mode === 'dark' ? imagePaths.lightLogo : imagePaths.darkLogo}
+                                    alt={'Logo'}
+                                />
+                            </Stack>
+                        </Link>
+                    </>
+
                     {auth && (
-                        <IconButton onClick={toggleDrawer} color="inherit">
-                            <MenuIcon sx={{ color: 'white' }} />
-                        </IconButton>
+                        <>
+                            {isSmallScreen && <Divider sx={{ mr: 2 }} orientation={'vertical'} flexItem />}
+                            <div className={classes.breadcrumbs}>
+                                <Breadcrumbs separator={<NavigateNextIcon fontSize={'small'} />}>
+                                    {breadcrumbs}
+                                </Breadcrumbs>
+                            </div>
+                            <div className={classes.tools}>{tools}</div>
+                        </>
                     )}
-                    <Link to={'/'}>
-                        <Stack spacing={2} sx={{ pl: 2 }} direction={'row'} alignItems={'center'}>
-                            <img width={32} height={32} src={imagePaths.iconLogo} alt={'Logo'} />
-                            <img
-                                height={32}
-                                width={157}
-                                src={theme.palette.mode === 'dark' ? imagePaths.lightLogo : imagePaths.darkLogo}
-                                alt={'Logo'}
-                            />
-                        </Stack>
-                    </Link>
-                </>
+                    <AdminMenu />
+                </AppBar>
 
                 {auth && (
-                    <>
-                        {isSmallScreen && <Divider sx={{ mr: 2 }} orientation={'vertical'} flexItem />}
-                        <div className={classes.breadcrumbs}>
-                            <Breadcrumbs separator={<NavigateNextIcon fontSize={'small'} />}>{breadcrumbs}</Breadcrumbs>
-                        </div>
-                        <div className={classes.tools}>{tools}</div>
-                    </>
+                    <SidebarProvider open={drawerOpen} setOpen={toggleDrawer}>
+                        <Sidebar />
+                    </SidebarProvider>
                 )}
-                <AdminMenu />
-            </AppBar>
 
-            {auth && (
-                <SidebarProvider open={drawerOpen} setOpen={toggleDrawer}>
-                    <Sidebar />
-                </SidebarProvider>
-            )}
-            <Box component={'main'} sx={{ flex: 1, p: 2 }} className={classes.main}>
-                <DrawerHeader />
-
-                <div className={classes.content}>
-                    <Suspense fallback={<Holding {...{ spinner: true }} />}>
-                        <Outlet />
-                    </Suspense>
-                </div>
-            </Box>
-            {modal}
-        </div>
+                <Box component={'main'} sx={{ flex: 1, p: 2 }} className={classes.main}>
+                    <div className={classes.content}>
+                        <Suspense fallback={<Holding {...{ spinner: true }} />}>
+                            <Outlet />
+                        </Suspense>
+                    </div>
+                </Box>
+                {modal}
+            </div>
+        </>
     );
 };
 
@@ -101,6 +105,8 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             display: 'flex',
             flex: 1,
             scrollbarWidth: 'thin',
+            // overflow: 'hidden',
+            // height: '100vh',
         },
         appBar: {
             alignItems: 'center',
@@ -132,23 +138,33 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
         main: {
             display: 'flex',
             flex: 1,
-            // height: '100%',
+            flexDirection: 'column',
+            justifyContent: 'start',
+            alignItems: 'center',
+            height: `calc(90vh - 64px)`,
+            paddingBottom: 64,
+            // width: '100%',
+            // overflow: 'hidden',
         },
         content: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            height: '100%',
-            alignItems: 'center',
-            flex: 1,
+            // display: 'flex',
+            // flexDirection: 'column',
+            // justifyContent: 'start',
+            // height: '100%',
+            // flex: 0.9,
             transition: `max-height 300ms ease-in-out`,
             '&::-webkit-scrollbar': {
                 width: 8,
             },
             scrollbarWidth: 'thin',
-            [theme.breakpoints.down('sm')]: {
-                marginTop: theme.spacing(32),
+            // marginTop: theme.spacing(5),
+            [theme.breakpoints.up('lg')]: {
+                maxWidth: '80%',
+                // alignContent: 'center',
             },
+            // [theme.breakpoints.only('xs')]: {
+            //     marginTop: theme.spacing(60),
+            // },
         },
     };
 });
