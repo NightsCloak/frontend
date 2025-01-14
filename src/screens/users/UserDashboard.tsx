@@ -81,6 +81,7 @@ const UserDashboard = () => {
                 columns={fields}
                 rows={users.data}
                 autoPageSize
+                pagination
             />
         </div>
     );
