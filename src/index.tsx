@@ -7,6 +7,7 @@ import * as Sentry from '@sentry/react';
 // English.
 import en from 'javascript-time-ago/locale/en';
 import Main from '@/Main';
+import { LicenseInfo } from '@mui/x-license';
 
 Sentry.init({
     dsn: 'https://b94f08f5e19d1d580865d095555328e6@relay.intract.dev/4508094083629056',
@@ -22,6 +23,10 @@ Sentry.init({
     replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
     normalizeDepth: 10,
 });
+
+LicenseInfo.setLicenseKey(
+    'e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y'
+);
 
 TimeAgo.addDefaultLocale(en);
 

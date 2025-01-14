@@ -86,9 +86,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
+        // width: '100vw',
         // justifyContent: 'space-evenly',
         // alignContent: 'center',
-
         // maxHeight: '100%',
         // margin: theme.spacing(4),
     },
