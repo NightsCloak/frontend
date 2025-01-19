@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import {
     CategoryScale,
     Chart as ChartJS,
@@ -72,7 +72,7 @@ const RecentUsersChart = () => {
     };
 
     return (
-        <Box className={classes.root} component={Paper} elevation={4} p={2}>
+        <div className={classes.root}>
             <Typography variant={'h6'} color={'intract.main'} display={'flex'} flexDirection={'row'}>
                 Recent Users:{' '}
                 <Typography style={{ color: '#FFF' }}>
@@ -96,15 +96,17 @@ const RecentUsersChart = () => {
                     ...stackStrategy,
                 }))}
                 resolveSizeBeforeRender
-                margin={{ top: 5, right: 20, bottom: 100, left: 40 }}
+                margin={{ top: 5 }}
                 slotProps={{
                     legend: {
+                        labelStyle: { fontSize: '12px' },
                         position: { vertical: 'bottom', horizontal: 'middle' },
                         onItemClick: handleLegendClick,
                     },
                 }}
+                sx={{ width: '100%' }}
             />
-        </Box>
+        </div>
     );
 };
 
@@ -119,6 +121,12 @@ const useStyles = makeStyles()((theme) => ({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         paddingLeft: theme.spacing(1),
+        [theme.breakpoints.only('xs')]: {
+            minHeight: 350,
+        },
+        '& > *': {
+            transitionDuration: '0s',
+        },
     },
 }));
 

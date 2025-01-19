@@ -10,6 +10,7 @@ import useScreenSize from '@intractinc/base/hooks/useScreenSize';
 const AdminDashboard = () => {
     const user = useAppSelector((state) => state.user);
     const { classes } = useStyles();
+
     const { isSmallScreen } = useScreenSize();
 
     return (
@@ -19,10 +20,13 @@ const AdminDashboard = () => {
                 container
                 justifyContent={'center'}
                 spacing={1}
+                // paddingLeft={1}
                 alignContent={'stretch'}
                 maxHeight={'100%'}
                 overflow={isSmallScreen ? 'auto' : 'hidden'}
-                sx={{ scrollbarWidth: 'thin' }}
+                sx={{
+                    scrollbarWidth: 'thin',
+                }}
             >
                 <Grid size={{ xs: 12, sm: 7 }} key={'recentActiveUsers'}>
                     <RecentUsersChart />
