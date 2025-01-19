@@ -83,12 +83,10 @@ const Main: FC = () => {
                     </SidebarProvider>
                 )}
 
-                <Box component={'main'} sx={{ flex: 1, p: 2 }} className={classes.main}>
-                    <div className={classes.content}>
-                        <Suspense fallback={<Holding {...{ spinner: true }} />}>
-                            <Outlet />
-                        </Suspense>
-                    </div>
+                <Box component={'main'} className={classes.main}>
+                    <Suspense fallback={<Holding {...{ spinner: true }} />}>
+                        <Outlet />
+                    </Suspense>
                 </Box>
                 {modal}
             </div>
@@ -140,34 +138,17 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             display: 'flex',
             flex: 1,
             flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            height: `calc(100vh - 64px)`,
-            width: '100vw',
+            // overflow: 'auto',
+            // justifyContent: 'center',
+            // alignContent: 'center',
+            height: `100%`,
+            // width: '100vw',
+            border: '1px solid red',
             // paddingBottom: 64,
-            // overflow: 'hidden',
             [theme.breakpoints.only('xs')]: {
                 padding: 0,
                 margin: 0,
-                marginTop: theme.spacing(8),
-            },
-        },
-        content: {
-            // display: 'flex',
-            // flexDirection: 'column',
-            height: '100vh',
-            width: '90vw',
-            transition: `max-height 300ms ease-in-out`,
-            '&::-webkit-scrollbar': {
-                width: 8,
-            },
-            scrollbarWidth: 'thin',
-            [theme.breakpoints.up('lg')]: {
-                maxWidth: '80%',
-            },
-            [theme.breakpoints.only('xs')]: {
-                padding: 0,
-                margin: 0,
+                marginTop: theme.spacing(2),
             },
         },
     };

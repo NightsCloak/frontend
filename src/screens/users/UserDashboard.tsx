@@ -44,7 +44,6 @@ const UserDashboard = () => {
             field: 'subscription',
             headerName: 'Subscription',
             renderCell: (params: GridRenderCellParams<User>) => {
-                console.log('params', params);
                 return <UserSubscriptionChip subscription={params.row.current_subscription} />;
             },
             minWidth: 200,
@@ -64,7 +63,7 @@ const UserDashboard = () => {
     // const refetchUsers = () => getUsers({ options: queryOptions });
 
     useEffect(() => {
-        updateBreadcrumbs([{ name: 'Admin', uri: '/admin' }, { name: 'Users' }]);
+        updateBreadcrumbs([{ name: 'Users', uri: '/users' }]);
         updateTabTitle('Users');
     }, []);
 

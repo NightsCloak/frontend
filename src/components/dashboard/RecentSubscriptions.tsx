@@ -23,7 +23,7 @@ const RecentSubscriptions = () => {
             {subscriptions.map((subscription) => {
                 if (subscription.user) {
                     return (
-                        <div className={classes.main}>
+                        <div className={classes.main} key={`subscription_${subscription.id}`}>
                             <Typography variant={'body1'}>
                                 {subscription.user.first} {subscription.user.last[0]}
                             </Typography>
@@ -39,21 +39,20 @@ const RecentSubscriptions = () => {
 
 const useStyles = makeStyles()((theme) => ({
     root: {
-        // display: 'flex',
-        // flex: 1,
-        height: 350,
-        // overflow: 'auto',
+        flex: 1,
+        display: 'flex',
+        overflow: 'auto',
+        minHeight: 350,
         marginBottom: theme.spacing(3),
         scrollbarWidth: 'none',
         flexDirection: 'column',
+        justifyContent: 'flex-start',
         paddingLeft: theme.spacing(1),
     },
     main: {
         display: 'flex',
-        justifyContent: 'space-evenly',
-        '& > *': {
-            marginBottom: theme.spacing(1),
-        },
+        justifyContent: 'space-between',
+        margin: theme.spacing(1),
     },
 }));
 

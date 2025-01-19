@@ -1,4 +1,3 @@
-import { Line } from 'react-chartjs-2';
 import { Box, Paper, Typography, useTheme } from '@mui/material';
 import {
     CategoryScale,
@@ -13,111 +12,113 @@ import {
 import { useGetUsersSnapshotQuery } from '@intractinc/base/redux/features/adminStats';
 import { useMemo } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { LineChartPro } from '@mui/x-charts-pro';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const RecentUsersChart = ({ dimensions }: { dimensions: { width: number; height: number } }) => {
-    const theme = useTheme();
+const RecentUsersChart = () => {
     const { data } = useGetUsersSnapshotQuery();
     const { classes } = useStyles();
+    const theme = useTheme();
 
-    const recentUsers = useMemo(() => {
-        if (!data) return { labels: [new Date().toLocaleTimeString('en-US')], datasets: [] };
-        const reverse = [...data.data].reverse();
-        const labels = reverse.map((snapshot) =>
-            new Date(snapshot.created_at).toLocaleTimeString('en-US', {
-                timeZone: 'America/New_York',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true,
-            })
-        );
-        const datasets = [
-            {
-                label: `Recently Active Users`,
-                data: reverse.map((snapshot) => snapshot.recently_active),
-                borderColor: theme.palette.intract.main,
-            },
-            {
-                label: `Paid Users`,
-                data: reverse.map((snapshot) => snapshot.paid_member),
-                borderColor: theme.palette.primary.main,
-                hidden: true,
-            },
-            {
-                label: `Trashed Users`,
-                data: reverse.map((snapshot) => snapshot.trashed),
-                borderColor: theme.palette.error.main,
-                hidden: true,
-            },
-            {
-                label: `Unverified Users`,
-                data: reverse.map((snapshot) => snapshot.unverified),
-                borderColor: theme.palette.success.light,
-                hidden: true,
-            },
-            {
-                label: `Total Users`,
-                data: reverse.map((snapshot) => snapshot.total),
-                borderColor: theme.palette.info.main,
-                hidden: true,
-            },
-        ];
-        return { labels, datasets };
-    }, [data]);
+    const fields: { [key: string]: string } = {
+        paid_members: 'Paid Members',
+        recently_active: 'Recently Active',
+        total: 'Total',
+        trashed: 'Trashed',
+        unverified: 'Unverified',
+    };
+
+    const colors: { [key: string]: string } = {
+        paid_members: theme.palette.success.dark,
+        recently_active: theme.palette.intract.main,
+        total: theme.palette.info.light,
+        trashed: theme.palette.error.main,
+        unverified: theme.palette.warning.light,
+    };
+
+    const recentUsers = useMemo(
+        () =>
+            !data?.data
+                ? []
+                : data.data
+                      .map((snapshot) => ({
+                          created_at: new Date(snapshot.created_at).toLocaleTimeString('US', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                          }),
+                          paid_members: snapshot.paid_member,
+                          total: snapshot.total,
+                          trashed: snapshot.trashed,
+                          recently_active: snapshot.recently_active,
+                          unverified: snapshot.unverified,
+                      }))
+                      .reverse(),
+        [data]
+    );
+
+    const stackStrategy = {
+        stack: 'total',
+        area: false,
+        // stackOffset: 'none', // To stack 0 on top of others
+    } as const;
+
+    const handleLegendClick = (
+        event: React.MouseEvent<SVGRectElement, MouseEvent>,
+        legendItem: SeriesLegendItemContext,
+        index: number
+    ) => {
+        console.log('e', event, legendItem, index);
+    };
 
     return (
         <Box className={classes.root} component={Paper} elevation={4} p={2}>
             <Typography variant={'h6'} color={'intract.main'} display={'flex'} flexDirection={'row'}>
                 Recent Users:{' '}
-                <Typography variant={'h6'} style={{ color: '#FFF' }}>
-                    &nbsp;{recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1]}
+                <Typography style={{ color: '#FFF' }}>
+                    {/*&nbsp;{recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1]}*/}
                 </Typography>
             </Typography>
-            <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-                <Line
-                    style={{ maxHeight: dimensions.height - 64, maxWidth: dimensions.width - 32 }}
-                    options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'bottom',
-                            },
-                            title: {
-                                display: false,
-                            },
-                        },
-                        scales: {
-                            y: {
-                                min: 0,
-                                // Sets the Max to the next highest multiple of 10 (33 -> 40, 55 -> 60)
-                                max:
-                                    recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1] +
-                                    Math.ceil(
-                                        recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1] / 10
-                                    ) *
-                                        10 -
-                                    recentUsers.datasets?.[0]?.data[recentUsers.datasets?.[0]?.data.length - 1],
-                                ticks: {
-                                    stepSize: 1,
-                                },
-                            },
-                        },
-                    }}
-                    data={recentUsers}
-                />
-            </div>
+            <LineChartPro
+                dataset={recentUsers}
+                xAxis={[
+                    {
+                        dataKey: 'created_at',
+                        scaleType: 'point',
+                    },
+                ]}
+                series={Object.keys(fields).map((key) => ({
+                    type: 'line',
+                    dataKey: key,
+                    label: fields[key],
+                    color: colors[key],
+                    showMark: false,
+                    ...stackStrategy,
+                }))}
+                resolveSizeBeforeRender
+                margin={{ top: 5, right: 20, bottom: 100, left: 40 }}
+                slotProps={{
+                    legend: {
+                        position: { vertical: 'bottom', horizontal: 'middle' },
+                        onItemClick: handleLegendClick,
+                    },
+                }}
+            />
         </Box>
     );
 };
 
 const useStyles = makeStyles()((theme) => ({
     root: {
-        display: 'flex',
-        flexDirection: 'column',
         flex: 1,
+        display: 'flex',
+        overflow: 'auto',
+        height: '100%',
+        maxHeight: 'calc(50vh - 20px)',
+        scrollbarWidth: 'none',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        paddingLeft: theme.spacing(1),
     },
 }));
 
