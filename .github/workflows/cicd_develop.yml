@@ -17,8 +17,8 @@ env:
   VITE_SCHEMA: "https"
   VITE_URI: "nightscloak.dev"
   VITE_PREFIX: "api/v1"
-  VITE_CLIENT_SECRET:
-  VITE_CLIENT_ID:
+  VITE_CLIENT_SECRET: ""
+  VITE_CLIENT_ID: ""
   VITE_PUSHER_APP_KEY: ""
   VITE_PUSHER_APP_WSS_PORT: "443"
   VITE_PUSHER_APP_WS_PORT: "80"
@@ -29,7 +29,7 @@ env:
   VITE_SENTRY_SOURCE_MAPS: "true"
   VITE_REG_OPEN: "true"
   VITE_AUTH_FLOW: "auth"
-  VITE_ANALYTICS_ID: ""
+  VITE_ANALYTICS_ID: "G-9X18K56P6B"
 
 permissions:
   id-token: write   # This is required for requesting the JWT

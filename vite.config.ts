@@ -8,7 +8,7 @@ import * as path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 process.env = { ...process.env, ...loadEnv(process.env.NODE_ENV ?? 'development', process.cwd()) };
-
+console.log('env', process.env)
 export default defineConfig({
     define: {
         'import.meta.env.GITHUB_SHA': JSON.stringify(process.env.GITHUB_SHA),
@@ -57,7 +57,7 @@ export default defineConfig({
             project: 'frontend',
             authToken: process.env.SENTRY_AUTH_TOKEN,
             // Generate Srcmaps for Develop and Production (false locally)
-            disable: process.env.VITE_SENRTY === 'false' || process.env.SENTRY_AUTH_TOKEN === undefined,
+            disable: process.env.NODE_ENV === 'DEV' || process.env.VITE_SENRTY === 'false' || process.env.SENTRY_AUTH_TOKEN === undefined,
             telemetry: process.env.VITE_SENTRY_TELEMETRY === 'true',
             sourcemaps: {
                 // Allow for toggle of Sentry srcmaps,
@@ -77,6 +77,7 @@ export default defineConfig({
         minify: process.env.VITE_DEPLOY_ENV === 'production',
         outDir: 'build',
         rollupOptions: {
+            watch: false,
             treeshake: true,
             onwarn: (warning, defaultHandler) => {
                 if (warning.code === 'SOURCEMAP_ERROR') {

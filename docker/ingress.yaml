@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: develop-ingress
+  namespace: nc-develop
+  annotations:
+    cert-manager.io/issuer: letsencrypt
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.org/proxy-connect-timeout: "30s"
+    nginx.org/proxy-read-timeout: "20s"
+    use-proxy-protocol: "true"
+    use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - nightscloak.dev
+        - www.nightscloak.dev
+      secretName: nc-dev-cert
+  rules:
+    - host: nightscloak.dev
+      http:
+        paths:
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

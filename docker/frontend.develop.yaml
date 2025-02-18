@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 990860969901.dkr.ecr.us-east-1.amazonaws.com/nightscloak/frontend:develop-2388fff9c9a2635a41fdc47022b4ce266fca71b5
+          image: 990860969901.dkr.ecr.us-east-1.amazonaws.com/nightscloak/frontend:develop-${COMMIT}
           imagePullPolicy: Always
           ports:
             - containerPort: 80
