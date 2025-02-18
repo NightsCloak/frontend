@@ -8,7 +8,7 @@ import * as path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 process.env = { ...process.env, ...loadEnv(process.env.NODE_ENV ?? 'development', process.cwd()) };
-console.log('env', process.env)
+
 export default defineConfig({
     define: {
         'import.meta.env.GITHUB_SHA': JSON.stringify(process.env.GITHUB_SHA),

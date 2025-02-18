@@ -13,6 +13,7 @@ metadata:
     use-proxy-protocol: "true"
     use-forwarded-headers: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   tls:
@@ -22,6 +23,16 @@ spec:
       secretName: nc-dev-cert
   rules:
     - host: nightscloak.dev
+      http:
+        paths:
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    - host: www.nightscloak.dev
       http:
         paths:
           - path: /(.*)
