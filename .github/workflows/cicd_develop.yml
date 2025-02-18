@@ -221,9 +221,6 @@ jobs:
     steps:
       - name: Clone Repo
         uses: actions/checkout@main
-        with:
-          submodules: 'true'
-          token: ${{ secrets.CICD_PAT }}
 
       # Assume AWS Role and set kubectl
       - name: Configure Aws Creds
