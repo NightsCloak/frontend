@@ -43,7 +43,7 @@ jobs:
         php: [ 8.3.9 ]
         platform:
           - linux/amd64
-          - linux/arm64
+#          - linux/arm64
     steps:
       # Set platform as env for use later
       - name: Prepare Platform
