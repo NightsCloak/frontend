@@ -29,7 +29,6 @@ function App() {
     const { matchRoute } = AuthRouteHandler(searchParams);
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user);
-    const guest = useAppSelector((state) => state.guest);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -61,13 +60,7 @@ function App() {
                 email: user.data.email,
             });
         }
-        if (guest.id && guest.name) {
-            Sentry.setUser({
-                id: guest.id,
-                name: guest.name,
-            });
-        }
-    }, [user, guest]);
+    }, [user]);
 
     return (
         <div

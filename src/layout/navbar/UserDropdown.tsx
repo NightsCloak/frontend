@@ -1,7 +1,6 @@
 import {
     Avatar,
     Button,
-    Chip,
     Divider,
     ListItemIcon,
     Menu,
@@ -49,7 +48,6 @@ type UserDropdownProps = {
 const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
     const { classes } = useStyles();
     const user = useAppSelector((state) => state.user);
-    const guest = useAppSelector((state) => state.guest);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selection, setSelection] = useState<PortalSelection | null>(null);
     const open = Boolean(anchorEl);
@@ -125,35 +123,9 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
     const menuItems = useMemo((): MenuObject => {
         return [
             {
-                title: user.data?.name ?? guest.name ?? 'Profile',
+                title: user.data?.name ?? 'Profile',
                 isHeader: true,
                 ignore: !user.data?.name,
-            },
-            {
-                title: (
-                    <>
-                        <Chip
-                            size={'small'}
-                            label={'Guest'}
-                            color={'info'}
-                            variant={'outlined'}
-                            sx={{
-                                '& .MuiChip-icon, .MuiChip-label': {
-                                    fontSize: 12,
-                                },
-                                '& .MuiChip-label': {
-                                    fontSize: 12,
-                                },
-                                mr: 1,
-                                mb: 0.5,
-                                // height: 15,
-                            }}
-                        />
-                        {guest.name}
-                    </>
-                ),
-                isHeader: true,
-                ignore: !guest.name,
             },
             {
                 title: 'Home',
@@ -197,9 +169,9 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
                 isLogout: true,
             },
         ].filter((item) => item.ignore !== true);
-    }, [user.data, guest, selection, location]);
+    }, [user.data, selection, location]);
 
-    if (!user.data?.id && !guest.id) {
+    if (!user.data?.id) {
         return null;
     }
 
@@ -226,12 +198,12 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
                         width: 32,
                         mr: 1,
                     }}
-                    src={guest.id ? undefined : (user.data.avatar_route ?? undefined)}
-                    alt={`${user.data?.name ?? guest.name}'s Avatar`}
+                    src={user.data.avatar_route ?? undefined}
+                    alt={`${user.data?.name}'s Avatar`}
                 >
-                    {user.data?.initials ?? guest.initials}
+                    {user.data?.initials}
                 </Avatar>
-                {showName && ` ${user.data?.name ?? guest.name} `}
+                {showName && ` ${user.data?.name} `}
                 <div style={{ display: 'flex', justifyContent: 'end', flex: 1 }}>
                     <ArrowDropDownIcon
                         style={{

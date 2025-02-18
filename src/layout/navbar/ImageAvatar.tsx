@@ -30,15 +30,6 @@ const ImageAvatar: FC<ImageAvatarProps> = ({ type, avatar, icon, name, size, dis
         let defaultAvatar = imagePaths.notFound;
 
         switch (type) {
-            case 'organization':
-                defaultAvatar = imagePaths.organization;
-                break;
-            case 'project':
-                defaultAvatar = imagePaths.project;
-                break;
-            case 'asset':
-                defaultAvatar = imagePaths.model;
-                break;
             case 'collection':
                 defaultAvatar = imagePaths.folder;
                 break;

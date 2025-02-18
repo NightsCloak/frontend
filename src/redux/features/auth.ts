@@ -71,13 +71,6 @@ const auth = apiSlice.injectEndpoints({
                 },
             }),
         }),
-        guest: builder.mutation<Guest, { name: string }>({
-            query: ({ name }) => ({
-                url: 'auth/guest',
-                method: 'POST',
-                body: { name },
-            }),
-        }),
         contact: builder.mutation<ContactResponse, ContactRequest>({
             query: ({ name, email, message }) => ({
                 url: 'contact',
@@ -139,7 +132,6 @@ export const {
     useVerifyEmailQuery,
     useGoogleLoginRedirectMutation,
     useGoogleLoginCallbackMutation,
-    useGuestMutation,
     useBroadcastingMutation,
 } = auth;
 

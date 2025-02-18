@@ -110,14 +110,14 @@ jobs:
       # Build App
       - name: Yarn Build amd64
         if: ${{ env.PLATFORM_PAIR == 'linux-amd64' }}
-        run: yarn build:app
+        run: yarn build
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       # Build App for non k8s platform (local dev testing)
       - name: Yarn Build arm64
         if: ${{ env.PLATFORM_PAIR == 'linux-arm64' }}
-        run: yarn build:app
+        run: yarn build
 
       # Set Docker image tag for build
       - name: Docker Meta
