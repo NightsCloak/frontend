@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: intract-prod-crt
-  namespace: prod
+  name: nc-prod-crt
+  namespace: nc-prod
 spec:
-  secretName: prod-tls
+  secretName: nc-prod-cert
   dnsNames:
-    - www.intract.com
-    - intract.com
+    - nightscloak.com
+    - www.nightscloak.com
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer

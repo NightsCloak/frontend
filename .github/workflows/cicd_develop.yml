@@ -9,11 +9,11 @@ env:
   REGISTRY_NAME: nightscloak
   NAMESPACE: nc-develop
   APP_NAME: frontend
-  KUBECTL_PATH: ./docker/nc.develop.yaml
+  KUBECTL_PATH: ./docker/frontend.develop.yaml
   ENVIRONMENT: develop
   NODE_VERSION: 23.x
   NODE_OPTIONS: "--max_old_space_size=6144"
-  VITE_APP: "admin"
+  VITE_APP: "frontend"
   VITE_SCHEMA: "https"
   VITE_URI: "nightscloak.dev"
   VITE_PREFIX: "api/v1"
@@ -70,9 +70,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.yarn-cache-dir.outputs.dir }}
-          key: intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ hashFiles('**/yarn.lock') }}
+          key: nc-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-
+            nc-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-
       
       # Install Deps
       - name: Install Dependencies

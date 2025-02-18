@@ -1,4 +1,4 @@
-FROM 573377737753.dkr.ecr.us-east-1.amazonaws.com/intract/nginx:latest
+FROM 990860969901.dkr.ecr.us-east-1.amazonaws.com/nightscloak/nginx:latest
 
 
 #Build App
