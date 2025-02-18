@@ -14,11 +14,14 @@ const usePageTracking = () => {
             !initialized
         ) {
             //Fallback to dev if not defined
-            ReactGA.initialize(import.meta.env.VITE_ANALYTICS_ID ?? 'G-NR826HGLJP', {
-                gtagOptions: {
-                    userId: user.data?.id ?? '',
-                },
-            });
+            if(import.meta.env.VITE_ANALYTICS_ID && import.meta.env.VITE_ANALYTICS_ID !== ''){
+                ReactGA.initialize(import.meta.env.VITE_ANALYTICS_ID, {
+                    gtagOptions: {
+                        userId: user.data?.id ?? '',
+                    },
+                });
+
+            }
 
             setInitialized(true);
         }
