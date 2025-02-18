@@ -53,9 +53,6 @@ jobs:
 
       - name: Clone Repo
         uses: actions/checkout@main
-        with:
-          submodules: 'true'
-          token: ${{ secrets.CICD_PAT }}
 
       # Setup Yarn
       - name: Yarn Setup
