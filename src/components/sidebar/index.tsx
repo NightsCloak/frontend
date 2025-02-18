@@ -1,14 +1,14 @@
 import { Avatar, IconButton, Typography } from '@mui/material';
-import { use, useCallback, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@intractinc/base/redux/hooks';
+import {ReactNode, use, useCallback, useEffect} from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
 import Drawer from '@/components/drawer';
 import LogoutIcon from '@mui/icons-material/Logout';
-import apiSlice from '@intractinc/base/redux/apiSlice';
-import { persistor } from '@intractinc/base/redux/store';
-import { useLogoutMutation } from '@intractinc/base/redux/features/auth';
-import { logout as userLogout } from '@intractinc/base/redux/reducers/userSlice';
+import apiSlice from '@/redux/apiSlice';
+import { persistor } from '@/redux/store';
+import { useLogoutMutation } from '@/redux/features/auth';
+import { logout as userLogout } from '@/redux/reducers/userSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SidebarContext from '@/contexts/SidebarContext';
 import SidebarMenu from '@/components/sidebar/SidebarMenu';
@@ -44,12 +44,17 @@ const Index = () => {
         }
     }, []);
 
-    const SidebarSection = (section: string = 'default') =>
-        ({
-            '': <SidebarMenu menuItems={defaultMenu} />,
-            users: <SidebarMenu menuItems={defaultMenu} />,
-            organizations: <div>test</div>,
-        })[section];
+    const SidebarSection = (section: string = 'default') => {
+        const menus: {[key: string]: ReactNode} = {
+            default: <SidebarMenu menuItems={defaultMenu} />,
+        };
+
+        if (!Object.prototype.hasOwnProperty.call(menus, section)) {
+            return menus['default'];
+        }
+
+        return menus[section];
+    };
 
     useEffect(() => {
         console.log('isSuccess', isSuccess);

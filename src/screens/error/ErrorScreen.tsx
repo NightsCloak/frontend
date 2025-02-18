@@ -4,8 +4,7 @@ import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
 import { FC, useEffect } from 'react';
 import { Dots } from 'react-activity';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
-import { useWorkspace } from '@intractinc/base/contexts/WorkspaceContext';
+import { useTools } from '@/contexts/ToolsContext';
 
 interface ErrorProps {
     title?: string;
@@ -15,31 +14,23 @@ interface ErrorProps {
 }
 
 const ErrorScreen: FC<ErrorProps> = ({ title, message, navigateTo, screenNotFound }) => {
-    const { organization, project } = useWorkspace();
     const { classes } = useStyles();
     const navigate = useNavigate();
     const { updateTabTitle } = useTools();
 
-    const showAsBack = navigateTo !== undefined || (screenNotFound && organization !== undefined);
+    const showAsBack = navigateTo !== undefined || (screenNotFound);
 
     const redirect = () => {
         if (navigateTo) {
             return navigateTo;
         }
 
-        if (!screenNotFound || !organization) {
+        if (!screenNotFound) {
             return '/';
         }
 
-        if (project) {
-            return `/organizations/${project.organization_id}/projects/${project.id}`;
-        }
 
-        if (organization) {
-            return `/organizations/${organization.id}`;
-        }
-
-        return '/home';
+        return '/';
     };
 
     useEffect(() => {

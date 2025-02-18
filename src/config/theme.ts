@@ -74,7 +74,7 @@ const theme = (prefersDarkMode: boolean): Theme =>
                 secondary: prefersDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0, 0, 0, 0.54)',
                 disabled: prefersDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.38)',
             },
-            intract: {
+            nc: {
                 button: prefersDarkMode ? 'rgb(38,37,36)' : 'rgba(230, 232, 234, 1)',
                 divider: '#323232',
                 main: '#E96C00',

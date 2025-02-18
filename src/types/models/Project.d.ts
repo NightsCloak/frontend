@@ -1,0 +1,23 @@
+type Project = {
+    _morphType: 'project';
+    id: string;
+    name: string;
+    slug: string;
+    avatar: string | null;
+    avatar_route: string | null;
+    banner: string | null;
+    banner_route: string | null;
+    is_published: boolean;
+    joinable_route: string | null;
+    used_storage: FileSize;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    organization_id: string;
+    organization?: Organization;
+    assets_count?: number;
+    asset_collections_count?: number;
+    members_count?: number;
+    member?: Member;
+    project_member?: ProjectMember;
+};

@@ -1,0 +1,3 @@
+type UserCheckoutRequest = {
+    price: UserPrice;
+};

@@ -1,4 +1,4 @@
-import { useAppSelector } from '@intractinc/base/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import LandingScreen from '@/screens/LandingScreen';
 import AdminDashboard from '@/screens/AdminDashboard';
 

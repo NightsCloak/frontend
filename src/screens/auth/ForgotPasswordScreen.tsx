@@ -2,10 +2,10 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { Box, Button, Paper, TextField, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Sentry } from 'react-activity';
-import { useForgotPasswordMutation } from '@intractinc/base/redux/features/auth';
+import { useForgotPasswordMutation } from '@/redux/features/auth';
 import { AlternateEmail, Home, Key, MarkEmailRead } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
+import { useTools } from '@/contexts/ToolsContext';
 
 const ForgotPasswordScreen: FC = () => {
     const navigate = useNavigate();

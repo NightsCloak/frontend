@@ -1,7 +1,7 @@
 import { makeStyles } from 'tss-react/mui';
 import { Button, Card, CardContent, CardHeader, Theme, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
-import useInterval from '@intractinc/base/hooks/useInterval';
+import useInterval from '@/hooks/useInterval';
 import { useNavigate } from 'react-router-dom';
 
 const UpdatedLanding = () => {

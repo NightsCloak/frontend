@@ -1,7 +1,7 @@
 import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 
-import { useAppSelector } from '@intractinc/base/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 
 const AuthRouteHandler = (searchParams: URLSearchParams) => {
     const auth = useAppSelector((state) => state.auth);

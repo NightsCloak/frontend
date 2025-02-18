@@ -2,11 +2,11 @@ import { makeStyles } from 'tss-react/mui';
 import { Button, Paper, Theme, Typography, useTheme } from '@mui/material';
 import { Sentry } from 'react-activity';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useVerifyEmailQuery } from '@intractinc/base/redux/features/auth';
+import { useVerifyEmailQuery } from '@/redux/features/auth';
 import { Email, Home } from '@mui/icons-material';
 import { FC, useEffect } from 'react';
-import { useGetUserQuery } from '@intractinc/base/redux/features/user';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
+import { useGetUserQuery } from '@/redux/features/user';
+import { useTools } from '@/contexts/ToolsContext';
 
 const VerifiesEmailScreen: FC = () => {
     const theme = useTheme();

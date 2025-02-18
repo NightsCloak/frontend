@@ -1,14 +1,14 @@
 import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { Box, Button, Paper, TextField, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { useResetPasswordMutation } from '@intractinc/base/redux/features/auth';
+import { useResetPasswordMutation } from '@/redux/features/auth';
 import { Key, Login as LoginIcon } from '@mui/icons-material';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Sentry } from 'react-activity';
 import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
+import { useTools } from '@/contexts/ToolsContext';
 
 const ResetPasswordScreen: FC = () => {
     const navigate = useNavigate();

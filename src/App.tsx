@@ -1,22 +1,22 @@
 import { Suspense, useCallback, useEffect } from 'react';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
-import usePageTracking from '@intractinc/base/hooks/usePageTracking';
+import usePageTracking from '@/hooks/usePageTracking';
 
-import { useAppDispatch, useAppSelector } from '@intractinc/base/redux/hooks';
-import { clearXSRF } from '@intractinc/base/redux/reducers/authSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { clearXSRF } from '@/redux/reducers/authSlice';
 import 'react-activity/dist/Levels.css';
 import 'react-activity/dist/Dots.css';
 import 'react-activity/dist/Digital.css';
 import 'react-activity/dist/Sentry.css';
 import 'react-activity/dist/Windmill.css';
 import 'react-activity/dist/Spinner.css';
-import AppError from '@intractinc/base/errors/AppError';
+import AppError from '@/errors/AppError';
 import { ErrorBoundary } from 'react-error-boundary';
 import AuthRouteHandler from '@/utils/AuthRouteHandler';
 import * as Sentry from '@sentry/react';
-import { useGetUserQuery } from '@intractinc/base/redux/features/user';
-import useTabSync from '@intractinc/base/hooks/useTabSync';
-import BaseProvider from '@intractinc/base/BaseProvider';
+import { useGetUserQuery } from '@/redux/features/user';
+import useTabSync from '@/hooks/useTabSync';
+import BaseProvider from '@/BaseProvider';
 import theme from '@/config/theme';
 import { CssBaseline } from '@mui/material';
 

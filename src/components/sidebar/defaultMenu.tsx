@@ -5,7 +5,7 @@ import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 const defaultMenu = [
     { label: 'Dashboard', to: '/', icon: <SpaceDashboardIcon /> },
-    { label: 'Users', to: '/users', icon: <PersonIcon /> },
+    { label: 'Characters', to: '/characters', icon: <PersonIcon /> },
     { label: 'Organizations', to: '/organizations', icon: <BusinessIcon /> },
     { label: 'Projects', to: '/projects', icon: <WorkspacesIcon /> },
 ];

@@ -2,7 +2,7 @@ import { FC, use } from 'react';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import sidebarContext from '@/contexts/SidebarContext';
-import IntractLink from '@intractinc/base/components/IntractLink';
+import NCLink from '@/components/NCLink';
 
 type SidebarMenuProps = {
     menuItems: {
@@ -20,7 +20,7 @@ const SidebarMenu: FC<SidebarMenuProps> = ({ menuItems }) => {
     return (
         <List>
             {menuItems.map((item, index) => (
-                <IntractLink
+                <NCLink
                     to={item.to}
                     key={`sidebar-menu-item-${item.label.toLowerCase()}-${index}`}
                     underline={'none'}
@@ -31,7 +31,7 @@ const SidebarMenu: FC<SidebarMenuProps> = ({ menuItems }) => {
                             <ListItemText className={classes.listItemText} primary={item.label} />
                         </ListItemButton>
                     </ListItem>
-                </IntractLink>
+                </NCLink>
             ))}
         </List>
     );

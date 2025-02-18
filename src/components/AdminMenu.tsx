@@ -1,6 +1,6 @@
 import { MenuItem, MenuList } from '@mui/material';
 import { useLocation } from 'react-router';
-import { useAppSelector } from '@intractinc/base/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Spinner } from 'react-activity';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useGetTokenMutation } from '@intractinc/base/redux/features/auth';
-import { useAppSelector } from '@intractinc/base/redux/hooks';
+import { useGetTokenMutation } from '@/redux/features/auth';
+import { useAppSelector } from '@/redux/hooks';
 
 const AuthCallbackScreen = () => {
     const [params] = useSearchParams();

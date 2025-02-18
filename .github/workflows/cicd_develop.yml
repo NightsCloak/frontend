@@ -2,25 +2,24 @@ on:
   push:
     branches:
       - develop
-
+  
 env:
   AWS_REGION: "us-east-1"
-  REGISTRY_URI: 573377737753.dkr.ecr.us-east-1.amazonaws.com
-  REGISTRY_NAME: intract
-  NAMESPACE: develop
-  APP_NAME: admin
-  KUBECTL_PATH: ./docker/admin.develop.yaml
+  REGISTRY_URI: 990860969901.dkr.ecr.us-east-1.amazonaws.com
+  REGISTRY_NAME: nightscloak
+  NAMESPACE: nc-develop
+  APP_NAME: frontend
+  KUBECTL_PATH: ./docker/nc.develop.yaml
   ENVIRONMENT: develop
   NODE_VERSION: 23.x
   NODE_OPTIONS: "--max_old_space_size=6144"
   VITE_APP: "admin"
   VITE_SCHEMA: "https"
-  VITE_URI: "admin.intract.dev"
+  VITE_URI: "nightscloak.dev"
   VITE_PREFIX: "api/v1"
-  VITE_CLIENT_SECRET: "6Yr0widLfM0QTLIJua7ooUREqPOOdeZwKYR4lQmz"
-  VITE_CLIENT_ID: "9545aa14-48f1-49bf-8835-552e3a63e9de"
-  VITE_STRIPE_PK: "pk_test_51OK4TCLpmBnJBh8WjK8NGIuQsPaR58tLUbL6KF79OW3puFOjqLRxOMyNaBO5hc4nacrRH7diPZ4NoXgzwVv0BDxE00UNLkuZl3"
-  VITE_PUSHER_APP_KEY: "YmV0YS5pbnRyYWN0LmRldg"
+  VITE_CLIENT_SECRET:
+  VITE_CLIENT_ID:
+  VITE_PUSHER_APP_KEY: ""
   VITE_PUSHER_APP_WSS_PORT: "443"
   VITE_PUSHER_APP_WS_PORT: "80"
   VITE_PUSHER_APP_PATH: "/socket"
@@ -30,7 +29,7 @@ env:
   VITE_SENTRY_SOURCE_MAPS: "true"
   VITE_REG_OPEN: "true"
   VITE_AUTH_FLOW: "auth"
-  VITE_ANALYTICS_ID: "G-NR826HGLJP"
+  VITE_ANALYTICS_ID: ""
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -63,9 +62,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-
+      
+      # Cache Yarn
+      - name: Cache Yarn Install
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            intract-${{ runner.os }}-${{ env.APP_NAME }}-${{ env.ENVIRONMENT }}-
+      
+      # Install Deps
+      - name: Install Dependencies
+        run: yarn
+        
       # Assume AWS Role and set kubectl
       - name: Configure Aws Creds
         uses: aws-actions/configure-aws-credentials@v4
@@ -78,9 +88,6 @@ jobs:
       - name: STS GetCallerIdentity
         run: |
           aws sts get-caller-identity
-          mkdir -p $HOME/.kube
-          echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
-          aws eks update-kubeconfig --name intract
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -97,10 +104,6 @@ jobs:
         with:
           environment: ${{ env.ENVIRONMENT }}
           ignore_missing: true
-
-      # Install Deps
-      - name: Install Dependencies
-        run: yarn
 
       # Build App
       - name: Yarn Build amd64
@@ -227,18 +230,13 @@ jobs:
           role-to-assume: arn:aws:iam::573377737753:role/GithubECR
           role-session-name: GitHub_AWS_ODIC
           aws-region: ${{ env.AWS_REGION }}
-
-      # Assume AWS Role and set Kubectl
-      - name: STS GetCallerIdentity
-        run: |
-          aws sts get-caller-identity
-          mkdir -p $HOME/.kube
-          echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
-          aws eks update-kubeconfig --name intract
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+      
+      # Set K8S Context
+      - name: Set K8S Context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       #ENV Subst for deployment
       - name: Generate Kubectl Deployment File

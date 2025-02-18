@@ -2,10 +2,10 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { Box, Button, Paper, TextField, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Sentry } from 'react-activity';
-import { useResendEmailVerificationMutation } from '@intractinc/base/redux/features/auth';
+import { useResendEmailVerificationMutation } from '@/redux/features/auth';
 import { AlternateEmail, Email, Home, MarkEmailRead } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
+import { useTools } from '@/contexts/ToolsContext';
 
 const ResendVerifyEmailScreen: FC = () => {
     const navigate = useNavigate();

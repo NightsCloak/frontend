@@ -1,0 +1,3 @@
+type GetCopyRequest = {
+    copyId: string;
+};

@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 import Main from '@/screens/layouts/Main';
 import ErrorScreen from '@/screens/error/ErrorScreen';
-import LoginScreen from '@intractinc/base/layout/screens/LoginScreen';
+import LoginScreen from '@/layout/screens/LoginScreen';
 import App from '@/App';
 import RootIndex from '@/screens/RootIndex';
 

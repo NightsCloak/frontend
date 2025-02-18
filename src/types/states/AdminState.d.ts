@@ -1,0 +1,3 @@
+interface AdminState {
+    recentActiveUsers: number[];
+}

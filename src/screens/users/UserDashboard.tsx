@@ -1,11 +1,10 @@
-import { useGetUsersAdminMutation } from '@intractinc/base/redux/features/adminUser';
+import { useGetUsersAdminMutation } from '@/redux/features/adminUser';
 import { Spinner } from 'react-activity';
-import { DataGridPremium, GridRenderCellParams } from '@mui/x-data-grid-premium';
+import { DataGridPremium } from '@mui/x-data-grid-premium';
 import { makeStyles } from 'tss-react/mui';
 import { Typography } from '@mui/material';
-import UserSubscriptionChip from '@intractinc/base/components/Billing/User/UserSubscriptionChip';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
-import useMeta from '@intractinc/base/hooks/useMeta';
+import { useTools } from '@/contexts/ToolsContext';
+import useMeta from '@/hooks/useMeta';
 import { useEffect, useState } from 'react';
 
 type VisibleColumns = {
@@ -40,14 +39,6 @@ const UserDashboard = () => {
     const fields = [
         { field: 'name', headerName: 'Name' },
         { field: 'email', headerName: 'Email', minWidth: 200 },
-        {
-            field: 'subscription',
-            headerName: 'Subscription',
-            renderCell: (params: GridRenderCellParams<User>) => {
-                return <UserSubscriptionChip subscription={params.row.current_subscription} />;
-            },
-            minWidth: 200,
-        },
         { field: 'logins_count', headerName: 'Logins', minWidth: 100 },
         { field: 'assets_count', headerName: 'Assets', minWidth: 100 },
         { field: 'asset_collections_count', headerName: 'Folders', minWidth: 100 },

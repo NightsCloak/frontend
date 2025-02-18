@@ -2,10 +2,10 @@ import { Alert, AlertTitle, Button, Paper, Stack, Typography } from '@mui/materi
 import { FC, useEffect, useState } from 'react';
 import { Sentry } from 'react-activity';
 import { makeStyles } from 'tss-react/mui';
-import { useGoogleLoginCallbackMutation, useHeartbeatQuery } from '@intractinc/base/redux/features/auth';
+import { useGoogleLoginCallbackMutation, useHeartbeatQuery } from '@/redux/features/auth';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Google, Undo } from '@mui/icons-material';
-import { useAppDispatch, useAppSelector } from '@intractinc/base/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 const GoogleLoginCallbackScreen: FC = () => {
     const { classes } = useStyles();

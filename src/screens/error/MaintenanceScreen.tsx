@@ -1,11 +1,11 @@
-import { useAppSelector } from '@intractinc/base/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useHeartbeatQuery } from '@intractinc/base/redux/features/auth';
+import { useHeartbeatQuery } from '@/redux/features/auth';
 import { LinearProgress, Paper, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Engineering } from '@mui/icons-material';
-import { useTools } from '@intractinc/base/contexts/ToolsContext';
+import { useTools } from '@/contexts/ToolsContext';
 
 const MaintenanceScreen: FC = () => {
     useHeartbeatQuery(undefined, { pollingInterval: 15000 });

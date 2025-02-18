@@ -35,23 +35,15 @@
       "@/*": [
         "./src/*"
       ],
-      "@intractinc/base/*": [
-        "./intract/base/lib/*"
-      ]
     }
   },
   "include": [
-    "./intract/base/lib/types/**/*.d.ts",
     "./src/**/*",
-    "./stories/**/*"
+    "./stories/**/*",
+    "./src/**/*.d.ts"
   ],
   "exclude": [
     "**/node_modules",
     "build"
   ],
-  "references": [
-    {
-      "path": "intract/base/tsconfig.app.json"
-    }
-  ]
 }
