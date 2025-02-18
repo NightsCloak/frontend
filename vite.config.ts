@@ -53,7 +53,7 @@ export default defineConfig({
             },
         },
         sentryVitePlugin({
-            org: 'intract-inc',
+            org: 'nightscloak',
             project: 'frontend',
             authToken: process.env.SENTRY_AUTH_TOKEN,
             // Generate Srcmaps for Develop and Production (false locally)
