@@ -7,9 +7,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 const store = intractStore;
 
 const Main = () => {
-    if (import.meta.env.VITE_APP !== 'admin') {
-        throw new Error('Invalid App');
-    }
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
