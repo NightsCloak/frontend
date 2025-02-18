@@ -60,6 +60,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       
+      # Get Yarn Cache Folder
+      - name: Get Yarn Cache Dir
+        id: yarn-cache-dir
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+      
       # Cache Yarn
       - name: Cache Yarn Install
         uses: actions/cache@v3
