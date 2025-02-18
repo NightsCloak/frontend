@@ -1,8 +1,7 @@
-| Branch     | Build Status                                                                                                                                                                                                                                      |
-|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Develop    | [![.github/workflows/fh_azure_cicd_develop.yml](https://github.com/IntractInc/frontend/actions/workflows/fh_azure_cicd_develop.yml/badge.svg?branch=develop)](https://github.com/IntractInc/frontend/actions/workflows/fh_azure_cicd_develop.yml) |
-| Staging    | [![.github/workflows/fh_azure_cicd_staging.yml](https://github.com/IntractInc/frontend/actions/workflows/fh_azure_cicd_staging.yml/badge.svg?branch=beta)](https://github.com/IntractInc/frontend/actions/workflows/fh_azure_cicd_staging.yml)    |
-| Production | [![.github/workflows/fh_azure_cicd_prod.yml](https://github.com/IntractInc/frontend/actions/workflows/fh_azure_cicd_prod.yml/badge.svg)](https://github.com/IntractInc/frontend/actions/workflows/fh_azure_cicd_prod.yml)                         |
+| Branch     | Build Status                                                                                                                                                                                                |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Develop    | [![.github/workflows/cicd_develop.yml](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_develop.yml/badge.svg)](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_develop.yml) |
+| Production | [![.github/workflows/cicd_prod.yml](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml/badge.svg)](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml)          |
 
 # Intract Frontend
 

@@ -73,12 +73,9 @@
   },
   "scripts": {
     "start": "yarn vite --host",
-    "start:watch": "yarn workspaces foreach -Ap --exclude '{@intractinc/admin}' run build:watch",
     "build": "tsc -b && vite build",
-    "prebuild": "yarn workspaces foreach -Rpt --exclude @intractinc/admin run build",
-    "build:app": "yarn workspaces foreach -Rpt run build",
-    "build:base": "yarn workspace @intractinc/base build",
-    "preview": "yarn build:app && vite preview --host",
+    "build:watch": "vite build --watch",
+    "preview": "yarn build && vite preview --host",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

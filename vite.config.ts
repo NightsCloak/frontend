@@ -70,7 +70,7 @@ export default defineConfig({
         }),
     ],
     build: {
-        assetsDir: 'vendor/intract',
+        assetsDir: 'vendor/nightscloak',
         // Generate Source Maps on Prod and Develop
         sourcemap: process.env.VITE_SENTRY_SOURCE_MAPS === 'true',
         // Minify in Production only

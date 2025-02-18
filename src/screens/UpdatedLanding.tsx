@@ -48,14 +48,14 @@ const UpdatedLanding = () => {
     return (
         <div className={classes.root} data-testid={'landingRoot'}>
             <div className={classes.header}>
-                <img className={classes.icon} src={'./images/iconLogo.png'} alt={'Intract Logo'} />
+                <img className={classes.icon} src={'./images/iconLogo.png'} alt={'NC Logo'} />
                 <Button className={classes.loginButton} variant={'contained'} onClick={() => navigate('/login')}>
                     Login
                 </Button>
             </div>
 
             <div className={classes.section1}>
-                <img src={'./images/logo.png'} height={40} alt={'Intract'} />
+                <img src={'./images/logo.png'} height={40} alt={'Nightscloak'} />
                 <div style={{ color: theme.palette.primary.main, fontWeight: 'bold', marginBottom: theme.spacing(3) }}>
                     Next Generation 3D Creative Collaboration
                 </div>
