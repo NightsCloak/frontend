@@ -78,30 +78,6 @@ metadata:
     use-proxy-protocol: "true"
     use-forwarded-headers: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/server-snippet: |
-      client_max_body_size 50M;
-      gzip on;
-      gzip_disable "MSIE [1-6]\.";
-      gzip_vary on;
-      gzip_proxied any;
-      gzip_comp_level 5;
-      gzip_min_length 512;
-      gzip_buffers 16 128k;
-      gzip_http_version 1.1;
-      gzip_types
-          text/plain
-          text/css
-          text/js
-          text/xml
-          text/javascript
-          application/javascript
-          application/x-javascript
-          application/json
-          application/xml
-          application/rss+xml
-          image/svg+xml
-          image/x-icon
-          image/bmp;
 spec:
   ingressClassName: nginx
   tls:
