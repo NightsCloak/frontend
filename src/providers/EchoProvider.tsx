@@ -95,17 +95,15 @@ const EchoProvider = ({ children }: EchoProps) => {
         }
 
         if (!privateChannel) {
-            setPrivateChannel(echoRef?.private(`intract.user.${user.data.id}`) ?? null);
+            setPrivateChannel(echoRef?.private(`nc.user.${user.data.id}`) ?? null);
             return;
         }
 
         const invalidateUser = () => dispatch(apiSlice.util.invalidateTags(['User']));
-        const invalidateOrganizations = () => dispatch(apiSlice.util.invalidateTags(['user-organizations']));
 
         const onNotification = () => {
             playChime();
             invalidateUser();
-            invalidateOrganizations();
         };
 
         privateChannel
@@ -120,7 +118,7 @@ const EchoProvider = ({ children }: EchoProps) => {
                 .stopListening('.user.archived', invalidateUser)
                 .stopListening('.user.updated', invalidateUser)
                 .stopListening('.user.subscription.updated', invalidateUser);
-            echoRef?.leave(`intract.user.${user.data.id}`);
+            echoRef?.leave(`nc.user.${user.data.id}`);
             setPrivateChannel(null);
         };
     }, [socket, privateChannel, user.data?.id]);

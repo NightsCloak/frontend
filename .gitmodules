@@ -1,6 +1,0 @@
-[submodule "intract/base"]
-	path = intract/base
-	url = git@github.com:IntractInc/base.git
-[submodule "intract/engine"]
-	path = intract/engine
-	url = git@github.com:IntractInc/engine.git

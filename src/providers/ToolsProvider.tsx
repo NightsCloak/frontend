@@ -88,9 +88,9 @@ const ToolsProvider = ({ children }: ToolsProps) => {
 
     useLayoutEffect(() => {
         if (tabTitle) {
-            document.title = `Intract - ${tabTitle}`;
+            document.title = `Nightscloak - ${tabTitle}`;
         } else {
-            document.title = 'Intract';
+            document.title = 'Nightscloak';
         }
         console.log('title changed');
     }, [tabTitle]);

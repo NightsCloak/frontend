@@ -3,13 +3,13 @@
 | Develop    | [![.github/workflows/cicd_develop.yml](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_develop.yml/badge.svg)](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_develop.yml) |
 | Production | [![.github/workflows/cicd_prod.yml](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml/badge.svg)](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml)          |
 
-# Intract Frontend
+# NightsCloak Frontend
 
 ### Quickstart:
 
 clone the repo
 
-`git clone git@github.com:IntractInc/frontend.git`
+`git clone git@github.com:nightscloak/frontend.git`
 
 run `yarn` to install dependencies
 
@@ -24,7 +24,7 @@ if yarn is not installed run
 
 ```
 corepack enable yarn
-yarn set version 3.2.3
+yarn set version 4+
 ```
 
 if you need to override the ENV you can create a .env.local file which will take precedence over the included

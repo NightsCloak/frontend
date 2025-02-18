@@ -7,7 +7,7 @@ interface PagesType {
     [key: string]: { title: string; display?: string };
 }
 
-const useIntractPageManager = () => {
+const usePageManager = () => {
     const location = useLocation();
     const [pages, setPages] = useState<PagesType>({ '/home': { title: '' } });
 
@@ -29,4 +29,4 @@ const useIntractPageManager = () => {
     return { updatePage };
 };
 
-export default useIntractPageManager;
+export default usePageManager;

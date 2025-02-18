@@ -19,7 +19,7 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
                     onClick={handler ?? handleOpen}
                     color={'success'}
                     aria-label={'Add'}
-                    data-testid={'IntractModal'}
+                    data-testid={'NCModal'}
                 >
                     <AddBox />
                 </IconButton>

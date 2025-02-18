@@ -1,10 +1,10 @@
 import routes from '@/config/routes';
-import { persistor, store as intractStore } from '@/redux/store';
+import { persistor, store as ncStore } from '@/redux/store';
 import Router from '@/Router';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-const store = intractStore;
+const store = ncStore;
 
 const Main = () => {
     return (

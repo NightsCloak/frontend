@@ -228,9 +228,6 @@ jobs:
       - name: STS GetCallerIdentity
         run: |
           aws sts get-caller-identity
-          mkdir -p $HOME/.kube
-          echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
-          aws eks update-kubeconfig --name intract
 
       - name: Login to Amazon ECR
         id: login-ecr

@@ -8,42 +8,7 @@ const baseUrl = `${import.meta.env.VITE_SCHEMA}://${import.meta.env.VITE_URI}${
 }`;
 const prefixedUrl = `${baseUrl}/`;
 
-const exceptions = [
-    'storeAssetAnnotation',
-    'storeAssetAnnotationComment',
-    'storeAssetAttachment',
-    'storeAssetCollectionThumbnail',
-    'storeAssetExportFile',
-    'storeAssetIngest',
-    'storeAssetMaterial',
-    'storeAssetThumbnail',
-    'storeEnvironmentTexture',
-    'storePlugin',
-    'storeProjectMedia',
-    'storeProjectMediaFile',
-    'storeReview',
-    'storeReviewComment',
-    'storeSharedAssetAnnotation',
-    'storeSharedAssetAnnotationComment',
-    'storeSharedPresentationAssetAnnotation',
-    'storeSharedPresentationAssetAnnotationComment',
-    'storeTexture',
-    'storeTextureAdmin',
-    'storeUserAssetCollectionThumbnail',
-    'storeUserAssetExportFile',
-    'storeUserAssetIngest',
-    'storeUserAssetMaterial',
-    'storeUserAssetThumbnail',
-    'storeUserTexture',
-    'storeVideoConversionFile',
-    'updateOrganizationAvatar',
-    'updateProjectAvatar',
-    'updateUserAvatar',
-    'storeIntractAssetIngestAdmin',
-    'storeIntractAssetMaterialAdmin',
-    'storeIntractAssetAttachmentAdmin',
-    'storeIntractAssetThumbnailAdmin',
-];
+const exceptions: string[] = [];
 // type ApiType = BaseQueryApi & { extra: { refresh?: LoginResponse } };
 
 // Base query override
@@ -56,7 +21,6 @@ const baseQuery = fetchBaseQuery({
         const pkceToken = (state.auth as AuthState).pkce.accessToken;
         const socketId = (state.app as AppState).socketId;
         const idle = (state.app as AppState).idle;
-        const guestSecret = (state.guest as GuestState).api_secret;
 
         //Set auth token for all requests
         if (xsrfToken) {
@@ -71,12 +35,8 @@ const baseQuery = fetchBaseQuery({
             headers.set('Authorization', `Bearer ${import.meta.env.VITE_STORYBOOK_ACCESS_TOKEN}`);
         }
 
-        if (guestSecret) {
-            headers.set('X-Intract-Guest-Key', guestSecret);
-        }
-
         if (idle) {
-            headers.set('X-Intract-Is-Idle', 'yes');
+            headers.set('X-NC-Is-Idle', 'yes');
         }
 
         //Required for socket

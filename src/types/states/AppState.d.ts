@@ -6,5 +6,5 @@ interface AppState {
     currentGameId: string;
     socket: string;
     socketId: string | null;
-    prevPage: IntractLocation;
+    prevPage: NCLocation;
 }

@@ -1,3 +1,0 @@
-type UserCheckoutRequest = {
-    price: UserPrice;
-};

@@ -16,34 +16,5 @@ type AuditLog = {
 };
 
 type Auditable =
-    | AiTexture
-    | AnnotationComment
-    | AnnotationModel
-    | AssetCollection
-    | AssetExport
-    | AssetModel
-    | AssetMove
-    | AssetPresentation
-    | AssetSave
-    | AssetVersionModel
-    | Copy
-    | Download
-    | EnvironmentTexture
-    | Guest
-    | IntractPlugin
     | NotificationChannel
-    | Organization
-    | OrganizationMember
-    | Project
-    | ProjectMedia
-    | Review
-    | ReviewComment
-    | RobloxAvatarDeck
-    | Tag
-    | Texture
-    | User
-    | UserAssetCollection
-    | UserAssetExport
-    | UserAssetSave
-    | UserTexture
-    | VideoConversion;
+    | User;
