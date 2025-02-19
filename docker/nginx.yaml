@@ -1,109 +1,109 @@
-  map $http_upgrade $type {
+map $http_upgrade $type {
     default "web";
     websocket "ws";
-  }
-    
-    map $sent_http_content_type $expires {
+}
+
+map $sent_http_content_type $expires {
     default                    off;
     text/html                  epoch;
     text/css                   max;
     application/javascript     max;
     ~image/                    max;
     model/gltf-binary          max;
+}
+
+server {
+  listen 80;
+  server_name "_";
+  client_max_body_size 25M;
+  
+  access_log /dev/stdout;
+  error_log /dev/stderr warn;
+  
+  root /var/www/html;
+  
+  # security headers
+  add_header Referrer-Policy "no-referrer-when-downgrade" always;
+  #add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-inline'; img-src * blob: data:; media-src 'self' http://localhost:3000 blob:" always;
+  add_header Strict-Transport-Security "max-age=0; includeSubDomains" always;
+  
+  index index.html index.htm index.php;
+  
+  charset utf-8;
+  
+  expires $expires;
+  add_header Cache-Control "public";
+  
+  #GZIP
+  gzip on;
+  gzip_disable "MSIE [1-6]\.";
+  gzip_vary on;
+  gzip_proxied any;
+  gzip_comp_level 5;
+  gzip_min_length 512;
+  gzip_buffers 16 128k;
+  gzip_http_version 1.1;
+  gzip_types text/plain text/css text/js text/xml text/javascript application/javascript application/x-javascript application/json application/xml application/rss+xml image/svg+xml image/x-icon image/bmp;
+  
+  location / {
+      try_files $uri $uri/ /index.html =404;
   }
-    
-    server {
-    listen 80;
-    server_name "_";
-    client_max_body_size 25M;
-    
-    access_log /dev/stdout;
-    error_log /dev/stderr warn;
-    
-    root /var/www/html;
-    
-    # security headers
-    add_header Referrer-Policy "no-referrer-when-downgrade" always;
-    #add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-inline'; img-src * blob: data:; media-src 'self' http://localhost:3000 blob:" always;
-    add_header Strict-Transport-Security "max-age=0; includeSubDomains" always;
-    
-    index index.html index.htm index.php;
-    
-    charset utf-8;
-    
-    expires $expires;
-    add_header Cache-Control "public";
-    
-    #GZIP
-    gzip on;
-    gzip_disable "MSIE [1-6]\.";
-    gzip_vary on;
-    gzip_proxied any;
-    gzip_comp_level 5;
-    gzip_min_length 512;
-    gzip_buffers 16 128k;
-    gzip_http_version 1.1;
-    gzip_types text/plain text/css text/js text/xml text/javascript application/javascript application/x-javascript application/json application/xml application/rss+xml image/svg+xml image/x-icon image/bmp;
-    
-    location / {
-        try_files $uri $uri/ /index.html =404;
-    }
-    
-    location /assets {
-        #root /var/www/html/assets;
-        try_files $uri $uri/ index.php?$query_string;
-    }
-    
-    location ~ ^/api|auth|mission|oauth|downloads(/.*)?$ {
-        add_header Cache-Control no-cache;
-        expires 0;
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-    
-    location /socket {
-    add_header Cache-Control no-cache;
-    expires 0;
-    proxy_pass             http://pusher:6001/;
-    proxy_read_timeout     60;
-    proxy_connect_timeout  60;
-    proxy_redirect         off;
-    
-    proxy_http_version 1.1;
-    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header   X-Real-IP       $remote_addr;
-    proxy_set_header   Upgrade $http_upgrade;
-    proxy_set_header   Connection 'upgrade';
-    proxy_set_header   Host $host;
-    proxy_no_cache $http_upgrade;
-    proxy_cache_bypass $http_upgrade;
-    }
-    
-    location = /favicon.ico { access_log off; log_not_found off; }
-    location = /robots.txt  { access_log off; log_not_found off; }
-    #error_page 404 /index.php;
-    
-    location ~ \.php$ {
-    expires $expires;
-    root /var/www/html/public;
-    include fastcgi_params;
-    fastcgi_pass php:9000;
-    fastcgi_index index.php;
-    fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
-    fastcgi_next_upstream error timeout non_idempotent invalid_header;
-    fastcgi_buffers 16 32k;
-    fastcgi_buffer_size 32k;
-    fastcgi_read_timeout 15;
-    fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
-    proxy_read_timeout     15;
-    proxy_connect_timeout  60;
-    proxy_set_header X-Forwarded-Host $host:$server_port;
-    proxy_set_header X-Forwarded-Server $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_no_cache $http_upgrade;
-    proxy_cache_bypass $http_upgrade;
-    }
-    
-    location ~ /\.(?!well-known).* {
-    deny all;
-    }
+  
+  location /assets {
+      #root /var/www/html/assets;
+      try_files $uri $uri/ index.php?$query_string;
   }
+  
+  location ~ ^/api|auth|mission|oauth|downloads(/.*)?$ {
+      add_header Cache-Control no-cache;
+      expires 0;
+      try_files $uri $uri/ /index.php?$query_string;
+  }
+  
+  location /socket {
+      add_header Cache-Control no-cache;
+      expires 0;
+      proxy_pass             http://pusher:6001/;
+      proxy_read_timeout     60;
+      proxy_connect_timeout  60;
+      proxy_redirect         off;
+      
+      proxy_http_version 1.1;
+      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Real-IP       $remote_addr;
+      proxy_set_header   Upgrade $http_upgrade;
+      proxy_set_header   Connection 'upgrade';
+      proxy_set_header   Host $host;
+      proxy_no_cache $http_upgrade;
+      proxy_cache_bypass $http_upgrade;
+  }
+  
+  location = /favicon.ico { access_log off; log_not_found off; }
+  location = /robots.txt  { access_log off; log_not_found off; }
+  #error_page 404 /index.php;
+  
+  location ~ \.php$ {
+      expires $expires;
+      root /var/www/html/public;
+      include fastcgi_params;
+      fastcgi_pass backend:9000;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
+      fastcgi_next_upstream error timeout non_idempotent invalid_header;
+      fastcgi_buffers 16 32k;
+      fastcgi_buffer_size 32k;
+      fastcgi_read_timeout 15;
+      fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
+      proxy_read_timeout     15;
+      proxy_connect_timeout  60;
+      proxy_set_header X-Forwarded-Host $host:$server_port;
+      proxy_set_header X-Forwarded-Server $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_no_cache $http_upgrade;
+      proxy_cache_bypass $http_upgrade;
+  }
+  
+  location ~ /\.(?!well-known).* {
+      deny all;
+  }
+}

@@ -14,7 +14,7 @@ declare module '@mui/material/styles' {
         nc: PaletteOptions['primary'] & {
             divider: string;
             dark: string;
-            medium: string;
+            medium?: string;
             button: string;
         };
     }
