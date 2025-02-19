@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
-import Main from '@/screens/layouts/Main';
+import Main from '@/layout/Main';
 import ErrorScreen from '@/screens/error/ErrorScreen';
 import LoginScreen from '@/layout/screens/LoginScreen';
 import App from '@/App';

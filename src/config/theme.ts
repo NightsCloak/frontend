@@ -82,16 +82,10 @@ const theme = (prefersDarkMode: boolean): Theme =>
                 light: 'rgb(200, 59, 75)',
             },
             primary: {
-                main: '#bb0a1e' ,
-                contrastText: '#FFFFFF',
-                // light: 'rgb(51, 51, 51)',
-                // dark: '#262626',
+                main: '#bb0a1e',
             },
             secondary: {
                 main: '#f50057',
-                contrastText: '#FFFFFF',
-                // light: '#F73378',
-                // dark: '#AB003C',
             },
             error: {
                 main: '#F44336',

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider as ReactRouterProvider } from 'react-router-dom';
 
 const routes = (routeConfig: RouteObject[]): RouteObject[] => [
     {
@@ -10,12 +10,12 @@ const routes = (routeConfig: RouteObject[]): RouteObject[] => [
 
 const router = (routeConfig: RouteObject[]) => createBrowserRouter(routes(routeConfig));
 
-const Router: FC<BaseProps> = ({ routeConfig }) => {
+const RouterProvider: FC<BaseProps> = ({ routeConfig }) => {
     return (
         <>
-            <RouterProvider router={router(routeConfig)} />
+            <ReactRouterProvider router={router(routeConfig)} />
         </>
     );
 };
 
-export default Router;
+export default RouterProvider;

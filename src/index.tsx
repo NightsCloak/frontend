@@ -6,8 +6,12 @@ import * as Sentry from '@sentry/react';
 
 // English.
 import en from 'javascript-time-ago/locale/en';
-import Main from '@/Main';
 import { LicenseInfo } from '@mui/x-license';
+import { persistor, store } from '@/redux/store';
+import Router from '@/providers/RouterProvider';
+import routes from '@/config/routes';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 Sentry.init({
     dsn: 'https://189679606c188c3d5ef98c81b2cfb8ee@o4508838011863040.ingest.us.sentry.io/4508838013173765',
@@ -41,7 +45,11 @@ window.console.log = import.meta.env.MODE === 'production' ? () => {} : console.
 
 root.render(
     <React.StrictMode>
-        <Main />
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <Router config={{}} routeConfig={routes} />
+            </PersistGate>
+        </Provider>
     </React.StrictMode>
 );
 
