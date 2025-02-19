@@ -1,22 +1,15 @@
 import { makeStyles } from 'tss-react/mui';
-import { Button, Theme, Typography, useTheme } from '@mui/material';
+import { Button, Theme, Typography } from '@mui/material';
 import { FallbackProps } from 'react-error-boundary';
 import { FC } from 'react';
-import imagePaths from '@/hooks/imagePaths';
 
 const AppError: FC<FallbackProps> = (_props) => {
     const { classes } = useStyles();
-    const theme = useTheme();
 
     return (
         <div className={classes.root}>
             <div className={classes.main}>
-                <img
-                    className={classes.logo}
-                    src={theme.palette.mode === 'dark' ? imagePaths.lightLogo : imagePaths.darkLogo}
-                    height={'10%'}
-                    alt={'oops'}
-                />
+                <img className={classes.logo} src={'images/logo.png'} height={'10%'} alt={'oops'} />
                 <Typography variant={'h6'}>Something Went Wrong</Typography>
                 <Button className={classes.reloadButton} variant={'contained'} onClick={() => window.location.reload()}>
                     Reload

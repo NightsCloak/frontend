@@ -7,7 +7,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useAppSelector } from '@/redux/hooks';
 import Holding from '@/layout/Holding';
-import imagePaths from '@/hooks/imagePaths';
 import useScreenSize from '@/hooks/useScreenSize';
 import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
 import Sidebar from '@/components/sidebar';
@@ -52,13 +51,7 @@ const Main: FC = () => {
                         )}
                         <Link to={'/'}>
                             <Stack spacing={2} sx={{ pl: 2 }} direction={'row'} alignItems={'center'}>
-                                <img width={32} height={32} src={imagePaths.iconLogo} alt={'Logo'} />
-                                <img
-                                    height={32}
-                                    width={157}
-                                    src={theme.palette.mode === 'dark' ? imagePaths.lightLogo : imagePaths.darkLogo}
-                                    alt={'Logo'}
-                                />
+                                <img width={32} height={32} src={'images/logo.png'} alt={'Logo'} />
                             </Stack>
                         </Link>
                     </>
