@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Typography } from '@mui/material';
-import {ReactNode, use, useCallback, useEffect} from 'react';
+import { ReactNode, use, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
@@ -22,6 +22,7 @@ const Index = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { open } = use(SidebarContext);
+
     const logoutHandler = async () => {
         await dispatch(userLogout());
         await dispatch(apiSlice.util.resetApiState());
@@ -37,15 +38,14 @@ const Index = () => {
             console.log('logout auth');
             logoutTrigger();
         }
-        console.log('import', import.meta);
-        if (import.meta.env.DEV) window.location.reload();
+        if (import.meta.env.DEV && import.meta.env.VITE_AUTH_FLOW === 'pkce') window.location.reload();
         else {
             navigate('/');
         }
     }, []);
 
     const SidebarSection = (section: string = 'default') => {
-        const menus: {[key: string]: ReactNode} = {
+        const menus: { [key: string]: ReactNode } = {
             default: <SidebarMenu menuItems={defaultMenu} />,
         };
 
@@ -57,7 +57,6 @@ const Index = () => {
     };
 
     useEffect(() => {
-        console.log('isSuccess', isSuccess);
         if (isSuccess) {
             logoutHandler();
         }

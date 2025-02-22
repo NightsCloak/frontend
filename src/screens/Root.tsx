@@ -1,15 +1,15 @@
 import { useAppSelector } from '@/redux/hooks';
 import LandingScreen from '@/screens/LandingScreen';
-import AdminDashboard from '@/screens/AdminDashboard';
+import Dashboard from '@/screens/users/Dashboard';
 
-const RootIndex = () => {
+const Root = () => {
     const auth = useAppSelector((state) => state.auth);
 
     if (auth.status) {
-        return <AdminDashboard />;
+        return <Dashboard />;
     }
 
     return <LandingScreen />;
 };
 
-export default RootIndex;
+export default Root;

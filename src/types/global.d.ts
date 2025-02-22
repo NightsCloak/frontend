@@ -11,16 +11,13 @@ type ImageAvatarProps = {
     type?: AvatarType;
     avatar?: string | null;
     icon?: ReactNode;
+    iconLabel?: ReactNode;
     name?: string | null;
     size?: number;
     disableClickable?: boolean;
 };
 
-type AvatarType = 'organization' | 'project' | 'asset' | 'collection' | 'user' | 'texture' | 'icon';
-
-type OrgMenu = {
-    [key: Organization['id']]: Organization & { projects: Project[]; open: boolean; openProject: Project['id'] | null };
-};
+type AvatarType = 'user' | 'icon';
 
 interface BaseProps {
     config: Config;
@@ -37,14 +34,17 @@ type Config = {
     theme?: ThemeOptions;
 };
 
-type styleKeys = 'root' | 'box' | 'title' | 'children';
-
-interface NCModalProps {
+interface NCModalProps extends OverridableComponent<ModalTypeMap> {
     title?: string;
     children?: React.ReactNode;
-    sx?: { [key in styleKeys]?: CSSProperties };
+    sx?: SxProps;
     override?: { [key in styleKeys]?: string };
     open?: boolean;
     handler?: React.MouseEventHandler<SVGSVGElement | HTMLElement>;
     icon?: React.ReactNode;
+    iconLabel?: string;
 }
+
+type ErrorResponse = {
+    errors?: { [key: string]: string[]; message?: string };
+};

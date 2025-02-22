@@ -1,8 +1,15 @@
 /// <reference types="vite/client" />
 
 import type ImportMetaVite from 'vite/types/importMeta';
-
 import type {
+    ModalTypeMap as MuiModalTypeMap,
+    OverridableComponent as MuiOverridableComponent,
+    SxProps as MuiSxProps,
+    Theme as MuiTheme,
+    ThemeOptions as MuiThemeOptions,
+} from '@mui/material';
+import type {
+    CSSProperties as ReactCSSProperties,
     Dispatch as ReactDispatch,
     ReactElement as ReactReactElement,
     ReactNode as ReactReactNode,
@@ -12,7 +19,6 @@ import type {
 import type { PresenceChannel as EchoPresenceChannel } from 'laravel-echo/dist/channel';
 import type { default as LaravelEcho } from 'laravel-echo';
 import type { IndexRouteObject, Location as ReactRoutertLocation, NonIndexRouteObject } from 'react-router';
-import type { Theme as MuiTheme, ThemeOptions as MuiThemeOptions } from '@mui/material';
 
 interface ImportMetaEnv {
     readonly VITE_APP: 'admin' | 'frontend';
@@ -74,8 +80,11 @@ declare global {
     interface Window {
         EyeDropper?: EyeDropperConstructor | undefined;
     }
-    
 
+    type SxProps<T> = MuiSxProps<T>;
+    type CSSProperties = ReactCSSProperties;
+    type ModalTypeMap<A, B> = MuiModalTypeMap<A, B>;
+    type OverridableComponent<M> = MuiOverridableComponent<M>;
     type Dispatch<A> = ReactDispatch<A>;
     type ReactElement<P, T> = ReactReactElement<P, T>;
     type ReactNode = ReactReactNode;
@@ -85,8 +94,4 @@ declare global {
     type RefObject<T> = ReactRefObject<T>;
     type NCLocation<S> = ReactRoutertLocation<S>;
     type ThemeOptions = MuiThemeOptions;
-
-
-
 }
-

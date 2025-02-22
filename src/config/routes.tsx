@@ -4,7 +4,7 @@ import Main from '@/layout/Main';
 import ErrorScreen from '@/screens/error/ErrorScreen';
 import LoginScreen from '@/layout/screens/LoginScreen';
 import App from '@/App';
-import RootIndex from '@/screens/RootIndex';
+import Root from '@/screens/Root';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -15,7 +15,7 @@ const ResendVerifyEmailScreen = lazy(() => import('@/screens/auth/ResendVerifyEm
 const ResetPasswordScreen = lazy(() => import('@/screens/auth/ResetPasswordScreen'));
 const VerifiesEmailScreen = lazy(() => import('@/screens/auth/VerifiesEmailScreen'));
 
-const UserDashboard = lazy(() => import('@/screens/users/UserDashboard'));
+const UserDashboard = lazy(() => import('@/screens/users/Dashboard'));
 const routes: RouteObject[] = [
     {
         element: <App />,
@@ -37,7 +37,7 @@ const routes: RouteObject[] = [
                             />
                         ),
                     },
-                    { path: '/', element: <RootIndex /> },
+                    { path: '/', element: <Root /> },
                     { path: '/maintenance', element: <MaintenanceScreen /> },
                     { path: '/login', element: <LoginScreen /> },
                     { path: 'auth/callback', element: <AuthCallback /> },

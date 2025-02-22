@@ -4,7 +4,7 @@ import { makeStyles } from 'tss-react/mui';
 import { Sentry } from 'react-activity';
 import { Delete, PhotoCamera } from '@mui/icons-material';
 import { useDeleteUserAvatarMutation, useUpdateUserAvatarMutation } from '@/redux/features/user';
-import imagePaths from '@/hooks/imagePaths';
+import imagePaths from '@/utils/imagePaths';
 
 interface ManageAvatarProps {
     user: User;

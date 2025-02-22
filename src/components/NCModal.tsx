@@ -1,10 +1,10 @@
 import { FC, useState } from 'react';
-import { Box, IconButton, Modal, Paper, Theme, Typography } from '@mui/material';
+import { Box, Button, Modal, Paper, Theme, Typography } from '@mui/material';
 import AddBox from '@mui/icons-material/AddBox';
 import CancelPresentation from '@mui/icons-material/CancelPresentation';
 import { makeStyles } from 'tss-react/mui';
 
-const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handler, icon }) => {
+const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handler, icon, iconLabel }) => {
     const { classes, cx } = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -13,21 +13,14 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
     };
 
     return (
-        <>
-            {icon ?? (
-                <IconButton
-                    onClick={handler ?? handleOpen}
-                    color={'success'}
-                    aria-label={'Add'}
-                    data-testid={'NCModal'}
-                >
-                    <AddBox />
-                </IconButton>
-            )}
+        <div style={sx}>
+            <Button onClick={handler ?? handleOpen} aria-label={'Add'} data-testid={'NCModal'}>
+                {iconLabel}
+                {icon ?? <AddBox />}
+            </Button>
             <Modal
                 open={open ?? modalOpen}
                 onClose={handler ?? handleOpen}
-                onBackdropClick={handler ?? handleOpen}
                 aria-labelledby={'Modal'}
                 aria-describedby={'Modal'}
                 className={cx(classes.root, override?.root)}
@@ -44,15 +37,12 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
                         </Typography>
                         <CancelPresentation onClick={handler ?? handleOpen} />
                     </Paper>
-                    <div
-                        className={cx(classes.modalContent, override?.children)}
-                        style={sx?.children && { ...sx.children }}
-                    >
+                    <div className={cx(classes.modalContent, override?.children)} style={sx}>
                         {children ?? 'Blank Modal'}
                     </div>
                 </Box>
             </Modal>
-        </>
+        </div>
     );
 };
 

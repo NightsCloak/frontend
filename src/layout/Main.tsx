@@ -1,7 +1,7 @@
 import { FC, Suspense, useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { AppBar, Box, Breadcrumbs, Divider, IconButton, Stack, Theme, useTheme } from '@mui/material';
+import { AppBar, Box, Breadcrumbs, Divider, Grow, IconButton, Stack, Theme, useTheme } from '@mui/material';
 import { useTools } from '@/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -13,12 +13,14 @@ import Sidebar from '@/components/sidebar';
 import SidebarProvider from '@/providers/SidebarProvider';
 import AdminMenu from '@/components/AdminMenu';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
+import imagePaths from '@/utils/imagePaths';
 
 const Main: FC = () => {
     const auth = useAppSelector((state) => state.auth.status);
     const maintenance = useAppSelector((state) => state.app.maintenance);
     const { isSmallScreen } = useScreenSize();
     const theme = useTheme();
+    console.log('theme', theme);
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
     const { classes } = useStyles({ isSmallScreen, auth, open: drawerOpen });
     const { tools, breadcrumbs, modal } = useTools();
@@ -51,7 +53,7 @@ const Main: FC = () => {
                         )}
                         <Link to={'/'}>
                             <Stack spacing={2} sx={{ pl: 2 }} direction={'row'} alignItems={'center'}>
-                                <img width={32} height={32} src={'images/logo.png'} alt={'Logo'} />
+                                <img width={32} height={32} src={imagePaths.logo} alt={'Logo'} />
                             </Stack>
                         </Link>
                     </>
@@ -77,9 +79,11 @@ const Main: FC = () => {
                 )}
 
                 <Box component={'main'} className={classes.main}>
-                    <Suspense fallback={<Holding {...{ spinner: true }} />}>
-                        <Outlet />
-                    </Suspense>
+                    <Grow easing={'ease-in-out'} in={false} timeout={100}>
+                        <Suspense fallback={<Holding {...{ spinner: true }} />}>
+                            <Outlet />
+                        </Suspense>
+                    </Grow>
                 </Box>
                 {modal}
             </div>
@@ -96,8 +100,9 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             display: 'flex',
             flex: 1,
             scrollbarWidth: 'thin',
-            width: '100vw',
-            overflow: 'hidden',
+            width: '100%',
+            maxWidth: '100%',
+            overflow: 'auto',
             height: '100vh',
         },
         appBar: {
@@ -136,9 +141,12 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             // alignContent: 'center',
             height: `100%`,
             width: '100%',
+            maxWidth: `calc(100vw - ${open ? '200px' : theme.spacing(7)} + 1px)`,
+            transition: `all ${open ? theme.transitions.duration.enteringScreen : theme.transitions.duration.leavingScreen}ms ${theme.transitions.easing.sharp}`,
             // paddingBottom: 64,
             padding: theme.spacing(1),
             [theme.breakpoints.only('xs')]: {
+                padding: theme.spacing(2),
                 // padding: 0,
                 // margin: 0,
                 marginTop: theme.spacing(2),

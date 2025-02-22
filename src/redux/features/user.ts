@@ -26,12 +26,6 @@ const user = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        getUserPendingOrganizationMembers: builder.query<OrganizationMember[], null>({
-            query: () => ({
-                url: 'user/members/pending',
-                method: 'GET',
-            }),
-        }),
         updateUserAvatar: builder.mutation<UpdateAvatarResponse, UpdateUserAvatarRequest>({
             query: ({ avatar }) => ({
                 url: 'user/avatar',
@@ -92,7 +86,6 @@ export const {
     useWaitListSignUpMutation,
     useGetUserQuery,
     useGetUserLoginsQuery,
-    useGetUserPendingOrganizationMembersQuery,
     useUpdateUserAvatarMutation,
     useDeleteUserAvatarMutation,
     useUpdateUserNameMutation,

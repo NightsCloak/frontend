@@ -13,20 +13,21 @@ import routes from '@/config/routes';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-Sentry.init({
-    dsn: 'https://189679606c188c3d5ef98c81b2cfb8ee@o4508838011863040.ingest.us.sentry.io/4508838013173765',
-    environment: import.meta.env.VITE_DEPLOY_ENV,
-    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
-    release: import.meta.env.GITHUB_SHA,
-    // Tracing
-    tracesSampleRate: 1.0, //  Capture 100% of the transactions
-    // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-    tracePropagationTargets: [/^https:\/\/nightscloak\.com\/api/, /^https:\/\/nightscloak\.dev\/api/],
-    // Session Replay
-    replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-    replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-    normalizeDepth: 10,
-});
+process.env.NODE_ENV === 'production' &&
+    Sentry.init({
+        dsn: 'https://189679606c188c3d5ef98c81b2cfb8ee@o4508838011863040.ingest.us.sentry.io/4508838013173765',
+        environment: import.meta.env.VITE_DEPLOY_ENV,
+        integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+        release: import.meta.env.GITHUB_SHA,
+        // Tracing
+        tracesSampleRate: 1.0, //  Capture 100% of the transactions
+        // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+        tracePropagationTargets: [/^https:\/\/nightscloak\.com\/api/, /^https:\/\/nightscloak\.dev\/api/],
+        // Session Replay
+        replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+        replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+        normalizeDepth: 10,
+    });
 
 LicenseInfo.setLicenseKey(
     'e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y'

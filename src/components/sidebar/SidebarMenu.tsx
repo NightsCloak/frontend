@@ -14,17 +14,12 @@ type SidebarMenuProps = {
 
 const SidebarMenu: FC<SidebarMenuProps> = ({ menuItems }) => {
     const { open } = use(sidebarContext);
-    console.log('open', open);
     const { classes } = useStyles({ open });
 
     return (
         <List>
             {menuItems.map((item, index) => (
-                <NCLink
-                    to={item.to}
-                    key={`sidebar-menu-item-${item.label.toLowerCase()}-${index}`}
-                    underline={'none'}
-                >
+                <NCLink to={item.to} key={`sidebar-menu-item-${item.label.toLowerCase()}-${index}`} underline={'none'}>
                     <ListItem disablePadding className={classes.listItem}>
                         <ListItemButton className={classes.listItemButton}>
                             <ListItemIcon className={classes.listItemIcon}>{item.icon}</ListItemIcon>

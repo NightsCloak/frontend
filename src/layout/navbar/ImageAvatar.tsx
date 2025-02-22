@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from 'react';
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import imagePaths from '@/hooks/imagePaths';
+import imagePaths from '@/utils/imagePaths';
 
 type ImageAvatarProps = {
     type?: AvatarType;

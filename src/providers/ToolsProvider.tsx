@@ -92,7 +92,7 @@ const ToolsProvider = ({ children }: ToolsProps) => {
         } else {
             document.title = 'Nightscloak';
         }
-        console.log('title changed');
+        // console.log('title changed');
     }, [tabTitle]);
 
     useLayoutEffect(() => {
