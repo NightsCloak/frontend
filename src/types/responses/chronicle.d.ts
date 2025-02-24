@@ -1,1 +1,1 @@
-type AddChronicleResponse = Partial<Chronicle>[] & ErrorResponse;
+type AddChronicleResponse = Partial<Chronicle>[] | FetchBaseQueryError | SerializedError;

@@ -19,6 +19,10 @@ import type {
 import type { PresenceChannel as EchoPresenceChannel } from 'laravel-echo/dist/channel';
 import type { default as LaravelEcho } from 'laravel-echo';
 import type { IndexRouteObject, Location as ReactRoutertLocation, NonIndexRouteObject } from 'react-router';
+import {
+    FetchBaseQueryError as RTKFetchBaseQueryError,
+    SerializedError as RTKSerializedError,
+} from '@reduxjs/toolkit/query/react';
 
 interface ImportMetaEnv {
     readonly VITE_APP: 'admin' | 'frontend';
@@ -81,6 +85,8 @@ declare global {
         EyeDropper?: EyeDropperConstructor | undefined;
     }
 
+    type FetchBaseQueryError = RTKFetchBaseQueryError;
+    type SerializedError = RTKSerializedError;
     type SxProps<T> = MuiSxProps<T>;
     type CSSProperties = ReactCSSProperties;
     type ModalTypeMap<A, B> = MuiModalTypeMap<A, B>;

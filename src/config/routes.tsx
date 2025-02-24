@@ -5,6 +5,7 @@ import ErrorScreen from '@/screens/error/ErrorScreen';
 import LoginScreen from '@/layout/screens/LoginScreen';
 import App from '@/App';
 import Root from '@/screens/Root';
+import ChroniclesDashboard from '@/screens/chronicles/ChroniclesDashboard';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -54,6 +55,16 @@ const routes: RouteObject[] = [
                     {
                         path: '/users',
                         element: <UserDashboard />,
+                    },
+                ],
+            },
+            {
+                path: '/chronicles',
+                element: <Main />,
+                children: [
+                    {
+                        path: '/chronicles',
+                        element: <ChroniclesDashboard />,
                     },
                 ],
             },

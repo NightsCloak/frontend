@@ -44,7 +44,3 @@ interface NCModalProps extends OverridableComponent<ModalTypeMap> {
     icon?: React.ReactNode;
     iconLabel?: string;
 }
-
-type ErrorResponse = {
-    errors?: { [key: string]: string[]; message?: string };
-};

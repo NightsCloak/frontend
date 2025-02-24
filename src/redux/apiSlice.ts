@@ -158,26 +158,7 @@ export const customBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBase
 
 const apiSlice = createApi({
     reducerPath: 'api',
-    tagTypes: [
-        'dev-organizations',
-        'dev-projects',
-        'organization-owners',
-        'organization-projects',
-        'project-developers',
-        'organization',
-        'User',
-        'Developer',
-        'Collections',
-        'AssetCollection',
-        'user-collections',
-        'asset-collections',
-        'user-organizations',
-        'project-members-to-mention',
-        'recent-trashed-models',
-        'recent-trashed-folders',
-        'recent-trashed-reviews',
-        'recent-trashed-media',
-    ],
+    tagTypes: ['User', 'Chronicles'],
     baseQuery: customBaseQuery,
     endpoints: (_builder) => ({}),
 });
