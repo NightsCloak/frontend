@@ -2,6 +2,7 @@
 
 import type ImportMetaVite from 'vite/types/importMeta';
 import type {
+    ModalOwnProps as MuiModalOwnProps,
     ModalTypeMap as MuiModalTypeMap,
     OverridableComponent as MuiOverridableComponent,
     SxProps as MuiSxProps,
@@ -85,6 +86,7 @@ declare global {
         EyeDropper?: EyeDropperConstructor | undefined;
     }
 
+    type ModalOwnProps = MuiModalOwnProps;
     type FetchBaseQueryError = RTKFetchBaseQueryError;
     type SerializedError = RTKSerializedError;
     type SxProps<T> = MuiSxProps<T>;

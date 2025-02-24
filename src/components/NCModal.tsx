@@ -4,7 +4,7 @@ import AddBox from '@mui/icons-material/AddBox';
 import CancelPresentation from '@mui/icons-material/CancelPresentation';
 import { makeStyles } from 'tss-react/mui';
 
-const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handler, icon, iconLabel }) => {
+const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handler, icon, iconLabel, ...props }) => {
     const { classes, cx } = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -19,6 +19,7 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
                 {icon ?? <AddBox />}
             </Button>
             <Modal
+                {...props}
                 open={open ?? modalOpen}
                 onClose={handler ?? handleOpen}
                 aria-labelledby={'Modal'}

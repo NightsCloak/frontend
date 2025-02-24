@@ -34,7 +34,7 @@ type Config = {
     theme?: ThemeOptions;
 };
 
-interface NCModalProps extends OverridableComponent<ModalTypeMap> {
+interface NCModalProps extends ModalOwnProps {
     title?: string;
     children?: React.ReactNode;
     sx?: SxProps;

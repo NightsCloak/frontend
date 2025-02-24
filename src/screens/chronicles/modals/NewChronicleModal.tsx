@@ -1,43 +1,19 @@
 import NCModal from '@/components/NCModal';
-import { Box, Button, TextField } from '@mui/material';
-import { useActionState, useEffect, useState } from 'react';
-import { Spinner } from 'react-activity';
-import { useAddChronicleMutation } from '@/redux/features/chronciles';
+import { Box } from '@mui/material';
+import { FC, useState } from 'react';
+import AddChronicleForm from '@/components/Chronicles/AddChronicleForm';
 
-type NewChronicleFormState = AddChronicleResponse | null;
-
-const initialState: NewChronicleFormState = { name: null, email: null, parent_id: null };
-
-const NewChronicleModal = () => {
+const NewChronicleModal: FC<NCModalProps> = ({ ...props }) => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleOpen = () => {
         setModalOpen(!modalOpen);
     };
 
-    const [submit] = useAddChronicleMutation();
-    const [state, submitAction, isPending] = useActionState(
-        async (previousState: NewChronicleFormState, formData: FormData): Promise<AddChronicleResponse> => {
-            const { data, error } = await submit({
-                name: formData.get('name') as string,
-                email: formData.get('email') as string,
-            });
-            console.log('test', data, error);
-            if (error) return error;
-            handleOpen();
-            if (data) return [{ name: data.name ?? '', email: data.email ?? '' }];
-            return previousState;
-        },
-        initialState
-    );
-
-    useEffect(() => {
-        console.log('state', state);
-    }, [state]);
-
     return (
         <Box p={1} justifyContent={'center'} alignItems={'center'} display={'flex'}>
             <NCModal
+                {...props}
                 open={modalOpen}
                 handler={handleOpen}
                 title={'Add Chronicle'}
@@ -47,19 +23,7 @@ const NewChronicleModal = () => {
                     box: { display: 'flex', alignSelf: 'center', height: 250 },
                 }}
             >
-                <form action={submitAction} style={{ display: 'flex', flexDirection: 'column', width: '50vw' }}>
-                    <TextField
-                        label={'Name'}
-                        name={'name'}
-                        error={state && state.data?.errors?.name}
-                        helperText={state && state.data?.errors?.name}
-                    />
-                    <br />
-                    <TextField label={'Email'} name={'email'} />
-                    <Button variant={'contained'} type={'submit'} disabled={isPending}>
-                        {isPending ? <Spinner /> : 'Submit'}
-                    </Button>
-                </form>
+                <AddChronicleForm handler={handleOpen} />
             </NCModal>
         </Box>
     );
