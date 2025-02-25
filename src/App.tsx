@@ -18,11 +18,11 @@ import { useGetUserQuery } from '@/redux/features/user';
 import useTabSync from '@/hooks/useTabSync';
 import RootProvider from '@/providers/RootProvider';
 import theme from '@/config/theme';
+import defaultTheme from '@/config/theme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
-import defaultTheme from '@/config/theme';
 import { toggleDarkMode } from '@/redux/reducers/userSlice';
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import { useHeartbeatQuery } from '@/redux/features/auth';
 
 function App() {

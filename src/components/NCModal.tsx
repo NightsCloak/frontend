@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Box, Button, Modal, Paper, Theme, Typography } from '@mui/material';
+import { Box, Button, Dialog, Paper, Theme, Typography } from '@mui/material';
 import AddBox from '@mui/icons-material/AddBox';
 import CancelPresentation from '@mui/icons-material/CancelPresentation';
 import { makeStyles } from 'tss-react/mui';
@@ -18,7 +18,7 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
                 {iconLabel}
                 {icon ?? <AddBox />}
             </Button>
-            <Modal
+            <Dialog
                 {...props}
                 open={open ?? modalOpen}
                 onClose={handler ?? handleOpen}
@@ -42,7 +42,7 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
                         {children ?? 'Blank Modal'}
                     </div>
                 </Box>
-            </Modal>
+            </Dialog>
         </div>
     );
 };

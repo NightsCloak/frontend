@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Link, LinkOwnProps, useTheme } from '@mui/material';
+import { Link, LinkOwnProps } from '@mui/material';
 import { useLocation } from 'react-router';
 import { makeStyles } from 'tss-react/mui';
 
@@ -13,9 +13,8 @@ type NCLinkProps = {
 
 const NCLink: FC<NCLinkProps> = ({ to, children, iconColor = true, ...props }) => {
     const location = useLocation();
-    const theme = useTheme();
     const active = location.pathname === to;
-    const { classes } = useStyles({ active, iconColor });
+    const { classes, theme } = useStyles({ active, iconColor });
 
     return (
         <Link

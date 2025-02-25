@@ -158,7 +158,7 @@ export const customBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBase
 
 const apiSlice = createApi({
     reducerPath: 'api',
-    tagTypes: ['User', 'Chronicles'],
+    tagTypes: ['User', 'Chronicles', 'Chronicle'],
     baseQuery: customBaseQuery,
     endpoints: (_builder) => ({}),
 });

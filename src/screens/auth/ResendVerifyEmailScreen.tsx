@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Box, Button, Paper, TextField, Theme, Typography, useTheme } from '@mui/material';
+import { Box, Button, Paper, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Sentry } from 'react-activity';
 import { useResendEmailVerificationMutation } from '@/redux/features/auth';
@@ -9,8 +9,7 @@ import { useTools } from '@/contexts/ToolsContext';
 
 const ResendVerifyEmailScreen: FC = () => {
     const navigate = useNavigate();
-    const theme = useTheme();
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
     const { updateTabTitle } = useTools();
     const emailRef = useRef<HTMLInputElement | null | undefined>(null);
     const [emailError, setEmailError] = useState<string | null>(null);

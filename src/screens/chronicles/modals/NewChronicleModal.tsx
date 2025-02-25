@@ -1,7 +1,7 @@
 import NCModal from '@/components/NCModal';
 import { Box } from '@mui/material';
 import { FC, useState } from 'react';
-import AddChronicleForm from '@/components/Chronicles/AddChronicleForm';
+import AddChronicleForm from '@/components/Chronicles/forms/AddChronicleForm';
 
 const NewChronicleModal: FC<NCModalProps> = ({ ...props }) => {
     const [modalOpen, setModalOpen] = useState(false);

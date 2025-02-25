@@ -10,7 +10,7 @@ const Dashboard = () => {
     return (
         <Box className={classes.root} component={Paper}>
             <Typography className={classes.header}>Welcome {user.name}</Typography>
-            <ChroniclesTable />
+            {(user?.data?.chronicles_count ?? 0) > 0 && <ChroniclesTable />}
         </Box>
     );
 };

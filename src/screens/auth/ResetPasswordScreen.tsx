@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
-import { Box, Button, Paper, TextField, Theme, Typography, useTheme } from '@mui/material';
+import { Box, Button, Paper, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useResetPasswordMutation } from '@/redux/features/auth';
 import { Key, Login as LoginIcon } from '@mui/icons-material';
@@ -14,8 +14,7 @@ const ResetPasswordScreen: FC = () => {
     const navigate = useNavigate();
     const { token } = useParams() as { token: string };
     const [searchParams] = useSearchParams();
-    const theme = useTheme();
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
     const { updateTabTitle } = useTools();
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);

@@ -1,7 +1,7 @@
 import { FC, Suspense, useEffect, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { AppBar, Box, Breadcrumbs, Divider, Grow, IconButton, Stack, Theme, useTheme } from '@mui/material';
+import { AppBar, Box, Breadcrumbs, Divider, Grow, IconButton, Stack, Theme } from '@mui/material';
 import { useTools } from '@/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -19,10 +19,9 @@ const Main: FC = () => {
     const auth = useAppSelector((state) => state.auth.status);
     const maintenance = useAppSelector((state) => state.app.maintenance);
     const { isSmallScreen } = useScreenSize();
-    const theme = useTheme();
-    console.log('theme', theme);
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-    const { classes } = useStyles({ isSmallScreen, auth, open: drawerOpen });
+    const { classes, theme } = useStyles({ isSmallScreen, auth, open: drawerOpen });
+
     const { tools, breadcrumbs, modal } = useTools();
 
     const toggleDrawer = () => {

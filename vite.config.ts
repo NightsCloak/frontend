@@ -6,6 +6,7 @@ import obfuscatorPlugin from 'vite-plugin-javascript-obfuscator';
 import checker from 'vite-plugin-checker';
 import * as path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import vitePluginImporter from 'vite-plugin-importer';
 
 process.env = { ...process.env, ...loadEnv(process.env.NODE_ENV ?? 'development', process.cwd()) };
 
@@ -18,6 +19,17 @@ export default defineConfig({
             babel: {
                 plugins: [['babel-plugin-react-compiler', {}]],
             },
+        }),
+        vitePluginImporter({
+            libraryName: '@mui/material',
+            libraryDirectory: '',
+            camel2DashComponentName: false,
+        }),
+        vitePluginImporter({
+            libraryName: '@mui/icons-material',
+            libraryDirectory: '',
+            camel2DashComponentName: false,
+            style: false,
         }),
         tsconfigPaths({}),
         svgrPlugin(),
@@ -57,7 +69,10 @@ export default defineConfig({
             project: 'frontend',
             authToken: process.env.SENTRY_AUTH_TOKEN,
             // Generate Srcmaps for Develop and Production (false locally)
-            disable: process.env.NODE_ENV === 'DEV' || process.env.VITE_SENRTY === 'false' || process.env.SENTRY_AUTH_TOKEN === undefined,
+            disable:
+                process.env.NODE_ENV === 'DEV' ||
+                process.env.VITE_SENRTY === 'false' ||
+                process.env.SENTRY_AUTH_TOKEN === undefined,
             telemetry: process.env.VITE_SENTRY_TELEMETRY === 'true',
             sourcemaps: {
                 // Allow for toggle of Sentry srcmaps,

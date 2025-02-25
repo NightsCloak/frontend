@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { Box, Button, Paper, TextField, Theme, Typography, useTheme } from '@mui/material';
+import { Box, Button, Paper, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Sentry } from 'react-activity';
 import { useForgotPasswordMutation } from '@/redux/features/auth';
@@ -9,9 +9,8 @@ import { useTools } from '@/contexts/ToolsContext';
 
 const ForgotPasswordScreen: FC = () => {
     const navigate = useNavigate();
-    const theme = useTheme();
     const { updateTabTitle } = useTools();
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
 
     const emailRef = useRef<HTMLInputElement | undefined>(null!);
     const [emailError, setEmailError] = useState<string | null>(null);

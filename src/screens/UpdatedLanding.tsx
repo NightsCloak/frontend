@@ -1,5 +1,5 @@
 import { makeStyles } from 'tss-react/mui';
-import { Button, Card, CardContent, CardHeader, Theme, Typography, useTheme } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Theme, Typography } from '@mui/material';
 import { useState } from 'react';
 import useInterval from '@/hooks/useInterval';
 import { useNavigate } from 'react-router-dom';
@@ -7,9 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const UpdatedLanding = () => {
     const [section3, setSection3] = useState<number>(0);
     const [section3delay, setSection3delay] = useState(false);
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
     const navigate = useNavigate();
-    const theme = useTheme();
 
     const section3messages = [
         'Keep everyone on the same page - in 3D - in realtime.',

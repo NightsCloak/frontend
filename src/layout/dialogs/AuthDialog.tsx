@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, Stack } from '@mui/material';
 import { FC, useState } from 'react';
 import { Login, PersonAdd } from '@mui/icons-material';
-import RegisterScreen from '@/layout/screens/RegisterScreen';
-import LoginScreen from '@/layout/screens/LoginScreen';
+import RegisterScreen from '@/screens/auth/RegisterScreen';
+import LoginScreen from '@/screens/auth/LoginScreen';
 
 type AuthDialogProps = {
     onLogin: () => void;

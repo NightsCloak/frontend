@@ -1,14 +1,13 @@
 import {
     Button,
+    Divider,
     IconButton,
-    MenuItem,
-    MenuList,
-    Typography,
-    useTheme,
     Link,
     ListItemIcon,
     ListItemText,
-    Divider,
+    MenuItem,
+    MenuList,
+    Typography,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { FC } from 'react';
@@ -26,10 +25,9 @@ type GuestMenuProps = {
 };
 
 const GuestMenu: FC<GuestMenuProps> = ({ inSidebar, toggleDrawer }) => {
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
     const user = useAppSelector((state) => state.user);
     const location = useLocation();
-    const theme = useTheme();
     const dispatch = useAppDispatch();
     const hideAuth = location.pathname.includes('/invite');
     const defaultColor = theme.palette.mode === 'dark' ? 'white' : 'black';

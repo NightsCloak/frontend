@@ -1,5 +1,5 @@
 import { makeStyles } from 'tss-react/mui';
-import { Button, Paper, Theme, Typography, useTheme } from '@mui/material';
+import { Button, Paper, Theme, Typography } from '@mui/material';
 import { Sentry } from 'react-activity';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useVerifyEmailQuery } from '@/redux/features/auth';
@@ -9,8 +9,7 @@ import { useGetUserQuery } from '@/redux/features/user';
 import { useTools } from '@/contexts/ToolsContext';
 
 const VerifiesEmailScreen: FC = () => {
-    const theme = useTheme();
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
     const navigate = useNavigate();
     const { updateTabTitle } = useTools();
     const { userId, emailHash } = useParams() as { userId: string; emailHash: string };

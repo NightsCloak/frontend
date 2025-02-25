@@ -2,10 +2,9 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 import Main from '@/layout/Main';
 import ErrorScreen from '@/screens/error/ErrorScreen';
-import LoginScreen from '@/layout/screens/LoginScreen';
+import LoginScreen from '@/screens/auth/LoginScreen';
 import App from '@/App';
 import Root from '@/screens/Root';
-import ChroniclesDashboard from '@/screens/chronicles/ChroniclesDashboard';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -17,6 +16,10 @@ const ResetPasswordScreen = lazy(() => import('@/screens/auth/ResetPasswordScree
 const VerifiesEmailScreen = lazy(() => import('@/screens/auth/VerifiesEmailScreen'));
 
 const UserDashboard = lazy(() => import('@/screens/users/Dashboard'));
+
+const ChroniclesDashboard = lazy(() => import('@/screens/chronicles/ChroniclesDashboard'));
+const Chronicle = lazy(() => import('@/screens/chronicles/Chronicle'));
+
 const routes: RouteObject[] = [
     {
         element: <App />,
@@ -65,6 +68,10 @@ const routes: RouteObject[] = [
                     {
                         path: '/chronicles',
                         element: <ChroniclesDashboard />,
+                    },
+                    {
+                        path: '/chronicles/:chronicleId',
+                        element: <Chronicle />,
                     },
                 ],
             },

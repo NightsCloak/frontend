@@ -1,4 +1,5 @@
-import { createTheme, darkScrollbar } from '@mui/material';
+import { darkScrollbar } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 // export const drawerWidth = 240;
 
