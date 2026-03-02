@@ -68,7 +68,7 @@ const Index = () => {
             <div className={classes.root}>
                 <div className={classes.avatar}>
                     <Avatar alt={user.name} src={user.data?.avatar_route ?? ''} />
-                    <Typography variant={'caption'}>
+                    <Typography variant={'inherit'}>
                         {open ? user.name : `${user.data?.first[0]}.${user.data?.last[0]}.`}
                     </Typography>
                     <div>

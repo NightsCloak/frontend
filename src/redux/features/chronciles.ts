@@ -1,5 +1,6 @@
 import apiSlice from '@/redux/apiSlice';
 
+
 const chronicle = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         addChronicle: builder.mutation<Chronicle, AddChronicleRequest>({
@@ -31,6 +32,15 @@ const chronicle = apiSlice.injectEndpoints({
             }),
             providesTags: (_result, _error, chronicleId) => [{ type: 'Chronicle', id: chronicleId }],
         }),
+        getChroniclesSearch: builder.query<{ id: string; label: string }[], void>({
+            query: () => ({
+                url: 'chronicles/search',
+                method: 'GET',
+            }),
+            transformResponse: (result: Chronicle[], meta, arg) => {
+                return result.map((chronicle) => ({ id: chronicle.id, label: chronicle.name }));
+            }
+        }),
         updateChronicle: builder.mutation<Chronicle, { chronicleId: string; name: string }>({
             query: ({ chronicleId, name }) => ({
                 url: `chronicles/${chronicleId}`,
@@ -48,5 +58,6 @@ export const {
     useDeleteChronicleMutation,
     useGetUserChroniclesQuery,
     useGetUserChronicleQuery,
+    useGetChroniclesSearchQuery,
     useUpdateChronicleMutation,
 } = chronicle;

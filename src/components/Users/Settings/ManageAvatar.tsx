@@ -51,7 +51,7 @@ const ManageAvatar: React.FC<ManageAvatarProps> = ({ user, expandedMenu }) => {
 
     return (
         <Grid container justifyContent={'center'} direction="column" alignItems={'center'} spacing={3}>
-            <Grid item>
+            <Grid>
                 <Avatar
                     sx={{
                         height: 150,
@@ -63,13 +63,13 @@ const ManageAvatar: React.FC<ManageAvatarProps> = ({ user, expandedMenu }) => {
                 />
             </Grid>
             {!!avatarError.length && (
-                <Grid item>
+                <Grid>
                     <Typography variant={'subtitle1'} sx={{ color: '#E41E26' }}>
                         {avatarError}
                     </Typography>
                 </Grid>
             )}
-            <Grid item>
+            <Grid>
                 <label htmlFor="contained-button-file">
                     <input
                         style={{ display: 'none' }}

@@ -1,21 +1,26 @@
 import Typography from '@mui/material/Typography';
 import { DataGridPremium, GridColDef, GridToolbar } from '@mui/x-data-grid-premium';
-import { useGetUserChroniclesQuery } from '@/redux/features/chronciles';
-import { Box, Paper } from '@mui/material';
+import { useDeleteChronicleMutation, useGetUserChroniclesQuery } from '@/redux/features/chronciles';
+import { Box, IconButton, Paper } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import NewChronicleModal from '@/screens/chronicles/modals/NewChronicleModal';
 import NCLink from '@/components/NCLink';
+import { Spinner } from 'react-activity';
+import { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 const ChroniclesTable = () => {
     const { classes } = useStyles();
-    // const [deleting, setDeleting] = useState<string | null>(null);
+    const [deleting, setDeleting] = useState<string | null>(null);
     const { data: chronicles, isLoading, isUninitialized } = useGetUserChroniclesQuery();
-    // const [deleteChronicle, { isLoading: isDeleteChronicleLoading }] = useDeleteChronicleMutation();
 
-    // const handleDeleteChronicle = (id: string) => {
-    //     setDeleting(id);
-    //     deleteChronicle(id);
-    // };
+    const [deleteChronicle, { isLoading: isDeleteChronicleLoading }] = useDeleteChronicleMutation();
+
+    const handleDeleteChronicle = (id: string) => {
+        setDeleting(id);
+        deleteChronicle(id);
+    };
 
     const columns: GridColDef[] = [
         {
@@ -29,29 +34,31 @@ const ChroniclesTable = () => {
             headerName: 'Email',
             minWidth: 250,
         },
-        // {
-        //     field: 'id',
-        //     align: 'center',
-        //     headerName: 'Delete',
-        //     renderCell: ({ row }) => {
-        //         return isDeleteChronicleLoading && deleting === row.id ? (
-        //             <div
-        //                 style={{
-        //                     display: 'flex',
-        //                     height: '100%',
-        //                     alignItems: 'center',
-        //                     justifyContent: 'center',
-        //                 }}
-        //             >
-        //                 <Spinner />
-        //             </div>
-        //         ) : (
-        //             <IconButton onClick={() => handleDeleteChronicle(row.id)}>
-        //                 <DeleteIcon />
-        //             </IconButton>
-        //         );
-        //     },
-        // },
+
+        {
+            field: 'id',
+            align: 'center',
+            headerName: 'Delete',
+            renderCell: ({ row }) => {
+                return isDeleteChronicleLoading && deleting === row.id ? (
+                    <div
+                        style={{
+                            display: 'flex',
+                            height: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Spinner />
+                    </div>
+                ) : (
+                    <IconButton onClick={() => handleDeleteChronicle(row.id)}>
+                        <DeleteIcon />
+
+                    </IconButton>
+                );
+            },
+        },
     ];
 
     return (

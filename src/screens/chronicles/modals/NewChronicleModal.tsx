@@ -19,8 +19,12 @@ const NewChronicleModal: FC<NCModalProps> = ({ ...props }) => {
                 title={'Add Chronicle'}
                 iconLabel={'Add Chronicle'}
                 sx={{
-                    root: { height: '50vh', marginTop: 'calc(20%)' },
-                    box: { display: 'flex', alignSelf: 'center', height: 250 },
+                    modal: {
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '50vw',
+                    },
                 }}
             >
                 <AddChronicleForm handler={handleOpen} />

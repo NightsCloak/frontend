@@ -188,7 +188,7 @@ const RegisterScreen: FC<RegisterProps> = ({ login, code, invitedEmail, onSucces
     return (
         <>
             <Grid container className={classes.root} data-testid="registerRoot">
-                <Grid item {...(fullWidth ? { xs: 12 } : { xs: 12, sm: 10, md: 6, lg: 4 })}>
+                <Grid size={fullWidth ? { xs: 12 } : { xs: 12, sm: 10, md: 6, lg: 4 }}>
                     <Paper className={classes.formRoot}>
                         <div className={classes.header}>
                             <Typography variant={'h4'}>

@@ -2,6 +2,7 @@ type Chronicle = {
     id: string;
     name: string;
     email: string;
+    location: string | null;
     cm_id: string;
     parent_id: string;
     avatar: string;
