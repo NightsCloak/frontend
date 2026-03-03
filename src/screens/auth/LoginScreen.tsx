@@ -1,17 +1,5 @@
 import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Chip,
-    Divider,
-    FormControlLabel,
-    Paper,
-    Stack,
-    TextField,
-    Theme,
-    Typography,
-} from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Paper, TextField, Theme, Typography } from '@mui/material';
 import { useHeartbeatQuery, useLoginMutation } from '@/redux/features/auth';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
@@ -21,7 +9,6 @@ import LockOutlined from '@mui/icons-material/LockOutlined';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useLocation } from 'react-router';
 import { useTools } from '@/contexts/ToolsContext';
-import LoginWithGoogleButton from '@/components/LoginWithGoogleButton';
 import LoginDevButton from '@/components/LoginDevButton';
 
 type LoginProps = {
@@ -240,12 +227,12 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
                                 Resend email.
                             </Typography>
                         </div>
-                        <Divider sx={{ my: 3 }}>
-                            <Chip label={'Social Login'} />
-                        </Divider>
-                        <Stack justifyContent={'center'} direction={'row'}>
-                            <LoginWithGoogleButton />
-                        </Stack>
+                        {/*<Divider sx={{ my: 3 }}>*/}
+                        {/*    <Chip label={'Social Login'} />*/}
+                        {/*</Divider>*/}
+                        {/*<Stack justifyContent={'center'} direction={'row'}>*/}
+                        {/*    <LoginWithGoogleButton />*/}
+                        {/*</Stack>*/}
                     </>
                 )}
             </Paper>
