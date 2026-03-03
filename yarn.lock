@@ -4902,13 +4902,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.11.8":
-  version: 13.12.2
-  resolution: "@types/validator@npm:13.12.2"
-  checksum: 10c0/64f1326c768947d756ab5bcd73f3f11a6f07dc76292aea83890d0390a9b9acb374f8df6b24af2c783271f276d3d613b78fc79491fe87edee62108d54be2e3c31
-  languageName: node
-  linkType: hard
-
 "@types/validator@npm:^13.7.10":
   version: 13.11.1
   resolution: "@types/validator@npm:13.11.1"
@@ -6347,17 +6340,6 @@ __metadata:
     libphonenumber-js: "npm:^1.10.14"
     validator: "npm:^13.7.0"
   checksum: 10c0/1f7c34052f0c342b1d27c5aec7c42b646bb77a56874acc0d8003e2ad8f0294e7da18b43e9caaac8e8817cbb309cf9f14bcebe4611994390ca4818f3b393783dc
-  languageName: node
-  linkType: hard
-
-"class-validator@npm:0.14.1":
-  version: 0.14.1
-  resolution: "class-validator@npm:0.14.1"
-  dependencies:
-    "@types/validator": "npm:^13.11.8"
-    libphonenumber-js: "npm:^1.10.53"
-    validator: "npm:^13.9.0"
-  checksum: 10c0/946e914e47548b5081449c720ea6a4877bac63dc960e14fca4b990b56e64efe3802d12f07ec22d6420c290245b72ea2d646939239f2a3b597794e6c4c2a4f2ae
   languageName: node
   linkType: hard
 
@@ -8212,7 +8194,6 @@ __metadata:
     globals: "npm:15.12.0"
     history: "npm:^5.3.0"
     immer: "npm:^10.1.1"
-    javascript-obfuscator: "npm:^4.1.1"
     javascript-time-ago: "npm:^2.5.11"
     jquery: "npm:^3.7.1"
     laravel-echo: "npm:^1.17.0"
@@ -9464,39 +9445,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"javascript-obfuscator@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "javascript-obfuscator@npm:4.1.1"
-  dependencies:
-    "@javascript-obfuscator/escodegen": "npm:2.3.0"
-    "@javascript-obfuscator/estraverse": "npm:5.4.0"
-    acorn: "npm:8.8.2"
-    assert: "npm:2.0.0"
-    chalk: "npm:4.1.2"
-    chance: "npm:1.1.9"
-    class-validator: "npm:0.14.1"
-    commander: "npm:10.0.0"
-    eslint-scope: "npm:7.1.1"
-    eslint-visitor-keys: "npm:3.3.0"
-    fast-deep-equal: "npm:3.1.3"
-    inversify: "npm:6.0.1"
-    js-string-escape: "npm:1.0.1"
-    md5: "npm:2.3.0"
-    mkdirp: "npm:2.1.3"
-    multimatch: "npm:5.0.0"
-    opencollective-postinstall: "npm:2.0.3"
-    process: "npm:0.11.10"
-    reflect-metadata: "npm:0.1.13"
-    source-map-support: "npm:0.5.21"
-    string-template: "npm:1.0.0"
-    stringz: "npm:2.1.0"
-    tslib: "npm:2.5.0"
-  bin:
-    javascript-obfuscator: bin/javascript-obfuscator
-  checksum: 10c0/6e6060664b3d85e0ec216e8ad9bbe701b5f4628e0c1b02db7c5f93cc0035b4dbdd73c11ff941013c1f82a38d07a86787846e76039e2f1cb8408db1a5997b7e04
-  languageName: node
-  linkType: hard
-
 "javascript-time-ago@npm:^2.5.11":
   version: 2.5.11
   resolution: "javascript-time-ago@npm:2.5.11"
@@ -9744,13 +9692,6 @@ __metadata:
   version: 1.10.44
   resolution: "libphonenumber-js@npm:1.10.44"
   checksum: 10c0/e07a2db963685b7ae2a1764da78f087feb546fff4b34c42c75706f5f3aba2bc023607bf467b81f7bce495ae77982c670c2dd36f7712eddab502f3fb46c174f00
-  languageName: node
-  linkType: hard
-
-"libphonenumber-js@npm:^1.10.53":
-  version: 1.11.16
-  resolution: "libphonenumber-js@npm:1.11.16"
-  checksum: 10c0/0f09b07202c5feac169973b6c10cb2c0fbcf624a676879ecbcab6953f9df08eacb56f26f30ee63a2e6e1dc029f67898a54d5b4533621add3d75e8ab8baccd6d9
   languageName: node
   linkType: hard
 
@@ -13184,13 +13125,6 @@ __metadata:
   version: 13.11.0
   resolution: "validator@npm:13.11.0"
   checksum: 10c0/0107da3add5a4ebc6391dac103c55f6d8ed055bbcc29a4c9cbf89eacfc39ba102a5618c470bdc33c6487d30847771a892134a8c791f06ef0962dd4b7a60ae0f5
-  languageName: node
-  linkType: hard
-
-"validator@npm:^13.9.0":
-  version: 13.12.0
-  resolution: "validator@npm:13.12.0"
-  checksum: 10c0/21d48a7947c9e8498790550f56cd7971e0e3d724c73388226b109c1bac2728f4f88caddfc2f7ed4b076f9b0d004316263ac786a17e9c4edf075741200718cd32
   languageName: node
   linkType: hard
 
