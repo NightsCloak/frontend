@@ -138,7 +138,6 @@
     "vite-plugin-checker": "^0.8.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-importer": "^0.2.5",
-    "vite-plugin-javascript-obfuscator": "^3.1.0",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4"
   },

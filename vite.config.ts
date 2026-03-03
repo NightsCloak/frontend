@@ -2,7 +2,6 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgrPlugin from 'vite-plugin-svgr';
-import obfuscatorPlugin from 'vite-plugin-javascript-obfuscator';
 import checker from 'vite-plugin-checker';
 import * as path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -37,19 +36,6 @@ export default defineConfig({
             typescript: {
                 tsconfigPath: 'tsconfig.app.json',
                 buildMode: false,
-            },
-        }),
-        obfuscatorPlugin({
-            include: [
-                'lib/engine/**/*.tsx',
-                'lib/engine/**/*.ts',
-                'lib/components/ModelPortal/**/*.ts',
-                'lib/components/ModelPortal/**/*.tsx',
-            ],
-            apply: 'build',
-            options: {
-                // Need to make sourcemaps for develop and production (sentry)
-                sourceMap: process.env.VITE_SENTRY_SOURCE_MAPS === 'true',
             },
         }),
         {
