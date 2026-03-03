@@ -46,8 +46,8 @@ spec:
             name: nginx
         - name: storage-nfs
           nfs:
-            server: 192.168.20.55
-            path: "/mnt/nfs/nc/develop"
+            server: 192.168.20.47
+            path: /mnt/vault/programs/nc/develop/storage
       terminationGracePeriodSeconds: 60
       imagePullSecrets:
         - name: aws
