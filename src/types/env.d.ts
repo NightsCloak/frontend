@@ -19,7 +19,7 @@ import type {
 } from 'react';
 import type { PresenceChannel as EchoPresenceChannel } from 'laravel-echo/dist/channel';
 import type { default as LaravelEcho } from 'laravel-echo';
-import type { IndexRouteObject, Location as ReactRoutertLocation, NonIndexRouteObject } from 'react-router';
+import type { Location as ReactRoutertLocation } from 'react-router';
 import {
     FetchBaseQueryError as RTKFetchBaseQueryError,
     SerializedError as RTKSerializedError,
@@ -63,7 +63,7 @@ declare global {
         readonly env: ImportMetaEnv;
     }
 
-    type RouteObject = IndexRouteObject | NonIndexRouteObject;
+
     type Theme = MuiTheme;
 
     interface ColorSelectionOptions {

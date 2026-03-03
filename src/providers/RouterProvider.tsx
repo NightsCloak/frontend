@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { createBrowserRouter, Outlet, RouterProvider as ReactRouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouteObject, RouterProvider as ReactRouterProvider } from 'react-router-dom';
 
 const routes = (routeConfig: RouteObject[]): RouteObject[] => [
     {
