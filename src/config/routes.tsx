@@ -6,6 +6,7 @@ import LoginScreen from '@/screens/auth/LoginScreen';
 import App from '@/App';
 import Root from '@/screens/Root';
 import RegisterScreen from '@/screens/auth/RegisterScreen';
+import ThirdPartyOauthCallbackScreen from '@/screens/auth/ThirdPartyOauthCallbackScreen';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -47,6 +48,7 @@ const routes: RouteObject[] = [
                     { path: '/login', element: <LoginScreen /> },
                     { path: '/register', element: <RegisterScreen /> },
                     { path: 'auth/callback', element: <AuthCallback /> },
+                    { path: 'login/social/:provider/callback', element: <ThirdPartyOauthCallbackScreen /> },
                     { path: 'password/forgot', element: <ForgotPasswordScreen /> },
                     { path: 'password/reset/:token', element: <ResetPasswordScreen /> },
                     { path: 'email/verify/:userId/:emailHash', element: <VerifiesEmailScreen /> },

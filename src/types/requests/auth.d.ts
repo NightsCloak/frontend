@@ -35,10 +35,17 @@ type ContactRequest = {
     message: string;
 };
 
-type GoogleLoginRequest = {
+type Confirm2FAChallengeRequest = {
+    code?: string;
+    recovery_code?: string;
+};
+
+type ThirdPartyOauthRequest = {
+    provider: string;
     code: string;
     state: string;
 };
+
 
 type BroadcastingRequest = {
     socket_id: string;

@@ -1,6 +1,6 @@
-import apiSlice from '@/redux/apiSlice';
+import apiSlice from '../apiSlice';
 
-const auth = apiSlice.injectEndpoints({
+const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         heartbeat: builder.query<Heartbeat, void>({
             query: () => `oauth/heartbeat`,
@@ -29,7 +29,7 @@ const auth = apiSlice.injectEndpoints({
                     remember,
                 },
             }),
-            invalidatesTags: ['User'],
+            // invalidatesTags: ['User'],
         }),
         logout: builder.mutation<void, void>({
             query: () => ({
@@ -95,10 +95,11 @@ const auth = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        googleLoginRedirect: builder.mutation<{ url: string }, null>({
-            query: () => ({
-                url: 'auth/social/google/redirect',
-                method: 'GET',
+        thirdPartyOauthCallback: builder.mutation<ThirdPartyOauthResponse, ThirdPartyOauthRequest>({
+            query: ({ provider, code, state }) => ({
+                url: `oauth/social/${provider}/callback`,
+                method: 'POST',
+                body: { code, state },
             }),
         }),
         broadcasting: builder.mutation<BroadcastingResponse, BroadcastingRequest>({
@@ -108,10 +109,17 @@ const auth = apiSlice.injectEndpoints({
                 body: { socket_id, channel_name },
             }),
         }),
+        confirm2FAChallenge: builder.mutation<null, Confirm2FAChallengeRequest>({
+            query: ({ code, recovery_code }) => ({
+                url: 'oauth/2fa-challenge',
+                method: 'POST',
+                body: { code, recovery_code },
+            }),
+        }),
     }),
 });
 
-export default auth;
+export default authApi;
 export const {
     useHeartbeatQuery,
     useGetTokenMutation,
@@ -123,7 +131,9 @@ export const {
     useContactMutation,
     useResendEmailVerificationMutation,
     useVerifyEmailQuery,
+    useThirdPartyOauthCallbackMutation,
     useBroadcastingMutation,
-} = auth;
+    useConfirm2FAChallengeMutation,
+} = authApi;
 
-export const { broadcasting } = auth.endpoints;
+export const { broadcasting } = authApi.endpoints;

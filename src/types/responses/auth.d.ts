@@ -28,8 +28,10 @@ type PkceAuthResponse = {
     };
 };
 
-type GoogleLoginResponse = {
-    access_token: string;
+type ThirdPartyOauthResponse = {
+    access_token?: string;
+    login: boolean;
+    linked: boolean;
 };
 
 type BroadcastingResponse = {
