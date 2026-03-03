@@ -11,7 +11,7 @@ env:
   APP_NAME: frontend
   KUBECTL_PATH: ./docker/frontend.develop.yaml
   ENVIRONMENT: develop
-  NODE_VERSION: 25.x
+  NODE_VERSION: 25.6.1
   NODE_OPTIONS: "--max_old_space_size=6144"
   VITE_APP: "frontend"
   VITE_SCHEMA: "https"
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 8.5.3]
+        php: [ 8.5.3 ]
         platform:
           - linux/amd64
 #          - linux/arm64
