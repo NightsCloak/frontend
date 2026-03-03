@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 8.3.9 ]
+        php: [ 8.5.3]
         platform:
           - linux/amd64
 #          - linux/arm64
