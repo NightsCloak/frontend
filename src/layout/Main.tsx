@@ -52,7 +52,7 @@ const Main: FC = () => {
                         )}
                         <Link to={'/'}>
                             <Stack spacing={2} sx={{ pl: 2 }} direction={'row'} alignItems={'center'}>
-                                <img width={32} height={32} src={imagePaths.logo} alt={'Logo'} />
+                                <img width={'auto'} height={48} src={imagePaths.logo} alt={'Logo'} />
                             </Stack>
                         </Link>
                     </>

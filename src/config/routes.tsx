@@ -5,6 +5,7 @@ import ErrorScreen from '@/screens/error/ErrorScreen';
 import LoginScreen from '@/screens/auth/LoginScreen';
 import App from '@/App';
 import Root from '@/screens/Root';
+import RegisterScreen from '@/screens/auth/RegisterScreen';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -44,6 +45,7 @@ const routes: RouteObject[] = [
                     { path: '/', element: <Root /> },
                     { path: '/maintenance', element: <MaintenanceScreen /> },
                     { path: '/login', element: <LoginScreen /> },
+                    { path: '/register', element: <RegisterScreen /> },
                     { path: 'auth/callback', element: <AuthCallback /> },
                     { path: 'password/forgot', element: <ForgotPasswordScreen /> },
                     { path: 'password/reset/:token', element: <ResetPasswordScreen /> },
