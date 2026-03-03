@@ -88,7 +88,7 @@ spec:
     - hosts:
         - nightscloak.dev
         - www.nightscloak.dev
-      secretName: nc-dev-cert
+      secretName: nc-develop-crt
   rules:
     - host: nightscloak.dev
       http:

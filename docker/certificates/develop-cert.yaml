@@ -4,7 +4,7 @@ metadata:
   name: nc-develop-crt
   namespace: nc-develop
 spec:
-  secretName: nc-dev-cert
+  secretName: nc-develop-crt
   dnsNames:
     - nightscloak.dev
     - www.nightscloak.dev
