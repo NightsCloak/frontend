@@ -4,7 +4,9 @@ import { createMigrate } from 'redux-persist';
  * Latest Migration Version is the current Redux RootState
  */
 
-type AuthRootStateV3 = AuthState;
+type AuthRootStateV4 = AuthState;
+
+type AuthRootStateV3 = Omit<AuthRootStateV4, 'intended'>;
 
 type AuthRootStateV2 = Omit<AuthRootStateV3, 'pkce'>;
 
@@ -38,10 +40,16 @@ const persistMigrations = {
             challenge_state: null!,
         },
     }),
+    4: async (state: AuthRootStateV3): Promise<AuthRootStateV4> => {
+        return {
+            ...state,
+            intended: null,
+        };
+    },
 };
 
-type MigrationState = AuthRootStateV1 | AuthRootStateV2 | AuthRootStateV3;
+type MigrationState = AuthRootStateV1 | AuthRootStateV2 | AuthRootStateV3 | AuthRootStateV4;
 
 export const authMigrate = createMigrate<MigrationState>(persistMigrations);
 
-export const authVersion = 3;
+export const authVersion = 4;

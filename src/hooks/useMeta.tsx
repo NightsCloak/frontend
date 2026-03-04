@@ -11,11 +11,12 @@ import {
     useMemo,
     useState,
 } from 'react';
-import queryFilterOptions from '@/components/queryFilterOptions';
+import { queryFilterOptions } from '@/components/queryFilterOptions';
 import {
     Autocomplete,
     Box,
     Chip,
+    ClickAwayListener,
     createFilterOptions,
     IconButton,
     InputAdornment,
@@ -28,16 +29,16 @@ import { makeStyles } from 'tss-react/mui';
 import SwapVert from '@mui/icons-material/SwapVert';
 import South from '@mui/icons-material/South';
 import North from '@mui/icons-material/North';
-import { Close } from '@mui/icons-material';
+import { Close, Search } from '@mui/icons-material';
 import useScreenSize from '@/hooks/useScreenSize';
 import { TypedMutationTrigger, TypedUseMutationResult, TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react';
 import { customBaseQuery } from '@/redux/apiSlice';
-
+// import { useSearchParams } from 'react-router-dom';
 // Ignore ESLint as Mutations can truly be <any>
 
 interface Sorting {
     direction: 'asc' | 'desc';
-    by: 'created' | 'name' | 'trashed' | 'updated' | 'size' | 'first' | 'last' | string;
+    by: 'created' | 'name' | 'trashed' | 'updated' | 'size' | 'first' | 'last' | 'active' | 'due' | string;
 }
 
 const useMeta = (
@@ -46,12 +47,18 @@ const useMeta = (
     {
         triggerParams,
         showPagination = true,
+        usePagination = true,
         useSearch = true,
         useTrashed = true,
         sortSize = false,
+        sortLastActive = false,
         sortName = true,
         sortFirst = false,
         sortLast = false,
+        sortDueBy = false,
+        sortTrashed = false,
+        sortClients = false,
+        hideSortButton = false,
         tags,
         initialTags,
         include,
@@ -63,26 +70,32 @@ const useMeta = (
     }: {
         triggerParams?: any;
         showPagination?: boolean;
+        usePagination?: boolean;
         useSearch?: boolean;
         useTrashed?: boolean;
         sortSize?: boolean;
+        sortLastActive?: boolean;
         sortName?: boolean;
         sortFirst?: boolean;
         sortLast?: boolean;
+        sortDueBy?: boolean;
+        sortTrashed?: boolean;
+        sortClients?: boolean;
+        hideSortButton?: boolean;
         tags?: TypedUseQueryHookResult<Tag[], any, typeof customBaseQuery>;
         initialTags?: string[];
         include?: string;
-        queryStrings?: {
-            [_key: string]: string | number | boolean | undefined | (string | number)[];
-        };
+        queryStrings?: { [key: string]: string | number | boolean | undefined | (string | number)[] };
         skip?: boolean;
         initialLimit?: number;
         initialSortBy?: Sorting['by'];
         initialSortDirection?: Sorting['direction'];
-    } = {},
+    } = { triggerParams: { options: '' } }
 ) => {
+    // const [urlSearchParams] = useSearchParams();
     const { isSmallScreen } = useScreenSize();
     const { classes } = useStyles();
+    // const [isInitialized, setIsInitialized] = useState<boolean>(true); //todo utilize
     const [isSkipping, setIsSkipping] = useState<boolean>(skip);
     const [page, updatePage] = useState<number>(1);
     const [pageLimit, updatePageLimit] = useState<number>(1);
@@ -95,8 +108,10 @@ const useMeta = (
     const [currentParams, setCurrentParams] = useState(triggerParams);
     const [filterTags, setFilterTags] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [currentData, setCurrentData] = useState<any>();
+    const [searchExpanded, setSearchExpanded] = useState<boolean>(false);
     const elmId = useMemo(() => Date.now(), []);
 
     const open = useMemo(() => {
@@ -107,10 +122,11 @@ const useMeta = (
         return state;
     }, [state]);
 
-    const queryOptions = useMemo(() => {
+    const makeOptions = (unlimited?: boolean) => {
+
         return queryFilterOptions({
-            limit,
-            page,
+            limit: !usePagination ? undefined : unlimited ? -1 : limit,
+            ...(usePagination && !unlimited && { page }),
             ...(include && { include }),
             ...(useSearch && { name }),
             sort: `${sortDirection === 'desc' ? '-' : ''}${sortBy}`,
@@ -118,7 +134,10 @@ const useMeta = (
             tags: filterTags.join(','),
             ...queryStrings,
         });
-    }, [page, limit, name, sortBy, sortDirection, showTrashed, include, useSearch, skip, queryStrings, filterTags]);
+    };
+
+    const queryOptions = makeOptions();
+    const queryOptionsUnlimited = makeOptions(true);
 
     const nextPage = () => {
         if (page < currentData?.meta?.last_page) updatePage((prevState) => prevState + 1);
@@ -156,6 +175,10 @@ const useMeta = (
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setNameSearchDebounce(e.target.value);
+
+        if (e.target.value.length === 0) {
+            setName('');
+        }
     };
 
     const handleClearSearch = () => {
@@ -165,10 +188,18 @@ const useMeta = (
         }
     };
 
+    const handleSearchCollapse = () => {
+        if (nameSearchDebounce === '') {
+            setSearchExpanded(false);
+        }
+    };
+
     const pagination = useMemo(() => {
         return (
             <div className={classes.numbers}>
                 <Pagination
+                    variant={'outlined'}
+                    size={isSmallScreen ? 'small' : undefined}
                     style={{ display: 'flex', justifyContent: 'center' }}
                     count={pageLimit}
                     page={page}
@@ -176,7 +207,7 @@ const useMeta = (
                 />
             </div>
         );
-    }, [page, pageLimit]);
+    }, [page, pageLimit, isSmallScreen]);
 
     const handleOpen: MouseEventHandler = (e) => {
         if (!open) {
@@ -188,7 +219,7 @@ const useMeta = (
         setAnchorEl(null);
     };
 
-    const filterOptions = createFilterOptions({
+    const filterTagOptions = createFilterOptions({
         stringify: (option: Tag) => option.name,
     });
 
@@ -213,10 +244,15 @@ const useMeta = (
         });
     };
 
+
     /**
      *  Checks if triggerParams have updated, prevents infinite loop
      */
     useEffect(() => {
+        // if (!isInitialized) {
+        //     return;
+        // }
+
         if (triggerParams && JSON.stringify(currentParams) !== JSON.stringify(triggerParams)) {
             setCurrentParams(triggerParams ?? {});
         }
@@ -230,7 +266,7 @@ const useMeta = (
      * actual trigger effect
      */
     useEffect(() => {
-        //something changed let's update
+        //something changed let's update //todo init
         !isSkipping && trigger({ options: queryOptions, ...currentParams });
     }, [queryOptions, currentParams, isSkipping]);
 
@@ -244,12 +280,27 @@ const useMeta = (
      * search Debounce Effect
      */
     useEffect(() => {
+        // if (!isInitialized || nameSearchDebounce.length === 0) {
+        //     return;
+        // }
+
+        if (nameSearchDebounce.length === 0) {
+            return;
+        }
+
         const timeout = setTimeout(() => {
             setPage(1);
             setName(nameSearchDebounce);
         }, 200);
         return () => clearTimeout(timeout);
     }, [nameSearchDebounce]);
+
+    // Expand search if name is set (e.g., after debounce or initial)
+    useEffect(() => {
+        if (name.length > 0) {
+            setSearchExpanded(true);
+        }
+    }, [name]);
 
     /**
      * Updates page number limit
@@ -261,6 +312,7 @@ const useMeta = (
     }, [currentData]);
 
     useEffect(() => {
+        //todo init
         if (tags?.data && initialTags) {
             setFilterTags(initialTags);
             setSelectedTags(tags.data.filter((tag) => initialTags.includes(tag.name)));
@@ -268,14 +320,55 @@ const useMeta = (
     }, [tags, initialTags]);
 
     useEffect(() => {
+        // if (!isInitialized) {
+        //     return;
+        // }
+
         const timeout = setTimeout(() => setFilterTags(selectedTags.map((item) => item.name)), 250);
         return () => clearTimeout(timeout);
     }, [selectedTags]);
 
+
+    // useEffect(() => {
+    //     const parsed = queryFilterParser(urlSearchParams);
+    //
+    //     if (parsed.page !== undefined) {
+    //         setPage(parsed.page);
+    //     }
+    //
+    //     if (parsed.limit !== undefined) {
+    //         updateLimit(parsed.limit);
+    //     }
+    //
+    //     if (parsed.sort !== undefined) {
+    //         if (parsed.sort.startsWith('-')) {
+    //             updateSortBy(parsed.sort.slice(1) as Sorting['by']);
+    //             updateSortDirection('desc');
+    //         } else {
+    //             updateSortBy(parsed.sort as Sorting['by']);
+    //             updateSortDirection('asc');
+    //         }
+    //     }
+    //
+    //     if (parsed.showTrashed !== undefined) {
+    //         updateShowTrashed(parsed.showTrashed);
+    //     }
+    //
+    //     if (parsed.name !== undefined) {
+    //         setName(parsed.name);
+    //     }
+    //
+    //     if (parsed.tags !== undefined) {
+    //         setFilterTags(parsed.tags as string[]);
+    //     }
+    //
+    //     setIsInitialized(true);
+    // }, []);
+
     const nav = (style?: CSSProperties) => {
         return (
             <div style={{ ...style }} className={classes.root}>
-                {showPagination && pageLimit > 1 && pagination}
+                {usePagination && showPagination && pageLimit > 1 && pagination}
                 {tags?.data && (
                     <Autocomplete
                         sx={{ width: 'auto', minWidth: isSmallScreen ? 75 : 150, m: 1 }}
@@ -283,7 +376,7 @@ const useMeta = (
                         id={`filter-tags-${elmId}`}
                         options={tags.data}
                         getOptionLabel={(option) => option.id}
-                        filterOptions={filterOptions}
+                        filterOptions={filterTagOptions}
                         onChange={handleTagsChanged}
                         value={selectedTags}
                         autoHighlight
@@ -318,52 +411,71 @@ const useMeta = (
                             <TextField
                                 {...params}
                                 label={'Tags'}
-                                slotProps={{
-                                    htmlInput: {
-                                        ...params.inputProps,
-                                        autoComplete: 'new-password',
-                                    },
+                                inputProps={{
+                                    ...params.inputProps,
+                                    autoComplete: 'new-password',
                                 }}
                             />
                         )}
                     />
                 )}
                 {useSearch && (
-                    <TextField
-                        InputProps={{
-                            endAdornment: (
-                                <>
-                                    <InputAdornment position={'end'}>
-                                        <IconButton
-                                            size={'small'}
-                                            aria-label={'Clear'}
-                                            onClick={handleClearSearch}
-                                            onMouseDown={(e: MouseEvent<HTMLButtonElement>) => e.preventDefault()}
-                                            edge={'end'}
-                                        >
-                                            <Close />
-                                        </IconButton>
-                                    </InputAdornment>
-                                </>
-                            ),
-                        }}
-                        label={'Search'}
-                        value={nameSearchDebounce}
-                        variant={'outlined'}
-                        onChange={handleSearchChange}
-                        margin={'none'}
-                        size={'small'}
-                        // InputLabelProps={{ shrink: true }}
-                        sx={(theme) => ({ marginRight: theme.spacing(2), width: 220 })}
-                    />
+                    <>
+                        {searchExpanded ? (
+                            <ClickAwayListener onClickAway={handleSearchCollapse}>
+                                <TextField
+                                    InputProps={{
+                                        endAdornment: nameSearchDebounce.length ? (
+                                            <InputAdornment position={'end'}>
+                                                <IconButton
+                                                    size={'small'}
+                                                    aria-label={'Clear'}
+                                                    onClick={handleClearSearch}
+                                                    onMouseDown={(e: MouseEvent<HTMLButtonElement>) =>
+                                                        e.preventDefault()
+                                                    }
+                                                    edge={'end'}
+                                                >
+                                                    <Close />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ) : undefined,
+                                    }}
+                                    label={'Search'}
+                                    value={nameSearchDebounce.length > 0 ? nameSearchDebounce : name}
+                                    variant={'outlined'}
+                                    onChange={handleSearchChange}
+                                    margin={'none'}
+                                    size={'small'}
+                                    autoFocus={true}
+                                    sx={{
+                                        mr: isSmallScreen ? 0.5 : 1,
+                                        width: 220,
+                                        transition: 'width 0.3s ease-in-out',
+                                    }}
+                                />
+                            </ClickAwayListener>
+                        ) : (
+                            <IconButton
+                                sx={{ mr: isSmallScreen ? 0.5 : 1 }}
+                                size={isSmallScreen ? 'small' : undefined}
+                                onClick={() => setSearchExpanded(true)}
+                            >
+                                <Search />
+                            </IconButton>
+                        )}
+                    </>
                 )}
-                <IconButton
-                    aria-label={'sort menu'}
-                    onClick={handleOpen}
-                    sx={(theme) => ({ marginRight: isSmallScreen ? 0 : theme.spacing(1) })}
-                >
-                    <SwapVert />
-                </IconButton>
+                {!hideSortButton && (
+                    <IconButton
+                        aria-label={'sort menu'}
+                        onClick={handleOpen}
+                        sx={{ mr: isSmallScreen ? 0.5 : 1 }}
+                        size={isSmallScreen ? 'small' : undefined}
+                    >
+                        <SwapVert />
+                    </IconButton>
+                )}
                 <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
                     {sortName && (
                         <MenuItem key={'name'} onClick={() => handleSortChange('name')} selected={sortBy === 'name'}>
@@ -384,6 +496,41 @@ const useMeta = (
                     {sortSize && (
                         <MenuItem key={'size'} onClick={() => handleSortChange('size')} selected={sortBy === 'size'}>
                             Size: {sortBy !== 'size' ? <SwapVert /> : sortDirection === 'desc' ? <North /> : <South />}
+                        </MenuItem>
+                    )}
+                    {sortLastActive && (
+                        <MenuItem
+                            key={'active'}
+                            onClick={() => handleSortChange('active')}
+                            selected={sortBy === 'active'}
+                        >
+                            Last Active:{' '}
+                            {sortBy !== 'active' ? <SwapVert /> : sortDirection === 'desc' ? <North /> : <South />}
+                        </MenuItem>
+                    )}
+                    {sortDueBy && (
+                        <MenuItem key={'due'} onClick={() => handleSortChange('due')} selected={sortBy === 'due'}>
+                            Due: {sortBy !== 'due' ? <SwapVert /> : sortDirection === 'desc' ? <North /> : <South />}
+                        </MenuItem>
+                    )}
+                    {sortClients && (
+                        <MenuItem
+                            key={'clients'}
+                            onClick={() => handleSortChange('clients')}
+                            selected={sortBy === 'clients'}
+                        >
+                            Clients:{' '}
+                            {sortBy !== 'clients' ? <SwapVert /> : sortDirection === 'desc' ? <North /> : <South />}
+                        </MenuItem>
+                    )}
+                    {sortTrashed && (
+                        <MenuItem
+                            key={'trashed'}
+                            onClick={() => handleSortChange('trashed')}
+                            selected={sortBy === 'trashed'}
+                        >
+                            Trashed:{' '}
+                            {sortBy !== 'trashed' ? <SwapVert /> : sortDirection === 'desc' ? <North /> : <South />}
                         </MenuItem>
                     )}
                     <MenuItem
@@ -431,7 +578,10 @@ const useMeta = (
         setSortBy,
         handleTagChipClicked,
         queryOptions,
+        queryOptionsUnlimited,
         showTrashed,
+        name,
+        isSearching: name.length > 0,
         data: currentData,
     };
 };

@@ -2,6 +2,7 @@ interface AuthState {
     status: boolean;
     xsrfToken: string | null;
     redirect: string | null;
+    intended: string | null;
     pkce: {
         lastCheck: string;
         accessToken: string;

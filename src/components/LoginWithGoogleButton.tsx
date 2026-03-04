@@ -1,26 +1,27 @@
 import { FC } from 'react';
 import { Button } from '@mui/material';
 import { Google } from '@mui/icons-material';
+import { useAppDispatch } from '@/redux/hooks';
+import { setRedirect } from '@/redux/reducers/authSlice';
 
 type LoginWithGoogleButtonProps = {
-    title?: string;
+    register?: boolean;
+    code?: string;
 };
 
-const LoginWithGoogleButton: FC<LoginWithGoogleButtonProps> = ({ title }) => {
+const LoginWithGoogleButton: FC<LoginWithGoogleButtonProps> = ({ register, code }) => {
+    const dispatch = useAppDispatch();
 
     const redirect = () => {
-        window.location.href = '/oauth/social/google/redirect';
-    }
+        dispatch(setRedirect(window.location.pathname));
+        setTimeout(() => {
+            window.location.href = `/oauth/social/google/redirect?action=${register ? 'register' : 'login'}${register && code ? `&invite=${code}` : ''}`;
+        }, 100);
+    };
 
     return (
-        <Button
-            startIcon={<Google />}
-            onClick={redirect}
-            variant={'contained'}
-            type={'submit'}
-            color={'secondary'}
-        >
-            {title ?? 'Login with Google'}
+        <Button startIcon={<Google />} onClick={redirect} variant={'contained'} type={'submit'} color={'secondary'}>
+            Google
         </Button>
     );
 };

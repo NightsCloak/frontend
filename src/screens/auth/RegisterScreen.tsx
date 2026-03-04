@@ -406,7 +406,7 @@ const RegisterScreen: FC<RegisterProps> = ({ login, code, invitedEmail, onSucces
                                     <Chip label={'Social Signup'} />
                                 </Divider>
                                 <Stack justifyContent={'center'} direction={'row'}>
-                                    <LoginWithGoogleButton title={'Signup with Google'} />
+                                    <LoginWithGoogleButton />
                                 </Stack>
                             </>
                         )}

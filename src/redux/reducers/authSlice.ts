@@ -1,10 +1,11 @@
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import authApi from '@/redux/features/auth';
+import authApi from '@/redux/features/authApi';
 
 const initialState: AuthState = {
     status: false,
     xsrfToken: null,
     redirect: null,
+    intended: null,
     pkce: {
         lastCheck: null!,
         accessToken: null!,
@@ -28,11 +29,17 @@ const authSlice = createSlice({
         setAuth: (state, action: PayloadAction<boolean>) => {
             state.status = action.payload;
         },
+        setRedirect: (state, action: PayloadAction<string | null>) => {
+            state.redirect = action.payload;
+        },
+        setIntended: (state, action: PayloadAction<string | null>) => {
+            state.intended = action.payload;
+        },
         logout: (state) => {
-            console.log('auth logout');
             state.status = false;
             state.xsrfToken = null;
             state.redirect = null;
+            state.intended = null;
             state.pkce = {
                 lastCheck: null!,
                 accessToken: null!,
@@ -50,10 +57,7 @@ const authSlice = createSlice({
         },
         updatePKCE: (
             state,
-            action: PayloadAction<{
-                challenge: AuthState['pkce']['challenge'];
-                challenge_state: string;
-            }>
+            action: PayloadAction<{ challenge: AuthState['pkce']['challenge']; challenge_state: string }>
         ) => {
             state.pkce.challenge = action.payload.challenge;
             state.pkce.challenge_state = action.payload.challenge_state;
@@ -74,8 +78,9 @@ const authSlice = createSlice({
             .addMatcher(authApi.endpoints.logout.matchFulfilled, (state) => {
                 state.status = false;
                 state.redirect = null;
+                state.intended = null;
             })
-            // .addMatcher(authApi.endpoints.googleLoginCallback.matchFulfilled, (state, action) => {
+            // .addMatcher(authApi.endpoints.thirdPartyOauthCallback.matchFulfilled, (state, action) => {
             //     state.status = true;
             //     state.pkce.accessToken = action.payload.access_token;
             //     state.pkce.refreshToken = null;
@@ -93,4 +98,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice;
-export const { clearXSRF, logout, setXSRFToken, updatePKCE, refreshPkce, setAuth } = authSlice.actions;
+export const { clearXSRF, logout, setRedirect, setIntended, setXSRFToken, updatePKCE, refreshPkce, setAuth } =
+    authSlice.actions;

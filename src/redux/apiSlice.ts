@@ -30,13 +30,9 @@ const baseQuery = fetchBaseQuery({
             headers.set('Authorization', `Bearer ${pkceToken}`);
         }
 
-        if (import.meta.env.STORYBOOK) {
-            console.log('Storybook Auth Applied');
-            headers.set('Authorization', `Bearer ${import.meta.env.VITE_STORYBOOK_ACCESS_TOKEN}`);
-        }
 
         if (idle) {
-            headers.set('X-NC-Is-Idle', 'yes');
+            headers.set('X-OWBN-Is-Idle', 'yes');
         }
 
         //Required for socket
