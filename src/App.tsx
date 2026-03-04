@@ -1,5 +1,5 @@
 import { Suspense, useCallback, useEffect, useMemo } from 'react';
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import usePageTracking from '@/hooks/usePageTracking';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -32,8 +32,7 @@ function App() {
     const maintenance = useAppSelector((state) => state.app.maintenance);
     usePageTracking();
     useTabSync();
-    const [searchParams] = useSearchParams();
-    const { matchRoute } = AuthRouteHandler(searchParams);
+    const { matchRoute } = AuthRouteHandler();
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user);
     const navigate = useNavigate();
