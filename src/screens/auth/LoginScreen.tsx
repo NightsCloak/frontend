@@ -11,18 +11,21 @@ import {
     TextField,
     Theme,
     Typography,
+    useTheme,
 } from '@mui/material';
-import { useHeartbeatQuery, useLoginMutation } from '@/redux/features/auth';
+import { useHeartbeatQuery, useLoginMutation } from '@/redux/features/authApi';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { AlternateEmail, Login as LoginIcon } from '@mui/icons-material';
 import { Sentry } from 'react-activity';
 import LockOutlined from '@mui/icons-material/LockOutlined';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { useLocation } from 'react-router';
 import { useTools } from '@/contexts/ToolsContext';
-import LoginDevButton from '@/components/LoginDevButton';
-import LoginWithGoogleButton from '@/components/LoginWithGoogleButton';
+import LoginWithGoogleButton from '@/screens/auth/LoginWithGoogleButton';
+import LoginDevButton from '@/screens/auth/LoginDevButton';
+import ChallengeScreen from '@/screens/auth/ChallengeScreen';
+import LoginWithDiscordButton from '@/screens/auth/LoginWithDiscordButton';
 
 type LoginProps = {
     register?: () => void;
@@ -30,19 +33,21 @@ type LoginProps = {
 };
 
 const LoginScreen: FC<LoginProps> = ({ register, success }) => {
-    const { classes, theme } = useStyles();
+    const theme = useTheme();
+    const { classes } = useStyles(theme)();
     const auth = useAppSelector((state) => state.auth);
     const location = useLocation();
     const navigate = useNavigate();
     const { updateTabTitle } = useTools();
-    const dispatch = useAppDispatch();
-    const [login, { isLoading, isSuccess, error }] = useLoginMutation();
-    const { data, isSuccess: isHeartbeatSuccess, refetch } = useHeartbeatQuery(undefined, { skip: !isSuccess });
+    const [login, { isLoading, isSuccess, error, reset }] = useLoginMutation();
+    const { data, isSuccess: isHeartbeatSuccess, refetch } = useHeartbeatQuery(undefined);
     const emailRef = useRef<HTMLInputElement | null | undefined>(null);
     const passwordRef = useRef<HTMLInputElement | null | undefined>(null);
     const rememberRef = useRef<HTMLInputElement | null>(null);
     const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
+    const [challenging, setChallenging] = useState<boolean>(false);
+    const _error = error as LoginError | undefined;
 
     const resetErrors = () => {
         setEmailError(null);
@@ -59,6 +64,12 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
         resetErrors();
     };
 
+    const cancelChallenge = () => {
+        resetErrors();
+        setChallenging(false);
+        reset();
+    };
+
     const gotoRegister = () => {
         if (register) {
             register();
@@ -67,32 +78,36 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
         navigate('/register');
     };
 
-    // Login Success, session needs regenerating via heartbeat
+    // Login or challenge Success, session needs regenerating via heartbeat
     useEffect(() => {
-        isSuccess && refetch(); //trigger heartbeat
+        if (isSuccess) {
+            refetch(); //trigger heartbeat
+        }
     }, [isSuccess]);
 
     // if HB is success, update auth
     useEffect(() => {
         if (isHeartbeatSuccess && data.auth) {
-            dispatch({ type: 'auth/setAuth', payload: data.auth });
             success && success();
         }
     }, [isHeartbeatSuccess, data]);
 
     useEffect(() => {
-        if (error) {
-            const response = error as LoginError;
-
-            if (response.data.errors) {
-                setEmailError(response.data.errors.email?.length ? response.data.errors.email[0] : null);
-                setPasswordError(response.data.errors.password?.length ? response.data.errors.password[0] : null);
+        if (_error) {
+            if (_error.status === 400) {
+                setChallenging(true);
                 return;
             }
 
-            setEmailError(response.data.message);
+            if (_error.data.errors) {
+                setEmailError(_error.data.errors.email?.length ? _error.data.errors.email[0] : null);
+                setPasswordError(_error.data.errors.password?.length ? _error.data.errors.password[0] : null);
+                return;
+            }
+
+            setEmailError(_error.data.message);
         }
-    }, [error]);
+    }, [_error]);
 
     useEffect(() => {
         !success && updateTabTitle('Login');
@@ -129,6 +144,10 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
                 </Paper>
             </div>
         );
+    }
+
+    if (_error?.status === 400 || challenging) {
+        return <ChallengeScreen {...{ onSuccess: refetch, onCancel: cancelChallenge }} />;
     }
 
     return (
@@ -241,10 +260,11 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
                             </Typography>
                         </div>
                         <Divider sx={{ my: 3 }}>
-                            <Chip label={'Social Login'} />
+                            <Chip label={<Typography>Login With</Typography>} />
                         </Divider>
-                        <Stack justifyContent={'center'} direction={'row'}>
+                        <Stack spacing={1} justifyContent={'center'} direction={'row'}>
                             <LoginWithGoogleButton />
+                            <LoginWithDiscordButton />
                         </Stack>
                     </>
                 )}
@@ -253,82 +273,83 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
     );
 };
 
-const useStyles = makeStyles()((theme: Theme) => ({
-    root: {
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        '& .MuiPaper-root': {
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15,
-            borderBottomLeftRadius: 15,
-            borderBottomRightRadius: 15,
-            boxShadow: '0px 0px 0px 0px rgba(0,0,0,0)',
-            padding: theme.spacing(2),
-            paddingBottom: theme.spacing(3),
-            width: 600,
-            [theme.breakpoints.down('sm')]: {
-                width: '90%',
+const useStyles = (theme: Theme) =>
+    makeStyles()({
+        root: {
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            '& .MuiPaper-root': {
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderBottomLeftRadius: 15,
+                borderBottomRightRadius: 15,
+                boxShadow: '0px 0px 0px 0px rgba(0,0,0,0)',
+                padding: theme.spacing(2),
+                paddingBottom: theme.spacing(3),
+                width: 600,
+                [theme.breakpoints.down('sm')]: {
+                    width: '90%',
+                },
             },
         },
-    },
-    spinner: {
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        minHeight: 24,
-        marginBottom: theme.spacing(1),
-    },
-    formRoot: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.down('sm')]: {
-            width: '75%',
+        spinner: {
+            flexGrow: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            minHeight: 24,
+            marginBottom: theme.spacing(1),
         },
-    },
-    header: {
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        padding: theme.spacing(1),
-        marginBottom: 10,
-        borderRadius: 10,
-        backgroundColor: theme.palette.background.default,
-    },
-    loginForm: {
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: theme.spacing(2),
-        '& .MuiFormControl-root': {
-            borderRadius: 4,
+        formRoot: {
+            flexDirection: 'column',
+            justifyContent: 'center',
+            [theme.breakpoints.down('sm')]: {
+                width: '75%',
+            },
         },
-    },
-    signUpText: {
-        textAlign: 'center',
-        marginTop: theme.spacing(1),
-        '&>span': {
+        header: {
+            flexGrow: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            padding: theme.spacing(1),
+            marginBottom: 10,
+            borderRadius: 10,
+            backgroundColor: theme.palette.background.default,
+        },
+        loginForm: {
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: theme.spacing(2),
+            '& .MuiFormControl-root': {
+                borderRadius: 4,
+            },
+        },
+        signUpText: {
+            textAlign: 'center',
+            marginTop: theme.spacing(1),
+            '&>span': {
+                cursor: 'pointer',
+                '&:hover': {
+                    textDecoration: 'underline',
+                },
+            },
+        },
+        options: {
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
+        },
+        optionsText: {
+            color: theme.palette.info.main,
             cursor: 'pointer',
             '&:hover': {
                 textDecoration: 'underline',
             },
         },
-    },
-    options: {
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'space-between',
-    },
-    optionsText: {
-        color: theme.palette.info.main,
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        },
-    },
-}));
+    });
 
 export default LoginScreen;

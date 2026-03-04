@@ -1,11 +1,11 @@
-export default function generateAuthQuery(auth: AuthState) {
+export default function generateAuthQuery(challenge_state: string, codeChallenge: string) {
     const query = {
         client_id: import.meta.env.VITE_PKCE_LOCAL_ID,
         redirect_uri: `http://${window.location.host}/auth/callback`,
         response_type: 'code',
         scope: '',
-        state: auth.pkce.challenge_state,
-        code_challenge: auth.pkce.challenge.codeChallenge,
+        state: challenge_state,
+        code_challenge: codeChallenge,
         code_challenge_method: 'S256',
     };
 

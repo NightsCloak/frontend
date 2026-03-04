@@ -6,7 +6,7 @@ import parseUrl from '@/utils/parseUrl';
 const baseUrl = `${import.meta.env.VITE_SCHEMA}://${import.meta.env.VITE_URI}${
     import.meta.env.VITE_PORT ? `:${import.meta.env.VITE_PORT}` : ''
 }`;
-const prefixedUrl = `${baseUrl}/`;
+export const prefixedUrl = `${baseUrl}/`;
 
 const exceptions: string[] = [];
 // type ApiType = BaseQueryApi & { extra: { refresh?: LoginResponse } };
@@ -30,9 +30,8 @@ const baseQuery = fetchBaseQuery({
             headers.set('Authorization', `Bearer ${pkceToken}`);
         }
 
-
         if (idle) {
-            headers.set('X-OWBN-Is-Idle', 'yes');
+            headers.set('X-Intract-Is-Idle', 'yes');
         }
 
         //Required for socket

@@ -23,7 +23,7 @@ import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useTools } from '@/contexts/ToolsContext';
-import LoginWithGoogleButton from '@/components/LoginWithGoogleButton';
+import LoginWithGoogleButton from '@/screens/auth/LoginWithGoogleButton';
 import Holding from '@/layout/Holding';
 import { useAppDispatch } from '@/redux/hooks';
 

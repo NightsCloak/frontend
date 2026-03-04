@@ -11,14 +11,13 @@ import {
     TextField,
     Theme,
     Typography,
+    useTheme,
 } from '@mui/material';
-
 import { useConfirm2FAChallengeMutation } from '@/redux/features/authApi';
 import { makeStyles } from 'tss-react/mui';
 import { EnhancedEncryption } from '@mui/icons-material';
 import { Spinner } from 'react-activity';
 import OtpInput from '@/components/Users/Settings/OtpInput';
-import { useTheme } from '@mui/material/styles';
 
 type ChallengeProps = {
     onSuccess: () => void;
