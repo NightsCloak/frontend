@@ -13,7 +13,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 const ThirdPartyOauthCallbackScreen: FC = () => {
     const auth = useAppSelector((state) => state.auth);
-    const { classes } = styles();
+    const { classes } = useStyles();
     const { provider } = useParams() as { provider: string };
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [challengePassed, setChallengePassed] = useState<boolean>(false);
@@ -117,7 +117,7 @@ const ThirdPartyOauthCallbackScreen: FC = () => {
     );
 };
 
-const styles = makeStyles()((theme) => ({
+const useStyles = makeStyles()((theme) => ({
     root: {
         flex: 1,
         display: 'flex',

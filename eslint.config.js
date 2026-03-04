@@ -13,7 +13,7 @@ export default [
         { ignores: ['build'] },
         {
             extends: [js.configs.recommended, ...tseslint.configs.recommended],
-            files: ['**/*.{ts,tsx}'],
+            files: ['**/*.{ts,tsx}', '**/*.d.{ts,tsx}'],
             languageOptions: {
                 globals: {
                     ...globals.browser,

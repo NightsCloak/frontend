@@ -19,7 +19,7 @@ const VerifiesEmailScreen: FC = () => {
             skip: !userId || !emailHash,
         }
     );
-    const { refetch } = useGetUserQuery(undefined, { skip: !isSuccess });
+    const { refetch } = useGetUserQuery(null, { skip: !isSuccess });
 
     useEffect(() => {
         isSuccess && refetch();

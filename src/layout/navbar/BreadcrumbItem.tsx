@@ -1,6 +1,6 @@
 import { Avatar, Link, Skeleton, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { FC, ReactElement } from 'react';
+import { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import ImageAvatar, { AvatarType } from '@/layout/navbar/ImageAvatar';
 import useScreenSize from '@/hooks/useScreenSize';
@@ -8,10 +8,13 @@ import useScreenSize from '@/hooks/useScreenSize';
 export interface BreadcrumbItemProps {
     type?: AvatarType;
     avatar?: string | null;
+    avatars?: string[] | null;
     name?: string | null;
     uri?: string;
     skeleton?: boolean;
-    chip?: ReactElement;
+    skip?: boolean;
+    grayscale?: boolean;
+    chip?: ReactNode | ReactNode[];
 }
 
 const BreadcrumbItem: FC<BreadcrumbItemProps> = ({ type, avatar, name, uri, skeleton, chip }) => {

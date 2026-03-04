@@ -8,6 +8,7 @@ import { setEchoStatus, setSocketId } from '@/redux/reducers/appSlice';
 import apiSlice from '@/redux/apiSlice';
 import { EchoContext } from '@/contexts/EchoContext';
 
+
 const EchoProvider = ({ children }: EchoProps) => {
     const [echoRef, setEchoRef] = useState<Echo<'reverb'> | null>(null);
     const clientRef = useRef<Pusher | null>(null);
@@ -62,9 +63,12 @@ const EchoProvider = ({ children }: EchoProps) => {
                 enabledTransports: ['ws', 'wss'],
                 channelAuthorization: {
                     customHandler,
+                    transport: 'ajax',
+                    endpoint: '',
                 },
             });
         }
+
         if (!(echoRef instanceof Echo) && !disabled) {
             setEchoRef(
                 new Echo({
@@ -74,7 +78,7 @@ const EchoProvider = ({ children }: EchoProps) => {
             );
         }
 
-        const onStateChanged = ({ current }: { current: string }) => {
+        const onStateChanged = ({ current, _previous }: { current: string; _previous: 'string' }) => {
             dispatch(setEchoStatus(current));
             if (current === 'connected') {
                 dispatch(setSocketId(echoRef?.socketId() ?? ''));
@@ -95,7 +99,7 @@ const EchoProvider = ({ children }: EchoProps) => {
         }
 
         if (!privateChannel) {
-            setPrivateChannel(echoRef?.private(`nc.user.${user.data.id}`) ?? null);
+            setPrivateChannel(echoRef?.private(`intract.user.${user.data.id}`) ?? null);
             return;
         }
 
@@ -118,12 +122,12 @@ const EchoProvider = ({ children }: EchoProps) => {
                 .stopListening('.user.archived', invalidateUser)
                 .stopListening('.user.updated', invalidateUser)
                 .stopListening('.user.subscription.updated', invalidateUser);
-            echoRef?.leave(`nc.user.${user.data.id}`);
+            echoRef?.leave(`intract.user.${user.data.id}`);
             setPrivateChannel(null);
         };
     }, [socket, privateChannel, user.data?.id]);
 
-    return <EchoContext value={{ echo: echoRef, privateChannel }}>{children}</EchoContext>;
+    return <EchoContext.Provider value={{ echo: echoRef, privateChannel }}>{children}</EchoContext.Provider>;
 };
 
 export default EchoProvider;

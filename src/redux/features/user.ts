@@ -13,7 +13,7 @@ const user = apiSlice.injectEndpoints({
                 },
             }),
         }),
-        getUser: builder.query<User, undefined>({
+        getUser: builder.query<User, null>({
             query: () => ({
                 url: 'user',
                 method: 'GET',

@@ -1,62 +1,63 @@
-import { Suspense, useCallback, useEffect, useMemo } from 'react';
+import { Suspense, useCallback, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import defaultTheme from '@/config/theme';
 import { Outlet, useNavigate } from 'react-router-dom';
 import usePageTracking from '@/hooks/usePageTracking';
-
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { clearXSRF } from '@/redux/reducers/authSlice';
-import 'react-activity/dist/Levels.css';
+import useTabSync from '@/hooks/useTabSync';
+import EchoProvider from '@/providers/EchoProvider';
 import 'react-activity/dist/Dots.css';
-import 'react-activity/dist/Digital.css';
+import 'react-activity/dist/Levels.css';
 import 'react-activity/dist/Sentry.css';
-import 'react-activity/dist/Windmill.css';
 import 'react-activity/dist/Spinner.css';
+import 'react-activity/dist/Digital.css';
+import 'react-activity/dist/Bounce.css';
+import 'react-activity/dist/Windmill.css';
+import { toggleDarkMode } from '@/redux/reducers/userSlice';
 import AppError from '@/errors/AppError';
 import { ErrorBoundary } from 'react-error-boundary';
-import AuthRouteHandler from '@/utils/AuthRouteHandler';
+import ToolsProvider from '@/providers/ToolsProvider';
+import { clearXSRF } from '@/redux/reducers/authSlice';
+import { useHeartbeatQuery } from '@/redux/features/authApi';
 import * as Sentry from '@sentry/react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useMediaQuery } from '@mui/material';
+import useAuthRouteHandler from '@/utils/useAuthRouteHandler';
 import { useGetUserQuery } from '@/redux/features/user';
-import useTabSync from '@/hooks/useTabSync';
-import RootProvider from '@/providers/RootProvider';
-import theme from '@/config/theme';
-import defaultTheme from '@/config/theme';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import CssBaseline from '@mui/material/CssBaseline';
-import { toggleDarkMode } from '@/redux/reducers/userSlice';
-import { createTheme } from '@mui/material/styles';
-import { useHeartbeatQuery } from '@/redux/features/auth';
+import { skipToken } from '@reduxjs/toolkit/query/react';
 
 function App() {
-    //Init Redux
-    useHeartbeatQuery(undefined, { pollingInterval: 300000 });
+    useHeartbeatQuery(undefined, { pollingInterval: 3 * 60 * 1000 });
     const dispatch = useAppDispatch();
     const maintenance = useAppSelector((state) => state.app.maintenance);
+    const { matchRoute } = useAuthRouteHandler();
     usePageTracking();
     useTabSync();
-    const { matchRoute } = AuthRouteHandler();
-    const auth = useAppSelector((state) => state.auth);
+
     const user = useAppSelector((state) => state.user);
+    const auth = useAppSelector((state) => state.auth);
+
     const navigate = useNavigate();
 
-    //Get OS Dark/Lite mode as initial default
     const osDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const prefersDarkMode = useMemo(() => {
-        return user.settings.darkMode ?? osDarkMode;
-    }, [osDarkMode, user.settings.darkMode]);
+    const prefersDarkMode = user.settings.darkMode ?? osDarkMode;
 
-    const generatedTheme = useMemo(() => {
-        const darkMode = user.settings.darkMode ?? prefersDarkMode;
 
-        //Storybook handles theme switching
-        // if (theme) {
-        //     return createTheme(theme);
-        // }
 
-        return createTheme(defaultTheme(darkMode));
-    }, [prefersDarkMode, user.settings.darkMode, theme]);
+    const { refetch, isUninitialized } = useGetUserQuery(!auth.status ? skipToken : null, {
+        refetchOnMountOrArgChange: true,
+    });
 
-    useEffect(() => {
-        dispatch(toggleDarkMode(prefersDarkMode));
-    }, [prefersDarkMode]);
+
+    const handleMaintenanceSet = useCallback(() => {
+        !matchRoute && navigate('/maintenance');
+    }, [matchRoute, navigate]);
+
+    const configTheme = useCallback(() => {
+        return defaultTheme(user.settings.darkMode ?? prefersDarkMode);
+    }, [prefersDarkMode, user.settings.darkMode]);
 
     useEffect(() => {
         return () => {
@@ -65,19 +66,14 @@ function App() {
         };
     }, []);
 
-    const { refetch, isUninitialized } = useGetUserQuery(undefined, {
-        skip: (!auth.pkce.accessToken || !auth.xsrfToken) && !auth.status,
-        refetchOnMountOrArgChange: true,
-    });
-
-    const handleMaintenanceSet = useCallback(() => {
-        !matchRoute && navigate('/maintenance');
-    }, [navigate]);
+    useEffect(() => {
+        dispatch(toggleDarkMode(prefersDarkMode));
+    }, [prefersDarkMode]);
 
     useEffect(() => {
         maintenance && handleMaintenanceSet();
         !maintenance && matchRoute && !isUninitialized && refetch();
-    }, [handleMaintenanceSet, maintenance]);
+    }, [handleMaintenanceSet, maintenance, matchRoute]);
 
     useEffect(() => {
         if (user.data) {
@@ -103,14 +99,20 @@ function App() {
                 alignContent: 'center',
             }}
         >
-            <RootProvider theme={generatedTheme}>
-                <CssBaseline />
-                <ErrorBoundary FallbackComponent={AppError}>
-                    <Suspense fallback={null}>
-                        <Outlet />
-                    </Suspense>
-                </ErrorBoundary>
-            </RootProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <ToolsProvider>
+                    <EchoProvider>
+                        <ThemeProvider theme={configTheme()}>
+                            <ErrorBoundary fallback={<AppError />}>
+                                <CssBaseline />
+                                <Suspense fallback={null}>
+                                    <Outlet />
+                                </Suspense>
+                            </ErrorBoundary>
+                        </ThemeProvider>
+                    </EchoProvider>
+                </ToolsProvider>
+            </LocalizationProvider>
         </div>
     );
 }

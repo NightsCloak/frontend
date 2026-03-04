@@ -1,10 +1,11 @@
 import { ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Location, useLocation } from 'react-router';
 import BreadcrumbItem, { BreadcrumbItemProps } from '@/layout/navbar/BreadcrumbItem';
-
+import chimeFile from '/sounds/chime.wav?url';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import ToolsContext from '@/contexts/ToolsContext';
 import { setIdle } from '@/redux/reducers/appSlice';
+
 
 const ToolsProvider = ({ children }: ToolsProps) => {
     const location = useLocation();
@@ -16,9 +17,9 @@ const ToolsProvider = ({ children }: ToolsProps) => {
     const [breadcrumbs, setBreadcrumbs] = useState<ReactNode | undefined>();
     const [previousLocation, updatePreviousLocation] = useState<Location>(null!);
     const [tabTitle, setTabTitle] = useState<ToolsContextType['tabTitle']>(null);
-    const [currentPath, setCurrentPath] = useState('');
+    const [currentPath, setCurrentPath] = useState<string>('');
     const chime = useMemo(() => {
-        const audio = new Audio('./sounds/chime.wav');
+        const audio = new Audio(chimeFile);
         audio.volume = 0.3;
 
         return audio;
@@ -36,19 +37,24 @@ const ToolsProvider = ({ children }: ToolsProps) => {
 
     const updateBreadcrumbs = (breadcrumbs: BreadcrumbItemProps[]) => {
         setBreadcrumbs(
-            breadcrumbs?.map((breadcrumb, index) => (
-                <BreadcrumbItem
-                    key={`${breadcrumb}_${index}`}
-                    {...{
-                        type: breadcrumb.type,
-                        name: breadcrumb.name,
-                        avatar: breadcrumb.avatar,
-                        uri: breadcrumb.uri,
-                        skeleton: breadcrumb.skeleton,
-                        chip: breadcrumb.chip,
-                    }}
-                />
-            ))
+            breadcrumbs
+                ?.filter((breadcrumb) => !breadcrumb.skip)
+                .map((breadcrumb, index) => (
+                    <BreadcrumbItem
+                        key={`breadcrumb_${index}`}
+                        {...{
+                            type: breadcrumb.type,
+                            name: breadcrumb.name,
+                            avatar: breadcrumb.avatar,
+                            avatars: breadcrumb.avatars,
+                            uri: breadcrumb.uri,
+                            skeleton: breadcrumb.skeleton,
+                            chip: breadcrumb.chip,
+                            grayscale: breadcrumb.grayscale,
+                            skip: breadcrumb.skip,
+                        }}
+                    />
+                ))
         );
     };
 
@@ -88,11 +94,10 @@ const ToolsProvider = ({ children }: ToolsProps) => {
 
     useLayoutEffect(() => {
         if (tabTitle) {
-            document.title = `OWBN - ${tabTitle}`;
+            document.title = `Intract - ${tabTitle}`;
         } else {
-            document.title = 'OWBN';
+            document.title = 'Intract';
         }
-        // console.log('title changed');
     }, [tabTitle]);
 
     useLayoutEffect(() => {
@@ -102,7 +107,6 @@ const ToolsProvider = ({ children }: ToolsProps) => {
             if (location.pathname !== currentPath) {
                 updateTabTitle(null);
                 updateTools(null);
-                updateBreadcrumbs([]);
                 setCurrentPath(location.pathname);
             }
         }

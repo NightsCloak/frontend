@@ -1,12 +1,12 @@
 import { useLocation, useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setRedirect, setIntended } from '@/redux/reducers/authSlice';
+import { setIntended, setRedirect } from '@/redux/reducers/authSlice';
 
-const AuthRouteHandler = () => {
+const useAuthRouteHandler = () => {
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user as UserState);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, ] = useSearchParams();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -61,7 +61,7 @@ const AuthRouteHandler = () => {
 
         if (intended) {
             searchParams.delete('intended');
-            setSearchParams(searchParams, { replace: true });
+            // setSearchParams(searchParams, { replace: true });
             dispatch(setIntended(intended));
             return;
         }
@@ -110,12 +110,10 @@ const AuthRouteHandler = () => {
             return;
         }
 
-        navigate(
-            '/home/account'
-        );
+        navigate('/home/account');
     }, [auth.status, location]);
 
     return { matchRoute };
 };
 
-export default AuthRouteHandler;
+export default useAuthRouteHandler;
