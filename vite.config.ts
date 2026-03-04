@@ -75,7 +75,7 @@ export default defineConfig({
         // Generate Source Maps on Prod and Develop
         sourcemap: process.env.VITE_SENTRY_SOURCE_MAPS === 'true',
         // Minify in Production only
-        minify: process.env.VITE_DEPLOY_ENV === 'production',
+        minify: false,
         outDir: 'build',
         rollupOptions: {
             watch: false,
