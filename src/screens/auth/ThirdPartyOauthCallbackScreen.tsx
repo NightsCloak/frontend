@@ -10,17 +10,18 @@ import DiscordIcon from '@/components/Layout/Icons/DiscordIcon';
 import ErrorScreen from '@/screens/error/ErrorScreen';
 import { useAppSelector } from '@/redux/hooks';
 
+
 const ThirdPartyOauthCallbackScreen: FC = () => {
-    const redirect = useAppSelector((state) => state.auth.redirect);
+    const auth = useAppSelector((state) => state.auth);
     const { classes } = styles();
     const { provider } = useParams() as { provider: string };
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [challengePassed, setChallengePassed] = useState<boolean>(false);
-    const [handleCallback, { data: callback, error }] = useThirdPartyOauthCallbackMutation();
+    const [handlePostCallback, { data: postCallback, error: postError }] = useThirdPartyOauthCallbackMutation();
     const { data: heartbeat, isSuccess: isHeartbeatSuccess, refetch } = useHeartbeatQuery(undefined);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const _error = error as BasicError | undefined;
+    const _error = postError as BasicError | undefined;
 
     const onChallengeSuccess = () => {
         refetch();
@@ -30,6 +31,7 @@ const ThirdPartyOauthCallbackScreen: FC = () => {
     useEffect(() => {
         const code = searchParams.get('code') ?? 'unknown';
         const state = searchParams.get('state') ?? 'unknown';
+        const payload = searchParams.get('payload') ?? 'unknown';
         const oauthError = searchParams.get('error') ?? null;
 
         if (oauthError) {
@@ -37,25 +39,36 @@ const ThirdPartyOauthCallbackScreen: FC = () => {
             return;
         }
 
-        handleCallback({ provider, code, state });
-    }, []);
-
-    useEffect(() => {
-        callback && refetch();
-    }, [callback]);
-
-    useEffect(() => {
-        if (!isHeartbeatSuccess || !heartbeat.auth || (!callback && !challengePassed)) {
+        if (provider === 'cfx') {
+            handlePostCallback({ provider, payload });
             return;
         }
 
-        if (callback?.linked) {
+        handlePostCallback({ provider, code, state });
+    }, []);
+
+    useEffect(() => {
+        if (postCallback) {
+            refetch();
+        }
+    }, [postCallback]);
+
+    useEffect(() => {
+        if (!isHeartbeatSuccess || !heartbeat.auth || (!postCallback && !challengePassed)) {
+            return;
+        }
+
+        if (postCallback?.linked) {
             navigate('/home/account?action=apps', { replace: true });
             return;
         }
 
-        !redirect && navigate('/games', { replace: true });
-    }, [isHeartbeatSuccess, heartbeat, callback, challengePassed]);
+        if (auth.intended || auth.redirect) {
+            return;
+        }
+
+        navigate('/home/account', { replace: true });
+    }, [isHeartbeatSuccess, heartbeat, postCallback, challengePassed]);
 
     useEffect(() => {
         if (_error) {

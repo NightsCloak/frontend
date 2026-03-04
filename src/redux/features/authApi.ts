@@ -95,7 +95,7 @@ const authApi = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        thirdPartyOauthCallback: builder.mutation<ThirdPartyOauthResponse, ThirdPartyOauthRequest>({
+        thirdPartyOauthCallback: builder.mutation<ThirdPartyOauthResponse, ThirdPartyOauthCallbackRequest>({
             query: ({ provider, code, state }) => ({
                 url: `oauth/social/${provider}/callback`,
                 method: 'POST',

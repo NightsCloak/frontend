@@ -40,10 +40,11 @@ type Confirm2FAChallengeRequest = {
     recovery_code?: string;
 };
 
-type ThirdPartyOauthRequest = {
+type ThirdPartyOauthCallbackRequest = {
     provider: string;
-    code: string;
-    state: string;
+    code?: string;
+    state?: string;
+    payload?: string;
 };
 
 
