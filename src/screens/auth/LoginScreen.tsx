@@ -11,7 +11,6 @@ import {
     TextField,
     Theme,
     Typography,
-    useTheme,
 } from '@mui/material';
 import { useHeartbeatQuery, useLoginMutation } from '@/redux/features/authApi';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +25,7 @@ import LoginWithGoogleButton from '@/screens/auth/LoginWithGoogleButton';
 import LoginDevButton from '@/screens/auth/LoginDevButton';
 import ChallengeScreen from '@/screens/auth/ChallengeScreen';
 import LoginWithDiscordButton from '@/screens/auth/LoginWithDiscordButton';
+import { useTheme } from '@mui/material/styles';
 
 type LoginProps = {
     register?: () => void;

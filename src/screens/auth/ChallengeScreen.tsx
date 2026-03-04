@@ -11,8 +11,8 @@ import {
     TextField,
     Theme,
     Typography,
-    useTheme,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useConfirm2FAChallengeMutation } from '@/redux/features/authApi';
 import { makeStyles } from 'tss-react/mui';
 import { EnhancedEncryption } from '@mui/icons-material';

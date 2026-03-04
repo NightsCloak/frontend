@@ -1,43 +1,42 @@
 import { Button } from '@mui/material';
-import { MouseEventHandler, useEffect, useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import pkceChallenge from 'pkce-challenge';
+import { MouseEventHandler, useMemo } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
 import { updatePKCE } from '@/redux/reducers/authSlice';
 import randomString from '@/utils/randomString';
 import generateAuthQuery from '@/utils/generateAuthQuery';
+import generateCodeVerifier from '@/utils/generateCodeVerifier';
+import generateCodeChallenge from '@/utils/generateCodeChallenge';
 
 const LoginDevButton = () => {
-    const auth = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     const challenge_state = useMemo(() => randomString(40), []);
-    const queryString = generateAuthQuery(auth);
 
-    const onClick: MouseEventHandler = () => {
+    const updateChallenge = async () => {
+        const verifier = generateCodeVerifier(43);
+        const challenge = generateCodeChallenge(verifier);
+
+        dispatch(
+            updatePKCE({
+                challenge: { codeVerifier: verifier, codeChallenge: challenge },
+                challenge_state,
+            })
+        );
+        console.log('challenge', verifier, challenge);
+        return { codeVerifier: verifier, codeChallenge: challenge };
+    };
+
+    const onClick: MouseEventHandler = async () => {
+        const { codeChallenge } = await updateChallenge();
+        const queryString = generateAuthQuery(challenge_state, codeChallenge);
         const url = `https://${import.meta.env.VITE_URI}/oauth/authorize?${queryString}`;
         console.log('url', url);
         window.location.assign(url);
     };
 
-    useEffect(() => {
-        const updateChallenge = async () => {
-            const challenge = await pkceChallenge();
-            dispatch(
-                updatePKCE({
-                    challenge: { codeVerifier: challenge.code_verifier, codeChallenge: challenge.code_challenge },
-                    challenge_state,
-                })
-            );
-            console.log('challenge', challenge);
-        };
-
-        updateChallenge();
-        return () => {};
-    }, []);
-
     return (
         <>
-            <Button color={'secondary'} variant={'contained'} onClick={onClick} fullWidth>
+            <Button variant={'contained'} onClick={onClick} fullWidth>
                 Login With {import.meta.env.VITE_URI}
             </Button>
         </>
