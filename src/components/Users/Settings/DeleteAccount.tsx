@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useState } from 'react';
+import { FC, useEffect, useState, MouseEvent } from 'react';
 import { Alert, AlertTitle, Box, Button, Stack, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useDeleteUserAccountMutation } from '@/redux/features/user';

@@ -7,6 +7,7 @@ import App from '@/App';
 import Root from '@/screens/Root';
 import RegisterScreen from '@/screens/auth/RegisterScreen';
 import ThirdPartyOauthCallbackScreen from '@/screens/auth/ThirdPartyOauthCallbackScreen';
+import AccountScreen from '@/screens/users/AccountScreen';
 
 /* eslint-disable react-refresh/only-export-components */
 
@@ -56,13 +57,17 @@ const routes: RouteObject[] = [
                 ],
             },
             {
-                path: '/users',
+                path: '/home',
                 element: <Main />,
                 children: [
                     {
-                        path: '/users',
+                        path: '*',
                         element: <UserDashboard />,
                     },
+                    {
+                        path: 'account',
+                        element: <AccountScreen />,
+                    }
                 ],
             },
             {

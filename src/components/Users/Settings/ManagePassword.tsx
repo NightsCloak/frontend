@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useState } from 'react';
+import { FC, useEffect, useState, MouseEvent } from 'react';
 import { Box, Button, TextField, Theme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useSetUserPasswordMutation, useUpdateUserPasswordMutation } from '@/redux/features/user';
@@ -9,7 +9,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 interface ManagePasswordProps {
     hasPassword: boolean;
-    expandedMenu: (setExpanded: boolean) => void;
+    expandedMenu: Dispatch<SetStateAction<string | false>>;
 }
 
 const ManagePassword: FC<ManagePasswordProps> = ({ hasPassword, expandedMenu }) => {

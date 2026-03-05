@@ -1,34 +1,34 @@
-import React from 'react';
 import { Box, Button, TextField, Theme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useUpdateUserEmailMutation } from '@/redux/features/user';
 import { AlternateEmail, LockOutlined } from '@mui/icons-material';
 import { Digital } from 'react-activity';
+import { FC, MouseEventHandler, useEffect, useState } from 'react';
 
 interface ManageEmailProps {
-    expandedMenu: (setExpanded: boolean) => void;
+    expandedMenu: Dispatch<SetStateAction<string | false>>;
 }
 
-const ManageEmail: React.FC<ManageEmailProps> = ({ expandedMenu }) => {
+const ManageEmail: FC<ManageEmailProps> = ({ expandedMenu }) => {
     const { classes } = useStyles();
-    const [email, setEmail] = React.useState<string>('');
-    const [currentPassword, setCurrentPassword] = React.useState<string>('');
-    const [emailError, setEmailError] = React.useState<string>('');
-    const [currentPasswordError, setCurrentPasswordError] = React.useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [currentPassword, setCurrentPassword] = useState<string>('');
+    const [emailError, setEmailError] = useState<string>('');
+    const [currentPasswordError, setCurrentPasswordError] = useState<string>('');
     const [updateEmail, { isLoading, isSuccess, error }] = useUpdateUserEmailMutation();
 
-    const handleEmailForm = async (e: React.MouseEvent) => {
+    const handleEmailForm: MouseEventHandler = async (e) => {
         e.preventDefault();
         setCurrentPasswordError('');
         setEmailError('');
         updateEmail({ email, current_password: currentPassword });
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         isSuccess && expandedMenu(false);
     }, [isSuccess, expandedMenu]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (error) {
             const response = 'data' in error ? error.data : JSON.stringify(error);
             const data = response as UpdateEmailResponse;

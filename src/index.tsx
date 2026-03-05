@@ -7,7 +7,11 @@ import * as Sentry from '@sentry/react';
 // English.
 import en from 'javascript-time-ago/locale/en';
 import { LicenseInfo } from '@mui/x-license';
-import Entry from '@/Entry';
+import { Provider } from 'react-redux';
+import { persistor, store } from '@/redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import Router from '@/Router';
+import routes from '@/config/routes';
 
 process.env.NODE_ENV === 'production' &&
     Sentry.init({
@@ -42,7 +46,11 @@ window.console.log = import.meta.env.MODE === 'production' ? () => {} : console.
 
 root.render(
     <React.StrictMode>
-        <Entry />
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <Router routeConfig={routes} />
+            </PersistGate>
+        </Provider>
     </React.StrictMode>
 );
 

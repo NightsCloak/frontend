@@ -1,4 +1,4 @@
-import apiSlice from '@/redux/apiSlice';
+import apiSlice from '../apiSlice';
 
 const user = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -49,6 +49,14 @@ const user = apiSlice.injectEndpoints({
             }),
             // invalidatesTags: ['User'],
         }),
+        updateUserSettings: builder.mutation<User, UpdateUserSettingsRequest>({
+            query: ({ is_onboarded, onboarding }) => ({
+                url: 'user/settings',
+                method: 'PUT',
+                body: { is_onboarded, onboarding },
+            }),
+            invalidatesTags: ['User'],
+        }),
         updateUserEmail: builder.mutation<UpdateEmailResponse, UpdateUserEmailRequest>({
             query: ({ current_password, email }) => ({
                 url: 'user/email',
@@ -78,6 +86,73 @@ const user = apiSlice.injectEndpoints({
                 body: { current_password },
             }),
         }),
+        enable2FA: builder.mutation<{ svg: string }, TwoFactorActionRequest>({
+            query: ({ current_password }) => ({
+                url: 'user/2fa/enable',
+                method: 'POST',
+                body: { current_password },
+            }),
+            invalidatesTags: ['User'],
+        }),
+        confirm2FA: builder.mutation<string[], ConfirmTwoFactorRequest>({
+            query: ({ code }) => ({
+                url: 'user/2fa/confirm',
+                method: 'POST',
+                body: { code },
+            }),
+            invalidatesTags: ['User'],
+        }),
+        get2FAQrCode: builder.mutation<{ svg: string }, null>({
+            query: () => ({
+                url: 'user/2fa/qr-code',
+                method: 'GET',
+            }),
+        }),
+        get2FASecret: builder.mutation<{ secret: string }, TwoFactorActionRequest>({
+            query: ({ current_password }) => ({
+                url: 'user/2fa/key',
+                method: 'POST',
+                body: { current_password },
+            }),
+        }),
+        get2FARecoveryCodes: builder.mutation<string[], TwoFactorActionRequest>({
+            query: ({ current_password }) => ({
+                url: 'user/2fa/recovery-codes',
+                method: 'POST',
+                body: { current_password },
+            }),
+        }),
+        regenerate2FARecoveryCodes: builder.mutation<string[], TwoFactorActionRequest>({
+            query: ({ current_password }) => ({
+                url: 'user/2fa/recovery-codes',
+                method: 'PUT',
+                body: { current_password },
+            }),
+            invalidatesTags: ['User'],
+        }),
+        disable2FA: builder.mutation<null, TwoFactorActionRequest>({
+            query: ({ current_password }) => ({
+                url: 'user/2fa/disable',
+                method: 'POST',
+                body: { current_password },
+            }),
+            invalidatesTags: ['User'],
+        }),
+        getUserSocialAccount: builder.query<UserSocialAccount, null>({
+            query: () => ({
+                url: 'user/social',
+                method: 'GET',
+            }),
+            providesTags: ['user-social-account'],
+        }),
+        removeUserSocialAccount: builder.mutation<null, RemoveUserSocialAccountRequest>({
+            query: ({ provider, current_password }) => ({
+                url: `user/social/${provider}/remove`,
+                method: 'PUT',
+                body: { current_password },
+            }),
+            invalidatesTags: ['user-social-account'],
+        }),
     }),
 });
 
@@ -89,8 +164,18 @@ export const {
     useUpdateUserAvatarMutation,
     useDeleteUserAvatarMutation,
     useUpdateUserNameMutation,
+    useUpdateUserSettingsMutation,
     useUpdateUserEmailMutation,
     useUpdateUserPasswordMutation,
     useSetUserPasswordMutation,
     useDeleteUserAccountMutation,
+    useEnable2FAMutation,
+    useConfirm2FAMutation,
+    useGet2FAQrCodeMutation,
+    useGet2FASecretMutation,
+    useGet2FARecoveryCodesMutation,
+    useRegenerate2FARecoveryCodesMutation,
+    useDisable2FAMutation,
+    useGetUserSocialAccountQuery,
+    useRemoveUserSocialAccountMutation,
 } = user;

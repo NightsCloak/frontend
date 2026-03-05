@@ -14,6 +14,7 @@ type User = {
     is_enabled: boolean;
     is_verified: boolean;
     has_password: boolean;
+    has_2fa_enabled: boolean;
     dark_mode: boolean;
     last_active_at: string | null;
     created_at: string;
@@ -25,4 +26,17 @@ type User = {
 
 type UserSettings = { admin: boolean; developer: boolean; verified: boolean | null; darkMode: boolean } | null;
 
-type UserTier = 'free' | 'tier-1' | 'tier-2' | 'tier-3' | 'unlimited';
+type UserSocialAccount = {
+    _morphType: 'userSocialAccount';
+    user_id: string;
+    has_discord: boolean;
+    discord_id: string | null;
+    discord_email: string | null;
+    has_google: boolean;
+    google_id: string | null;
+    google_email: string | null;
+    created_at: string;
+    updated_at: string;
+};
+
+type ThirdPartyProvider = 'discord' | 'google' | 'slack' | 'roblox' | 'cfx';

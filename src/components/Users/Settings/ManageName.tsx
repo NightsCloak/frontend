@@ -1,23 +1,23 @@
-import React from 'react';
 import { Box, Button, TextField, Theme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import userApi, { useUpdateUserNameMutation } from '@/redux/features/user';
 import { PersonOutlined } from '@mui/icons-material';
 import { Digital } from 'react-activity';
 import { useAppDispatch } from '@/redux/hooks';
+import { FC, useEffect, useState } from 'react';
 
 interface ManageNameProps {
     user: User;
-    expandedMenu: (setExpanded: boolean) => void;
+    expandedMenu: Dispatch<SetStateAction<string | false>>;
 }
 
-const ManageName: React.FC<ManageNameProps> = ({ user, expandedMenu }) => {
+const ManageName: FC<ManageNameProps> = ({ user, expandedMenu }) => {
     const { classes } = useStyles();
     const dispatch = useAppDispatch();
-    const [firstName, setFirstName] = React.useState<string>(user.first);
-    const [firstNameError, setFirstNameError] = React.useState<string>('');
-    const [lastName, setLastName] = React.useState<string>(user.last);
-    const [lastNameError, setLastNameError] = React.useState<string>('');
+    const [firstName, setFirstName] = useState<string>(user.first);
+    const [firstNameError, setFirstNameError] = useState<string>('');
+    const [lastName, setLastName] = useState<string>(user.last);
+    const [lastNameError, setLastNameError] = useState<string>('');
     const [updateName, { isLoading, isSuccess, error }] = useUpdateUserNameMutation();
     const handleNameForm = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -27,14 +27,14 @@ const ManageName: React.FC<ManageNameProps> = ({ user, expandedMenu }) => {
         // userApi.util.invalidateTags(['User']);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isSuccess) {
             expandedMenu(false);
             dispatch(userApi.util.invalidateTags(['User']));
         }
     }, [isSuccess, expandedMenu, dispatch]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (error) {
             const response = 'data' in error ? error.data : JSON.stringify(error);
             const data = response as UpdateNameResponse;

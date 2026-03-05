@@ -1,6 +1,6 @@
-import { Suspense, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '@/config/theme';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -23,7 +23,6 @@ import { useHeartbeatQuery } from '@/redux/features/authApi';
 import * as Sentry from '@sentry/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useMediaQuery } from '@mui/material';
 import useAuthRouteHandler from '@/utils/useAuthRouteHandler';
 import { useGetUserQuery } from '@/redux/features/user';
 import { skipToken } from '@reduxjs/toolkit/query/react';
@@ -44,12 +43,9 @@ function App() {
     const osDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const prefersDarkMode = user.settings.darkMode ?? osDarkMode;
 
-
-
     const { refetch, isUninitialized } = useGetUserQuery(!auth.status ? skipToken : null, {
         refetchOnMountOrArgChange: true,
     });
-
 
     const handleMaintenanceSet = useCallback(() => {
         !matchRoute && navigate('/maintenance');
@@ -105,9 +101,7 @@ function App() {
                         <ThemeProvider theme={configTheme()}>
                             <ErrorBoundary fallback={<AppError />}>
                                 <CssBaseline />
-                                <Suspense fallback={null}>
-                                    <Outlet />
-                                </Suspense>
+                                <Outlet />
                             </ErrorBoundary>
                         </ThemeProvider>
                     </EchoProvider>

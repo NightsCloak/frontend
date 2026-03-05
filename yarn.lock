@@ -8184,6 +8184,7 @@ __metadata:
     pusher-js: "npm:^8.4.0-rc2"
     react: "npm:^19.0.0"
     react-activity: "npm:^2.1.3"
+    react-calendly: "npm:^4.4.0"
     react-chartjs-2: "npm:^5.3.0"
     react-color: "npm:^2.19.3"
     react-device-detect: "npm:^2.2.3"
@@ -10692,6 +10693,16 @@ __metadata:
     react: ">= 15.0.0"
     react-dom: ">= 15.0.0"
   checksum: 10c0/f011871c581064126b8fd5f8d89b6288431fc13cb77ef89388cc29ef45ace06af5d76189e6ed17e1d7e0604862189b9a8bf7cdf054ecadb6b9ef3d7b75dec211
+  languageName: node
+  linkType: hard
+
+"react-calendly@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "react-calendly@npm:4.4.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10c0/4eb34866f29ef1b268240cf12bb4a81e26fa2fd1a60adf367eac6b443bb683303f85227291db74e1fa103220ef31a87478dd918b306b38588e9b7ffc30ef3e8c
   languageName: node
   linkType: hard
 

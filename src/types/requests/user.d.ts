@@ -9,6 +9,11 @@ type UpdateUserNameRequest = {
     last: string;
 };
 
+type UpdateUserSettingsRequest = {
+    onboarding?: object | null;
+    is_onboarded?: boolean;
+};
+
 type UpdateUserAvatarRequest = {
     avatar: FormData;
 };
@@ -41,6 +46,14 @@ type AdminGetUserRequest = {
     userId: string;
 };
 
+type ConfirmTwoFactorRequest = {
+    code: string;
+};
+
+type TwoFactorActionRequest = {
+    current_password: string;
+};
+
 type AdminUpdateUserRequest = {
     userId: string;
     is_enabled: boolean;
@@ -58,4 +71,9 @@ type AdminPurgeUserRequest = {
 
 type AdminRestoreUserRequest = {
     userId: string;
+};
+
+type RemoveUserSocialAccountRequest = {
+    provider: ThirdPartyProvider;
+    current_password: string;
 };

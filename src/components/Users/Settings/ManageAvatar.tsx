@@ -1,17 +1,17 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Avatar, Button, Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Sentry } from 'react-activity';
 import { Delete, PhotoCamera } from '@mui/icons-material';
 import { useDeleteUserAvatarMutation, useUpdateUserAvatarMutation } from '@/redux/features/user';
-import imagePaths from '@/utils/imagePaths';
+import { imagePaths } from '@/hooks/useImagePaths';
 
 interface ManageAvatarProps {
     user: User;
-    expandedMenu: (setExpanded: boolean) => void;
+    expandedMenu: Dispatch<SetStateAction<string | false>>;
 }
 
-const ManageAvatar: React.FC<ManageAvatarProps> = ({ user, expandedMenu }) => {
+const ManageAvatar: FC<ManageAvatarProps> = ({ user, expandedMenu }) => {
     const { classes } = useStyles();
     const [avatarError, setAvatarError] = useState<string>('');
     const [uploadAvatar, { isLoading: isAvatarUploading, isSuccess: isAvatarUploaded, error }] =

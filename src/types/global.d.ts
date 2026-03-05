@@ -20,7 +20,7 @@ type ImageAvatarProps = {
 type AvatarType = 'user' | 'icon';
 
 interface BaseProps {
-    config: Config;
+    config?: Config;
     routeConfig: RouteObject[];
 }
 
