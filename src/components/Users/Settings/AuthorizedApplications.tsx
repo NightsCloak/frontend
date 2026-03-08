@@ -27,7 +27,7 @@ import { Spinner } from 'react-activity';
 import { useAppSelector } from '@/redux/hooks';
 
 const AuthorizedApplications: FC = () => {
-    const { classes } = styles();
+    const { classes } = useStyles();
     const [currentPassword, setCurrentPassword] = useState<string>('');
     const [currentPasswordError, setCurrentPasswordError] = useState<string | undefined>(undefined);
     const [removing, setRemoving] = useState<ThirdPartyProvider | undefined>(undefined);
@@ -243,7 +243,7 @@ const AuthorizedApplications: FC = () => {
     );
 };
 
-const styles = makeStyles()(() => ({
+const useStyles = makeStyles()(() => ({
     formRoot: {
         flexGrow: 1,
         display: 'flex',
