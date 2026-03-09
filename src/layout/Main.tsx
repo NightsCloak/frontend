@@ -1,7 +1,7 @@
 import { FC, Suspense, useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
-import { AppBar, Box, Breadcrumbs, Divider, Grow, IconButton, Stack, Theme } from '@mui/material';
+import { AppBar, Breadcrumbs, Divider, Grow, IconButton, Stack, Theme } from '@mui/material';
 import { useTools } from '@/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -79,13 +79,13 @@ const Main: FC = () => {
                     </SidebarProvider>
                 )}
 
-                <Box component={'main'} className={classes.main}>
+                <div className={classes.main}>
                     <Grow easing={'ease-in-out'} in={false} timeout={100}>
                         <Suspense fallback={<Holding {...{ spinner: true }} />}>
                             <Outlet />
                         </Suspense>
                     </Grow>
-                </Box>
+                </div>
                 {modal}
             </div>
         </>
@@ -111,7 +111,6 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             display: 'flex',
             flexDirection: 'row',
             paddingLeft: isSmallScreen ? theme.spacing(1) : theme.spacing(2),
-            // width: '100%',
             ...(!auth && {
                 backgroundColor: theme.palette.background.paper,
             }),
@@ -143,22 +142,16 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
         },
         main: {
             display: 'flex',
-            flex: 1,
+            // flex: 1,
             flexDirection: 'column',
-            // overflow: 'auto',
-            // justifyContent: 'center',
-            // alignContent: 'center',
-            height: `100%`,
+            alignItems: auth ? undefined : 'center',
+            height: '100%',
             width: '100%',
-            maxWidth: `calc(100vw - ${open ? '200px' : theme.spacing(7)} + 1px)`,
+            maxWidth: `calc(100vw - ${auth ? (open ? '200px' : theme.spacing(7)) : '0'} + 1px)`,
             transition: `all ${open ? theme.transitions.duration.enteringScreen : theme.transitions.duration.leavingScreen}ms ${theme.transitions.easing.sharp}`,
-            // paddingBottom: 64,
-            padding: theme.spacing(1),
+            paddingBottom: theme.spacing(2),
             [theme.breakpoints.only('xs')]: {
                 padding: theme.spacing(2),
-                // padding: 0,
-                // margin: 0,
-                marginTop: theme.spacing(2),
             },
         },
     };
