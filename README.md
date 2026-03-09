@@ -1,7 +1,7 @@
-| Branch     | Build Status                                                                                                                                                                                                |
-|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Branch     | Build Status                                                                                                                                                                                                            |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Develop    | [![.github/workflows/cicd_develop.yml](https://github.com/NightsCloak/frontend/actions/workflows/cicd_develop.yml/badge.svg?branch=master)](https://github.com/NightsCloak/frontend/actions/workflows/cicd_develop.yml) |
-| Production | [![.github/workflows/cicd_prod.yml](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml/badge.svg)](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml)          |
+| Production | [![.github/workflows/cicd_prod.yml](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml/badge.svg)](https://github.com/NightsCloak/frontend2/actions/workflows/cicd_prod.yml)                      |
 
 # NightsCloak Frontend
 
