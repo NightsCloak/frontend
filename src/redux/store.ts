@@ -11,6 +11,7 @@ import { combineSlices, configureStore, UnknownAction } from '@reduxjs/toolkit';
 import { maintenanceMiddleware } from './middleware/maintenanceMiddleware';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userMigrate, userVersion } from './migrations/userMigration';
+import { appMigrate, appVersion } from '@/redux/migrations/appMigration';
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer({
     actionTransformer: (action): UnknownAction | null => {
@@ -50,12 +51,12 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
     },
 });
 
-// const appPersistConfig = {
-//     key: 'app',
-//     storage: storage,
-//     version: appVersion,
-//     migrate: appMigrate,
-// };
+const appPersistConfig = {
+    key: 'app',
+    storage: storage,
+    version: appVersion,
+    migrate: appMigrate,
+};
 
 const authPersistConfig = {
     key: 'auth',
@@ -73,7 +74,7 @@ const userPersistConfig = {
 
 export const reducers = combineSlices({
     [apiSlice.reducerPath]: apiSlice.reducer,
-    app: appSlice.reducer,
+    app: persistReducer(appPersistConfig, appSlice.reducer),
     auth: persistReducer(authPersistConfig, authSlice.reducer),
     user: persistReducer(userPersistConfig, userSlice.reducer),
 });

@@ -86,7 +86,7 @@ const theme = (prefersDarkMode: boolean): Theme =>
                 main: '#bb0a1e',
             },
             secondary: {
-                main: '#f50057',
+                main: '#680000',
             },
             error: {
                 main: '#F44336',

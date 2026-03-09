@@ -19,11 +19,15 @@ const NewChronicleModal: FC<NCModalProps> = ({ ...props }) => {
                 title={'Add Chronicle'}
                 iconLabel={'Add Chronicle'}
                 sx={{
+                    root: { width: '100vh', padding: 0 },
                     modal: {
                         flex: 1,
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '50vw',
+                        width: '50%',
+                        minWidth: 300,
+                        padding: 1,
+                        border: '1px solid red',
                     },
                 }}
             >

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Location } from 'react-router';
 
 const initialState: AppState = {
-    drawer: true,
+    drawer: false,
     idle: false,
     maintenance: false,
     maintenanceCheck: null,
@@ -32,9 +32,12 @@ const appSlice = createSlice({
         setIdle: (state, action: PayloadAction<boolean>) => {
             state.idle = action.payload;
         },
+        toggleDrawer: (state) => {
+            state.drawer = !state.drawer;
+        },
     },
 });
 
-export const { setMaintenanceMode, setEchoStatus, setSocketId, updatePage, setIdle } = appSlice.actions;
+export const { setMaintenanceMode, setEchoStatus, setSocketId, updatePage, setIdle, toggleDrawer } = appSlice.actions;
 
 export default appSlice;

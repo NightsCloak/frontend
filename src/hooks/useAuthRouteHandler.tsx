@@ -6,7 +6,7 @@ import { setIntended, setRedirect } from '@/redux/reducers/authSlice';
 const useAuthRouteHandler = () => {
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user as UserState);
-    const [searchParams, ] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -26,6 +26,7 @@ const useAuthRouteHandler = () => {
         'privacy',
         'invite',
         'shared',
+        'chronicles',
     ];
 
     const isGuestPath = useMemo(() => {
@@ -77,6 +78,7 @@ const useAuthRouteHandler = () => {
             location.pathname !== '/home/account' &&
             !location.pathname.includes('email/verify')
         ) {
+            console.log('redirecting to verify');
             navigate('/home/account');
             return;
         }
@@ -110,7 +112,7 @@ const useAuthRouteHandler = () => {
             return;
         }
 
-        navigate('/home/account');
+        navigate('/home');
     }, [auth.status, location]);
 
     return { matchRoute };

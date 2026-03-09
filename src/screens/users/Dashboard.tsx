@@ -1,7 +1,7 @@
 import { makeStyles } from 'tss-react/mui';
 import { Box, Paper, Typography } from '@mui/material';
 import { useAppSelector } from '@/redux/hooks';
-import ChroniclesTable from '@/screens/chronicles/ChroniclesTable';
+import UserChroniclesTable from '@/screens/chronicles/UserChroniclesTable';
 
 const Dashboard = () => {
     const { classes } = useStyles();
@@ -10,7 +10,7 @@ const Dashboard = () => {
     return (
         <Box className={classes.root} component={Paper}>
             <Typography className={classes.header}>Welcome {user.name}</Typography>
-            {(user?.data?.chronicles_count ?? 0) > 0 && <ChroniclesTable />}
+            {(user?.data?.chronicles_count ?? 0) > 0 && <UserChroniclesTable />}
         </Box>
     );
 };

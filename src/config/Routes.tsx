@@ -1,26 +1,27 @@
-import { lazy } from 'react';
-import { RouteObject } from 'react-router-dom';
-import Main from '@/layout/Main';
-import ErrorScreen from '@/screens/error/ErrorScreen';
-import LoginScreen from '@/screens/auth/LoginScreen';
-import App from '@/App';
-import Root from '@/screens/Root';
-import RegisterScreen from '@/screens/auth/RegisterScreen';
-import ThirdPartyOauthCallbackScreen from '@/screens/auth/ThirdPartyOauthCallbackScreen';
-import AccountScreen from '@/screens/users/AccountScreen';
+import { FC, lazy } from 'react';
+import { RouterProvider } from 'react-router';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
 
-/* eslint-disable react-refresh/only-export-components */
-
+const App = lazy(() => import('@/App'));
+const Main = lazy(() => import('@/layout/Main'));
+const Root = lazy(() => import('@/screens/Root'));
 const AuthCallback = lazy(() => import('@/screens/auth/AuthCallbackScreen'));
 const ForgotPasswordScreen = lazy(() => import('@/screens/auth/ForgotPasswordScreen'));
 const MaintenanceScreen = lazy(() => import('@/screens/error/MaintenanceScreen'));
+const ErrorScreen = lazy(() => import('@/screens/error/ErrorScreen'));
+const LoginScreen = lazy(() => import('@/screens/auth/LoginScreen'));
+const RegisterScreen = lazy(() => import('@/screens/auth/RegisterScreen'));
+const ThirdPartyOauthCallbackScreen = lazy(() => import('@/screens/auth/ThirdPartyOauthCallbackScreen'));
 const ResendVerifyEmailScreen = lazy(() => import('@/screens/auth/ResendVerifyEmailScreen'));
 const ResetPasswordScreen = lazy(() => import('@/screens/auth/ResetPasswordScreen'));
 const VerifiesEmailScreen = lazy(() => import('@/screens/auth/VerifiesEmailScreen'));
 
 const UserDashboard = lazy(() => import('@/screens/users/Dashboard'));
+const UserAccountScreen = lazy(() => import('@/screens/users/AccountScreen'));
+const UserChroniclesDashboard = lazy(() => import('@/screens/chronicles/UserChroniclesDashboard'));
+const UserChronicle = lazy(() => import('@/screens/chronicles/UserChronicle'));
 
-const ChroniclesDashboard = lazy(() => import('@/screens/chronicles/ChroniclesDashboard'));
+const Chronicles = lazy(() => import('@/screens/chronicles/Chronicles'));
 const Chronicle = lazy(() => import('@/screens/chronicles/Chronicle'));
 
 const routes: RouteObject[] = [
@@ -61,13 +62,27 @@ const routes: RouteObject[] = [
                 element: <Main />,
                 children: [
                     {
-                        path: '*',
+                        path: '/home',
                         element: <UserDashboard />,
                     },
                     {
                         path: 'account',
-                        element: <AccountScreen />,
-                    }
+                        element: <UserAccountScreen />,
+                    },
+                ],
+            },
+            {
+                path: '/user',
+                element: <Main />,
+                children: [
+                    {
+                        path: 'chronicles',
+                        element: <UserChroniclesDashboard />,
+                    },
+                    {
+                        path: 'chronicles/:chronicleId',
+                        element: <UserChronicle />,
+                    },
                 ],
             },
             {
@@ -76,10 +91,10 @@ const routes: RouteObject[] = [
                 children: [
                     {
                         path: '/chronicles',
-                        element: <ChroniclesDashboard />,
+                        element: <Chronicles />,
                     },
                     {
-                        path: '/chronicles/:chronicleId',
+                        path: ':chronicleId',
                         element: <Chronicle />,
                     },
                 ],
@@ -88,4 +103,14 @@ const routes: RouteObject[] = [
     },
 ];
 
-export default routes;
+const browserRouter = createBrowserRouter(routes);
+
+const Router: FC = () => {
+    return (
+        <>
+            <RouterProvider router={browserRouter} />
+        </>
+    );
+};
+
+export default Router;

@@ -23,7 +23,7 @@ import { useHeartbeatQuery } from '@/redux/features/authApi';
 import * as Sentry from '@sentry/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import useAuthRouteHandler from '@/utils/useAuthRouteHandler';
+import useAuthRouteHandler from '@/hooks/useAuthRouteHandler';
 import { useGetUserQuery } from '@/redux/features/user';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 

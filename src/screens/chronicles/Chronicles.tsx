@@ -1,6 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
-import ChroniclesTable from '@/screens/chronicles/ChroniclesTable';
+
 import { makeStyles } from 'tss-react/mui';
+import ChroniclesTable from '@/screens/chronicles/ChroniclesTable';
 
 const ChroniclesDashboard = () => {
     const { classes } = useStyles();

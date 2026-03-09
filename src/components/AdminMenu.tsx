@@ -35,9 +35,9 @@ const useStyles = makeStyles()((theme) => ({
     root: {
         display: 'flex',
         // width: '100%',
-        flex: 1,
         justifyContent: 'end',
         marginRight: theme.spacing(1),
+        border: '1px solid blue',
     },
 }));
 export default AdminMenu;

@@ -1,28 +1,13 @@
 import Typography from '@mui/material/Typography';
 import { DataGridPremium, GridColDef, GridToolbar } from '@mui/x-data-grid-premium';
-import { useDeleteChronicleMutation, useGetUserChroniclesQuery } from '@/redux/features/chronciles';
-import { Box, IconButton, Paper } from '@mui/material';
-import { makeStyles } from 'tss-react/mui';
-import NewChronicleModal from '@/screens/chronicles/modals/NewChronicleModal';
+import { useGetChroniclesQuery } from '@/redux/features/chronciles';
+import { Box, Paper } from '@mui/material';
 import NCLink from '@/components/NCLink';
-import { Spinner } from 'react-activity';
-import { useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-
 
 const ChroniclesTable = () => {
-    const { classes } = useStyles();
-    const [deleting, setDeleting] = useState<string | null>(null);
-    const { data: chronicles, isLoading, isUninitialized } = useGetUserChroniclesQuery();
+    const { data: chronicles, isLoading, isUninitialized } = useGetChroniclesQuery();
 
-    const [deleteChronicle, { isLoading: isDeleteChronicleLoading }] = useDeleteChronicleMutation();
-
-    const handleDeleteChronicle = (id: string) => {
-        setDeleting(id);
-        deleteChronicle(id);
-    };
-
-    const columns: GridColDef[] = [
+    const columns: GridColDef<Chronicle>[] = [
         {
             field: 'name',
             headerName: 'Chronicle',
@@ -34,30 +19,20 @@ const ChroniclesTable = () => {
             headerName: 'Email',
             minWidth: 250,
         },
-
         {
-            field: 'id',
-            align: 'center',
-            headerName: 'Delete',
-            renderCell: ({ row }) => {
-                return isDeleteChronicleLoading && deleting === row.id ? (
-                    <div
-                        style={{
-                            display: 'flex',
-                            height: '100%',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Spinner />
-                    </div>
-                ) : (
-                    <IconButton onClick={() => handleDeleteChronicle(row.id)}>
-                        <DeleteIcon />
-
-                    </IconButton>
-                );
-            },
+            field: 'genre',
+            headerName: 'Genre',
+            renderCell: ({ row }) =>
+                row?.genres?.map((genre, index, array) => (
+                    <>
+                        <Typography variant={'caption'}>
+                            {genre.name}
+                            {array.length - 1 > index && ','}
+                        </Typography>
+                        &nbsp;
+                    </>
+                )),
+            minWidth: 250,
         },
     ];
 
@@ -68,67 +43,49 @@ const ChroniclesTable = () => {
             p={2}
             style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 300 }}
         >
-            <div className={classes.header}>
-                <Typography>Chronicles:</Typography>
-                <NewChronicleModal />
-            </div>
-            {isUninitialized ? (
-                <Typography>Loading...</Typography>
-            ) : (
-                <DataGridPremium
-                    slots={{
-                        toolbar: GridToolbar,
-                        noRowsOverlay: () => (
-                            <Box
-                                style={{
-                                    // height: '100%',
-                                    flex: 1,
-                                    flexDirection: 'column',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Typography color={'primary'}>No Chronicles Found</Typography>
-                            </Box>
-                        ),
-                    }}
-                    slotProps={{
-                        toolbar: {
-                            showQuickFilter: true,
-                            excelOptions: {
-                                disableToolbarButton: true,
-                            },
-                            printOptions: { disableToolbarButton: true },
-                            csvOptions: { disableToolbarButton: true },
+            <DataGridPremium
+                slots={{
+                    toolbar: GridToolbar,
+                    noRowsOverlay: () => (
+                        <Box
+                            style={{
+                                // height: '100%',
+                                flex: 1,
+                                flexDirection: 'column',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color={'primary'}>No Chronicles Found</Typography>
+                        </Box>
+                    ),
+                }}
+                slotProps={{
+                    toolbar: {
+                        showQuickFilter: true,
+                        excelOptions: {
+                            disableToolbarButton: true,
                         },
-                    }}
-                    pagination
-                    pageSizeOptions={[10, 25, 50, 100]}
-                    initialState={{
-                        pagination: { paginationModel: { pageSize: 10 } },
-                    }}
-                    disableColumnFilter
-                    disableColumnSelector
-                    disableDensitySelector
-                    density={'compact'}
-                    loading={isUninitialized || isLoading}
-                    columns={columns}
-                    rows={chronicles ?? []}
-                />
-            )}
+                        printOptions: { disableToolbarButton: true },
+                        csvOptions: { disableToolbarButton: true },
+                    },
+                }}
+                pagination
+                pageSizeOptions={[10, 25, 50, 100]}
+                initialState={{
+                    pagination: { paginationModel: { pageSize: 10 } },
+                }}
+                disableColumnFilter
+                disableColumnSelector
+                disableDensitySelector
+                density={'compact'}
+                loading={isUninitialized || isLoading}
+                columns={columns}
+                rows={chronicles?.data ?? []}
+            />
         </Box>
     );
 };
-
-const useStyles = makeStyles()((theme) => ({
-    root: {},
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-}));
 
 export default ChroniclesTable;

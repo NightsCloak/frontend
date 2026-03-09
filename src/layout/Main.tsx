@@ -1,11 +1,11 @@
-import { FC, Suspense, useEffect, useState } from 'react';
+import { FC, Suspense, useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { AppBar, Box, Breadcrumbs, Divider, Grow, IconButton, Stack, Theme } from '@mui/material';
 import { useTools } from '@/contexts/ToolsContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import Holding from '@/layout/Holding';
 import useScreenSize from '@/hooks/useScreenSize';
 import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
@@ -14,28 +14,27 @@ import SidebarProvider from '@/providers/SidebarProvider';
 import AdminMenu from '@/components/AdminMenu';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
 import imagePaths from '@/utils/imagePaths';
+import { toggleDrawer } from '@/redux/reducers/appSlice';
+import PublicMenu from '@/components/NavBar/PublicMenu';
 
 const Main: FC = () => {
+    const dispatch = useAppDispatch();
     const auth = useAppSelector((state) => state.auth.status);
     const maintenance = useAppSelector((state) => state.app.maintenance);
+    const drawer = useAppSelector((state) => state.app.drawer);
     const { isSmallScreen } = useScreenSize();
-    const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-    const { classes, theme } = useStyles({ isSmallScreen, auth, open: drawerOpen });
+    const { classes, theme } = useStyles({ isSmallScreen, auth, open: drawer });
 
     const { tools, breadcrumbs, modal } = useTools();
 
-    const toggleDrawer = () => {
-        setDrawerOpen((prevState) => !prevState);
-    };
-
     useEffect(() => {
-        if (drawerOpen) {
-            setDrawerOpen(false);
+        if (drawer) {
+            dispatch(toggleDrawer());
         }
     }, [auth]);
 
     useEffect(() => {
-        !isSmallScreen && setDrawerOpen(false);
+        !isSmallScreen && dispatch(toggleDrawer());
     }, [isSmallScreen]);
 
     return (
@@ -46,7 +45,7 @@ const Main: FC = () => {
                 <AppBar position="fixed" className={classes.appBar} sx={{ zIndex: theme.zIndex.drawer + 1 }}>
                     <>
                         {auth && (
-                            <IconButton onClick={toggleDrawer} color="inherit">
+                            <IconButton onClick={() => dispatch(toggleDrawer())} color="inherit">
                                 <MenuIcon sx={{ color: 'white' }} />
                             </IconButton>
                         )}
@@ -68,11 +67,14 @@ const Main: FC = () => {
                             <div className={classes.tools}>{tools}</div>
                         </>
                     )}
-                    <AdminMenu />
+                    <div className={classes.appBarMenu}>
+                        <PublicMenu />
+                        <AdminMenu />
+                    </div>
                 </AppBar>
 
                 {auth && (
-                    <SidebarProvider open={drawerOpen} setOpen={toggleDrawer}>
+                    <SidebarProvider>
                         <Sidebar />
                     </SidebarProvider>
                 )}
@@ -113,6 +115,14 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             ...(!auth && {
                 backgroundColor: theme.palette.background.paper,
             }),
+        },
+        appBarMenu: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'end',
+            display: 'flex',
+            flexDirection: 'row',
+            '& > *': { marginLeft: theme.spacing(1) },
         },
         breadcrumbs: {
             display: 'flex',

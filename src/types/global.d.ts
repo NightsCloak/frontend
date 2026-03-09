@@ -19,11 +19,6 @@ type ImageAvatarProps = {
 
 type AvatarType = 'user' | 'icon';
 
-interface BaseProps {
-    config?: Config;
-    routeConfig: RouteObject[];
-}
-
 type Config = {
     routes?: RouteObject[];
     app?: 'frontend' | 'admin';

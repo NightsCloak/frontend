@@ -27,7 +27,7 @@ const NCModal: FC<NCModalProps> = ({ title, children, sx, override, open, handle
                 className={cx(classes.root, override?.root)}
                 style={sx?.root && { ...sx.root }}
             >
-                <Box component={Paper} className={cx(override?.box, classes.modal)} style={sx?.box && { ...sx.box }}>
+                <Box component={Paper} className={cx(override?.modal, classes.modal)} style={sx?.box && { ...sx.box }}>
                     <Paper className={classes.modalHeader}>
                         <Typography
                             variant={'h5'}
@@ -93,12 +93,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
     },
 
     modalContent: {
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
+        height: '100%',
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        overflowY: 'auto',
+        scrollbarWidth: 'thin',
         padding: theme.spacing(1),
         '& .MuiButton-root': {
             marginTop: theme.spacing(2),

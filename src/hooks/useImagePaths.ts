@@ -1,9 +1,4 @@
 type ImagePaths = {
-    annotationFailed: string;
-    annotationFinished: string;
-    annotationInProgress: string;
-    annotationPending: string;
-    blankAlbedoTexture: string;
     darkLogo: string;
     folder: string;
     gridOpacity: string;
@@ -20,11 +15,6 @@ type ImagePaths = {
 };
 
 export const imagePaths: ImagePaths = {
-    annotationFailed: '/images/annotation_failed.png',
-    annotationFinished: '/images/annotation_finished.png',
-    annotationInProgress: '/images/annotation_inProgress.png',
-    annotationPending: '/images/annotation_pending.png',
-    blankAlbedoTexture: '/images/blankIntractAlbedoTexture.png',
     darkLogo: '/images/DarkLogo.png',
     folder: '/images/folder_default.png',
     gridOpacity: '/images/gridOpacity.png',

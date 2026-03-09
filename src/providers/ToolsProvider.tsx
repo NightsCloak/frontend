@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import ToolsContext from '@/contexts/ToolsContext';
 import { setIdle } from '@/redux/reducers/appSlice';
 
-
 const ToolsProvider = ({ children }: ToolsProps) => {
     const location = useLocation();
     const playSounds = useAppSelector((state) => state.user.settings.alertSounds);
@@ -94,9 +93,9 @@ const ToolsProvider = ({ children }: ToolsProps) => {
 
     useLayoutEffect(() => {
         if (tabTitle) {
-            document.title = `Intract - ${tabTitle}`;
+            document.title = `OWBN - ${tabTitle}`;
         } else {
-            document.title = 'Intract';
+            document.title = 'OWBN';
         }
     }, [tabTitle]);
 

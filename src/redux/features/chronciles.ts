@@ -1,6 +1,5 @@
 import apiSlice from '@/redux/apiSlice';
 
-
 const chronicle = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         addChronicle: builder.mutation<Chronicle, AddChronicleRequest>({
@@ -18,9 +17,17 @@ const chronicle = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Chronicles', 'User'],
         }),
-        getUserChronicles: builder.query<Chronicle[], void>({
+        getChronicles: builder.query<ChronicleResponse, void>({
+            query: () => {
+                return {
+                    url: 'chronicles',
+                    method: 'GET',
+                };
+            },
+        }),
+        getUserChronicles: builder.query<ChronicleResponse, void>({
             query: () => ({
-                url: 'chronicles',
+                url: 'user/chronicles',
                 method: 'GET',
             }),
             providesTags: ['Chronicles'],
@@ -32,6 +39,42 @@ const chronicle = apiSlice.injectEndpoints({
             }),
             providesTags: (_result, _error, chronicleId) => [{ type: 'Chronicle', id: chronicleId }],
         }),
+        getChronicleGenresList: builder.query<Omit<ChronicleGenresList, 'children'>[], void>({
+            query: () => ({
+                url: 'chronicles/genres',
+                method: 'GET',
+            }),
+            providesTags: ['ChronicleGenres'],
+            transformResponse: (result: ChronicleGenresList[]) => {
+                const values: Omit<ChronicleGenresList, 'children'>[] = [];
+                for (const genre of result) {
+                    if (genre.children.length > 0) {
+                        for (const child of genre.children) {
+                            values.push({ name: `${genre.name} - ${child.name}`, value: child.value });
+                        }
+                        continue;
+                    }
+
+                    values.push({ name: genre.name, value: genre.value });
+                }
+
+                return values;
+            },
+        }),
+        getChronicleRegionsList: builder.query<ChronicleRegionList[], void>({
+            query: () => ({
+                url: 'chronicles/regions',
+                method: 'GET',
+            }),
+            providesTags: ['ChronicleRegions'],
+        }),
+        getChronicleTypesList: builder.query<ChronicleTypesList[], void>({
+            query: () => ({
+                url: 'chronicles/types',
+                method: 'GET',
+            }),
+            providesTags: ['ChronicleRegions'],
+        }),
         getChroniclesSearch: builder.query<{ id: string; label: string }[], void>({
             query: () => ({
                 url: 'chronicles/search',
@@ -39,7 +82,7 @@ const chronicle = apiSlice.injectEndpoints({
             }),
             transformResponse: (result: Chronicle[], meta, arg) => {
                 return result.map((chronicle) => ({ id: chronicle.id, label: chronicle.name }));
-            }
+            },
         }),
         updateChronicle: builder.mutation<Chronicle, { chronicleId: string; name: string }>({
             query: ({ chronicleId, name }) => ({
@@ -56,8 +99,12 @@ export default chronicle;
 export const {
     useAddChronicleMutation,
     useDeleteChronicleMutation,
+    useGetChroniclesQuery,
     useGetUserChroniclesQuery,
     useGetUserChronicleQuery,
     useGetChroniclesSearchQuery,
+    useGetChronicleGenresListQuery,
+    useGetChronicleRegionsListQuery,
+    useGetChronicleTypesListQuery,
     useUpdateChronicleMutation,
 } = chronicle;
