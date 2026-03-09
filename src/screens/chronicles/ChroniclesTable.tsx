@@ -61,6 +61,7 @@ const ChroniclesTable = () => {
                         </Box>
                     ),
                 }}
+                getRowHeight={() => 'auto'}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,
