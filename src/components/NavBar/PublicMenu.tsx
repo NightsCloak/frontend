@@ -1,7 +1,9 @@
 import NCLink from '@/components/NCLink';
 import { MenuItem } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 function PublicMenu() {
+    const location = useLocation();
     return (
         <div>
             <MenuItem selected={location.pathname === '/chronicles'}>
