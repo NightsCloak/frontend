@@ -120,15 +120,15 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (auth.status) {
-    //         console.log('history', history);
-    //         //let redirect = history?.[0]?.pathname !== '/' ? history[0]?.pathname : '/';
-    //         //console.log('auth', auth.status, redirect);
-    //         //if (redirect === '/login') redirect = '/';
-    //         //navigate(redirect);
-    //     }
-    // }, [auth]);
+    useEffect(() => {
+        if (auth.status) {
+            console.log('history', history);
+            //let redirect = history?.[0]?.pathname !== '/' ? history[0]?.pathname : '/';
+            //console.log('auth', auth.status, redirect);
+            //if (redirect === '/login') redirect = '/';
+            //navigate(redirect);
+        }
+    }, [auth]);
 
     if (import.meta.env.VITE_AUTH_FLOW === 'pkce') {
         return (

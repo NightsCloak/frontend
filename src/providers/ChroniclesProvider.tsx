@@ -12,10 +12,10 @@ type ChroniclesProviderProps = {
 };
 
 const ChroniclesProvider: FC<ChroniclesProviderProps> = ({ children }) => {
-    const { data: genresList } = useGetChronicleGenresListQuery(undefined, { pollingInterval: 30000 });
-    const { data: regionsList } = useGetChronicleRegionsListQuery(undefined, { pollingInterval: 30000 });
-    const { data: typesList } = useGetChronicleTypesListQuery(undefined, { pollingInterval: 30000 });
-    const { data: chroniclesList } = useGetChroniclesQuery(undefined, { pollingInterval: 30000 });
+    const { data: genresList } = useGetChronicleGenresListQuery(undefined, { pollingInterval: 300000 });
+    const { data: regionsList } = useGetChronicleRegionsListQuery(undefined, { pollingInterval: 300000 });
+    const { data: typesList } = useGetChronicleTypesListQuery(undefined, { pollingInterval: 300000 });
+    const { data: chroniclesList } = useGetChroniclesQuery(undefined, { pollingInterval: 300000 });
     return (
         <ChroniclesContext
             value={{
