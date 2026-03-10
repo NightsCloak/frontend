@@ -80,13 +80,13 @@ const authSlice = createSlice({
                 state.redirect = null;
                 state.intended = null;
             })
-            // .addMatcher(authApi.endpoints.thirdPartyOauthCallback.matchFulfilled, (state, action) => {
-            //     state.status = true;
-            //     state.pkce.accessToken = action.payload.access_token;
-            //     state.pkce.refreshToken = null;
-            //     state.pkce.expiresIn = null;
-            //     state.pkce.lastCheck = JSON.stringify(new Date());
-            // })
+            .addMatcher(authApi.endpoints.thirdPartyOauthCallback.matchFulfilled, (state, action) => {
+                state.status = true;
+                state.pkce.accessToken = action.payload.access_token ?? '';
+                state.pkce.refreshToken = null;
+                state.pkce.expiresIn = null;
+                state.pkce.lastCheck = JSON.stringify(new Date());
+            })
             .addMatcher(authApi.endpoints.getToken.matchFulfilled, (state, { payload }) => {
                 state.status = true;
                 state.pkce.accessToken = payload.access_token;
