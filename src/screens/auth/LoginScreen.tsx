@@ -11,6 +11,7 @@ import {
     TextField,
     Theme,
     Typography,
+    useTheme,
 } from '@mui/material';
 import { useHeartbeatQuery, useLoginMutation } from '@/redux/features/authApi';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,6 @@ import LoginWithGoogleButton from '@/screens/auth/LoginWithGoogleButton';
 import LoginDevButton from '@/screens/auth/LoginDevButton';
 import ChallengeScreen from '@/screens/auth/ChallengeScreen';
 import LoginWithDiscordButton from '@/screens/auth/LoginWithDiscordButton';
-import { useTheme } from '@mui/material/styles';
 
 type LoginProps = {
     register?: () => void;
@@ -119,16 +119,6 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
             passwordRef.current.value = import.meta.env.VITE_DEV_PASSWORD ?? '';
         }
     }, []);
-
-    useEffect(() => {
-        if (auth.status) {
-            console.log('history', history);
-            //let redirect = history?.[0]?.pathname !== '/' ? history[0]?.pathname : '/';
-            //console.log('auth', auth.status, redirect);
-            //if (redirect === '/login') redirect = '/';
-            //navigate(redirect);
-        }
-    }, [auth]);
 
     if (import.meta.env.VITE_AUTH_FLOW === 'pkce') {
         return (
