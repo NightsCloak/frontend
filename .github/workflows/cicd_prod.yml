@@ -7,10 +7,10 @@ env:
   AWS_REGION: "us-east-1"
   REGISTRY_URI: 990860969901.dkr.ecr.us-east-1.amazonaws.com
   REGISTRY_NAME: nightscloak
-  NAMESPACE: nc-develop
+  NAMESPACE: nc-prod
   APP_NAME: frontend
-  KUBECTL_PATH: ./docker/frontend.develop.yaml
-  ENVIRONMENT: develop
+  KUBECTL_PATH: ./docker/frontend.prod.yaml
+  ENVIRONMENT: prod
   NODE_VERSION: 25.6.1
   NODE_OPTIONS: "--max_old_space_size=6144"
   VITE_APP: "frontend"
