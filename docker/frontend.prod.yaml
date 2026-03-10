@@ -93,8 +93,8 @@ spec:
     - host: nightscloak.prod
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: /(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: frontend
