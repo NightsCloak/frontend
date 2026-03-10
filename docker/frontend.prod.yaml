@@ -86,11 +86,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - nightscloak.prod
-        - www.nightscloak.prod
-      secretName: nc-prod-cert
+        - nightscloak.com
+        - www.nightscloak.com
+      secretName: nc-prod-crt
   rules:
-    - host: nightscloak.prod
+    - host: nightscloak.com
       http:
         paths:
           - path: /(.*)
