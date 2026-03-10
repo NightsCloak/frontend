@@ -16,7 +16,7 @@ env:
   VITE_APP: "frontend"
   VITE_SCHEMA: "https"
   VITE_URI: "nightscloak.com"
-  VITE_PREFIX: "api/v1"
+  VITE_PREFIX: "api"
   VITE_CLIENT_SECRET: "U4UpmHPwt3tgdZpnpkD9fi10m2e2TKn6SZP11nQN"
   VITE_CLIENT_ID: "019cd878-4dd2-715a-b59f-874ab8d4ac5b"
   VITE_PUSHER_APP_KEY: ""
