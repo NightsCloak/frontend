@@ -47,8 +47,8 @@ const routes: RouteObject[] = [
                     },
                     { path: '/', element: <Root /> },
                     { path: '/maintenance', element: <MaintenanceScreen /> },
-                    { path: '/login', element: <LoginScreen /> },
-                    { path: '/register', element: <RegisterScreen /> },
+                    { path: 'login', element: <LoginScreen /> },
+                    { path: 'register', element: <RegisterScreen /> },
                     { path: 'auth/callback', element: <AuthCallback /> },
                     { path: 'login/social/:provider/callback', element: <ThirdPartyOauthCallbackScreen /> },
                     { path: 'password/forgot', element: <ForgotPasswordScreen /> },
@@ -62,7 +62,7 @@ const routes: RouteObject[] = [
                 element: <Main />,
                 children: [
                     {
-                        path: '/home',
+                        path: 'home',
                         element: <UserDashboard />,
                     },
                     {

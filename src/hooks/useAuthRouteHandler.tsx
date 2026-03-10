@@ -1,12 +1,12 @@
 import { useLocation, useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setIntended, setRedirect } from '@/redux/reducers/authSlice';
+import { setRedirect, setIntended } from '@/redux/reducers/authSlice';
 
 const useAuthRouteHandler = () => {
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user as UserState);
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,9 +24,8 @@ const useAuthRouteHandler = () => {
         'email/verify',
         'terms',
         'privacy',
-        'invite',
-        'shared',
-        'chronicles',
+        '/login/social/google/callback',
+        '/login/social/discord/callback',
     ];
 
     const isGuestPath = useMemo(() => {
@@ -62,7 +61,7 @@ const useAuthRouteHandler = () => {
 
         if (intended) {
             searchParams.delete('intended');
-            // setSearchParams(searchParams, { replace: true });
+            setSearchParams(searchParams, { replace: true });
             dispatch(setIntended(intended));
             return;
         }
@@ -78,7 +77,6 @@ const useAuthRouteHandler = () => {
             location.pathname !== '/home/account' &&
             !location.pathname.includes('email/verify')
         ) {
-            console.log('redirecting to verify');
             navigate('/home/account');
             return;
         }
@@ -111,8 +109,6 @@ const useAuthRouteHandler = () => {
             handleRedirect({ redirect: auth.redirect });
             return;
         }
-
-        navigate('/home');
     }, [auth.status, location]);
 
     return { matchRoute };
