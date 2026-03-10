@@ -406,7 +406,7 @@ const RegisterScreen: FC<RegisterProps> = ({ login, code, invitedEmail, onSucces
                                     <Chip label={'Social Signup'} />
                                 </Divider>
                                 <Stack justifyContent={'center'} direction={'row'}>
-                                    <LoginWithGoogleButton register/>
+                                    <LoginWithGoogleButton register />
                                 </Stack>
                             </>
                         )}
@@ -435,6 +435,7 @@ const RegisterScreen: FC<RegisterProps> = ({ login, code, invitedEmail, onSucces
 
 const useStyles = makeStyles()((theme: Theme) => ({
     root: {
+        width: '100%',
         flex: 1,
         display: 'flex',
         justifyContent: 'center',

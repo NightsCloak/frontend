@@ -84,13 +84,13 @@ const chronicle = apiSlice.injectEndpoints({
                 return result.map((chronicle) => ({ id: chronicle.id, label: chronicle.name }));
             },
         }),
-        updateChronicle: builder.mutation<Chronicle, { chronicleId: string; name: string }>({
-            query: ({ chronicleId, name }) => ({
-                url: `chronicles/${chronicleId}`,
+        updateChronicle: builder.mutation<Chronicle, Partial<Chronicle> & { id: Chronicle['id'] }>({
+            query: (chronicle) => ({
+                url: `chronicles/${chronicle.id}`,
                 method: 'PUT',
-                body: { name },
+                body: chronicle,
             }),
-            invalidatesTags: (_result, _error, { chronicleId }) => [{ type: 'Chronicle', id: chronicleId }],
+            invalidatesTags: (_result, _error, chronicle) => [{ type: 'Chronicle', id: chronicle.id }],
         }),
     }),
 });

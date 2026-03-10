@@ -26,6 +26,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import useAuthRouteHandler from '@/hooks/useAuthRouteHandler';
 import { useGetUserQuery } from '@/redux/features/user';
 import { skipToken } from '@reduxjs/toolkit/query/react';
+import ChroniclesProvider from './providers/ChroniclesProvider';
 
 function App() {
     useHeartbeatQuery(undefined, { pollingInterval: 3 * 60 * 1000 });
@@ -98,12 +99,14 @@ function App() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <ToolsProvider>
                     <EchoProvider>
-                        <ThemeProvider theme={configTheme()}>
-                            <ErrorBoundary fallback={<AppError />}>
-                                <CssBaseline />
-                                <Outlet />
-                            </ErrorBoundary>
-                        </ThemeProvider>
+                        <ChroniclesProvider>
+                            <ThemeProvider theme={configTheme()}>
+                                <ErrorBoundary fallback={<AppError />}>
+                                    <CssBaseline />
+                                    <Outlet />
+                                </ErrorBoundary>
+                            </ThemeProvider>
+                        </ChroniclesProvider>
                     </EchoProvider>
                 </ToolsProvider>
             </LocalizationProvider>

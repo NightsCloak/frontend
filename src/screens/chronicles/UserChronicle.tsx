@@ -8,6 +8,7 @@ import NCModal from '@/components/NCModal';
 import { useState } from 'react';
 import UpdateChronicleName from '@/components/Chronicles/forms/UpdateChronicleName';
 import { Edit } from '@mui/icons-material';
+import UpdateChronicleEmail from '@/components/Chronicles/forms/UpdateChronicleEmail';
 
 const UserChronicle = () => {
     const params = useParams<{ chronicleId: string }>();
@@ -29,7 +30,12 @@ const UserChronicle = () => {
                     <UpdateChronicleName handler={handleUpdateNameModal} chronicleId={params.chronicleId ?? ''} />
                 </NCModal>
             </div>
-            <Typography>{data.email}</Typography>
+            <div style={{ display: 'flex' }}>
+                <Typography variant={'h6'}>{data.email}</Typography>
+                <NCModal title={''} sx={{ box: { height: 200 } }} icon={<Edit />}>
+                    <UpdateChronicleEmail handler={handleUpdateNameModal} chronicleId={params.chronicleId ?? ''} />
+                </NCModal>
+            </div>
         </Box>
     );
 };

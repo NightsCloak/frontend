@@ -3,8 +3,9 @@ import { useLocation } from 'react-router';
 import { useAppSelector } from '@/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
+import NCLink from './NCLink';
 
-const AdminMenu = () => {
+const UserMenu = () => {
     const location = useLocation();
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user);
@@ -19,11 +20,16 @@ const AdminMenu = () => {
 
     return (
         <div className={classes.root}>
-            <MenuList>
+            <MenuList className={classes.menuList}>
                 {!auth.status && (
-                    <MenuItem selected={location.pathname === '/login'} onClick={handleLoginNavigation}>
-                        Login
-                    </MenuItem>
+                    <>
+                        <MenuItem selected={location.pathname === '/login'} onClick={handleLoginNavigation}>
+                            Login
+                        </MenuItem>
+                        <NCLink to={'/register'}>
+                            <MenuItem selected={location.pathname === '/register'}>register</MenuItem>
+                        </NCLink>
+                    </>
                 )}
                 {auth.status && <MenuItem>{user.name}</MenuItem>}
             </MenuList>
@@ -34,9 +40,10 @@ const AdminMenu = () => {
 const useStyles = makeStyles()((theme) => ({
     root: {
         display: 'flex',
-        // width: '100%',
+        flexDirection: 'row',
         justifyContent: 'end',
         marginRight: theme.spacing(1),
     },
+    menuList: { display: 'flex', flexDirection: 'row', '& > *': { marginLeft: theme.spacing(1) } },
 }));
-export default AdminMenu;
+export default UserMenu;

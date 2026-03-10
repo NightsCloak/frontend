@@ -1,11 +1,11 @@
 import Typography from '@mui/material/Typography';
 import { DataGridPremium, GridColDef, GridToolbar } from '@mui/x-data-grid-premium';
-import { useGetChroniclesQuery } from '@/redux/features/chronciles';
 import { Box, Paper } from '@mui/material';
 import NCLink from '@/components/NCLink';
+import useChronicles from '@/hooks/useChronicles';
 
 const ChroniclesTable = () => {
-    const { data: chronicles, isLoading, isUninitialized } = useGetChroniclesQuery();
+    const { chroniclesList } = useChronicles();
 
     const columns: GridColDef<Chronicle>[] = [
         {
@@ -81,9 +81,9 @@ const ChroniclesTable = () => {
                 disableColumnSelector
                 disableDensitySelector
                 density={'compact'}
-                loading={isUninitialized || isLoading}
+                loading={chroniclesList.data.length === 0}
                 columns={columns}
-                rows={chronicles?.data ?? []}
+                rows={chroniclesList?.data ?? []}
             />
         </Box>
     );

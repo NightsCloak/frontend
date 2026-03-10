@@ -11,7 +11,7 @@ import useScreenSize from '@/hooks/useScreenSize';
 import MaintenanceScreen from '@/screens/error/MaintenanceScreen';
 import Sidebar from '@/components/sidebar';
 import SidebarProvider from '@/providers/SidebarProvider';
-import AdminMenu from '@/components/AdminMenu';
+import UserMenu from '@/components/UserMenu';
 import DrawerHeader from '@/components/drawer/DrawerHeader';
 import imagePaths from '@/utils/imagePaths';
 import { toggleDrawer } from '@/redux/reducers/appSlice';
@@ -69,7 +69,7 @@ const Main: FC = () => {
                     )}
                     <div className={classes.appBarMenu}>
                         <PublicMenu />
-                        <AdminMenu />
+                        <UserMenu />
                     </div>
                 </AppBar>
 
@@ -121,7 +121,6 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             justifyContent: 'end',
             display: 'flex',
             flexDirection: 'row',
-            '& > *': { marginLeft: theme.spacing(1) },
         },
         breadcrumbs: {
             display: 'flex',
