@@ -7,6 +7,7 @@ function parseUrl(api: BaseQueryApi, args: string | FetchArgs, url: string): [ur
         'oauth/logout',
         'oauth/token',
         'oauth/social/google/callback',
+        'oauth/social/discord/callback',
     ];
 
     if (api.endpoint !== 'getToken') {
