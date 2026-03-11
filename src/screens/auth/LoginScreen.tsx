@@ -9,9 +9,7 @@ import {
     Paper,
     Stack,
     TextField,
-    Theme,
     Typography,
-    useTheme,
 } from '@mui/material';
 import { useHeartbeatQuery, useLoginMutation } from '@/redux/features/authApi';
 import { useNavigate } from 'react-router-dom';
@@ -33,8 +31,7 @@ type LoginProps = {
 };
 
 const LoginScreen: FC<LoginProps> = ({ register, success }) => {
-    const theme = useTheme();
-    const { classes } = useStyles(theme)();
+    const { classes, theme } = useStyles();
     const auth = useAppSelector((state) => state.auth);
     const location = useLocation();
     const navigate = useNavigate();
@@ -263,83 +260,82 @@ const LoginScreen: FC<LoginProps> = ({ register, success }) => {
     );
 };
 
-const useStyles = (theme: Theme) =>
-    makeStyles()({
-        root: {
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            '& .MuiPaper-root': {
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-                borderBottomLeftRadius: 15,
-                borderBottomRightRadius: 15,
-                boxShadow: '0px 0px 0px 0px rgba(0,0,0,0)',
-                padding: theme.spacing(2),
-                paddingBottom: theme.spacing(3),
-                width: 600,
-                [theme.breakpoints.down('sm')]: {
-                    width: '90%',
-                },
-            },
-        },
-        spinner: {
-            flexGrow: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            minHeight: 24,
-            marginBottom: theme.spacing(1),
-        },
-        formRoot: {
-            flexDirection: 'column',
-            justifyContent: 'center',
+const useStyles = makeStyles()((theme) => ({
+    root: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '& .MuiPaper-root': {
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            borderBottomLeftRadius: 15,
+            borderBottomRightRadius: 15,
+            boxShadow: '0px 0px 0px 0px rgba(0,0,0,0)',
+            padding: theme.spacing(2),
+            paddingBottom: theme.spacing(3),
+            width: 600,
             [theme.breakpoints.down('sm')]: {
-                width: '75%',
+                width: '90%',
             },
         },
-        header: {
-            flexGrow: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            padding: theme.spacing(1),
-            marginBottom: 10,
-            borderRadius: 10,
-            backgroundColor: theme.palette.background.default,
+    },
+    spinner: {
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: 24,
+        marginBottom: theme.spacing(1),
+    },
+    formRoot: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        [theme.breakpoints.down('sm')]: {
+            width: '75%',
         },
-        loginForm: {
-            flexGrow: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: theme.spacing(2),
-            '& .MuiFormControl-root': {
-                borderRadius: 4,
-            },
+    },
+    header: {
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        padding: theme.spacing(1),
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor: theme.palette.background.default,
+    },
+    loginForm: {
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: theme.spacing(2),
+        '& .MuiFormControl-root': {
+            borderRadius: 4,
         },
-        signUpText: {
-            textAlign: 'center',
-            marginTop: theme.spacing(1),
-            '&>span': {
-                cursor: 'pointer',
-                '&:hover': {
-                    textDecoration: 'underline',
-                },
-            },
-        },
-        options: {
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'space-between',
-        },
-        optionsText: {
-            color: theme.palette.info.main,
+    },
+    signUpText: {
+        textAlign: 'center',
+        marginTop: theme.spacing(1),
+        '&>span': {
             cursor: 'pointer',
             '&:hover': {
                 textDecoration: 'underline',
             },
         },
-    });
+    },
+    options: {
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'space-between',
+    },
+    optionsText: {
+        color: theme.palette.info.main,
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+    },
+}));
 
 export default LoginScreen;

@@ -71,6 +71,10 @@ const useAuthRouteHandler = () => {
             return;
         }
 
+        if (auth.status && location.pathname === '/login') {
+            navigate('/home');
+            return;
+        }
         if (
             user.data &&
             !user.data.is_verified &&
