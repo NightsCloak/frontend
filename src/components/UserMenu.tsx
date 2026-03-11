@@ -1,11 +1,14 @@
-import { MenuItem, MenuList } from '@mui/material';
+import { Menu, MenuItem, MenuList } from '@mui/material';
 import { useLocation } from 'react-router';
 import { useAppSelector } from '@/redux/hooks';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
 import NCLink from './NCLink';
+import { MouseEventHandler, useState } from 'react';
 
 const UserMenu = () => {
+    const [anchorEl, setAnchorEl] = useState<null | Element>(null);
+    const open = Boolean(anchorEl);
     const location = useLocation();
     const auth = useAppSelector((state) => state.auth);
     const user = useAppSelector((state) => state.user);
@@ -17,6 +20,22 @@ const UserMenu = () => {
             navigate('/login');
         }
     };
+
+    const handleMenuClick: MouseEventHandler = (event) => {
+        console.log('menu', event);
+        !anchorEl && setAnchorEl(event.currentTarget);
+        anchorEl && setAnchorEl(null);
+    };
+
+    const handleMenuNavigation: MouseEventHandler = (event) => {
+        anchorEl && setAnchorEl(null);
+        switch (event.currentTarget.textContent) {
+            case 'Account Settings':
+                navigate('/home/account');
+        }
+    };
+
+    const menu = [{ element: <MenuItem onClick={handleMenuNavigation}>Account Settings</MenuItem> }];
 
     return (
         <div className={classes.root}>
@@ -31,7 +50,26 @@ const UserMenu = () => {
                         </NCLink>
                     </>
                 )}
-                {auth.status && <MenuItem>{user.name}</MenuItem>}
+                {auth.status && (
+                    <>
+                        <MenuItem id={'user_menu'} onClick={handleMenuClick}>
+                            {user.name}
+                        </MenuItem>
+                        <Menu
+                            id={'user_menu'}
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={() => setAnchorEl(null)}
+                            slotProps={{
+                                list: {
+                                    'aria-labelledby': 'basic-button',
+                                },
+                            }}
+                        >
+                            {menu.map((item) => item.element)}
+                        </Menu>
+                    </>
+                )}
             </MenuList>
         </div>
     );

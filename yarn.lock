@@ -2989,13 +2989,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/x-charts-pro@npm:^8.27.4":
-  version: 8.27.4
-  resolution: "@mui/x-charts-pro@npm:8.27.4"
+"@mui/x-charts-pro@npm:^8.27.5":
+  version: 8.27.5
+  resolution: "@mui/x-charts-pro@npm:8.27.5"
   dependencies:
     "@babel/runtime": "npm:^7.28.4"
     "@mui/utils": "npm:^7.3.5"
-    "@mui/x-charts": "npm:8.27.4"
+    "@mui/x-charts": "npm:8.27.5"
     "@mui/x-charts-vendor": "npm:8.26.0"
     "@mui/x-internal-gestures": "npm:0.4.0"
     "@mui/x-internals": "npm:8.26.0"
@@ -3018,7 +3018,7 @@ __metadata:
       optional: true
     "@emotion/styled":
       optional: true
-  checksum: 10c0/bb8ac2319c0ab8a22e77202f26fa26e42a9b365134167bdbf355d61830b11a1df107dfe897ffe08b19a186d95d2f84d7726891696127b290fc283d1daef19951
+  checksum: 10c0/05d19cab192cb17250862368697288963143c9e6a16af0c65d438e2d3afa706a8278e1d745b7912f4161d813485ff252be370af421814345f2e17de4f7ed5dcd
   languageName: node
   linkType: hard
 
@@ -3053,9 +3053,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/x-charts@npm:8.27.4":
-  version: 8.27.4
-  resolution: "@mui/x-charts@npm:8.27.4"
+"@mui/x-charts@npm:8.27.5":
+  version: 8.27.5
+  resolution: "@mui/x-charts@npm:8.27.5"
   dependencies:
     "@babel/runtime": "npm:^7.28.4"
     "@mui/utils": "npm:^7.3.5"
@@ -3079,18 +3079,18 @@ __metadata:
       optional: true
     "@emotion/styled":
       optional: true
-  checksum: 10c0/90db52fbf2ce97200ebeba1a0d2cc32c491908e8ccc44b0c80b16424f3110be0df34cbfa1bf7a85b4573a4f9d179308673b65f9404f5f4a5e30e5192b08b398f
+  checksum: 10c0/6924749df4dd8d3b961a4591cf6f71f9e37ba0780c90d8db9e0967e0ee488f6423fc676cb265bbf62c547f9181de2f80462c573735959fcab694c07cf9b726cf
   languageName: node
   linkType: hard
 
-"@mui/x-data-grid-premium@npm:^8.27.4":
-  version: 8.27.4
-  resolution: "@mui/x-data-grid-premium@npm:8.27.4"
+"@mui/x-data-grid-premium@npm:^8.27.5":
+  version: 8.27.5
+  resolution: "@mui/x-data-grid-premium@npm:8.27.5"
   dependencies:
     "@babel/runtime": "npm:^7.28.4"
     "@mui/utils": "npm:^7.3.5"
-    "@mui/x-data-grid": "npm:8.27.4"
-    "@mui/x-data-grid-pro": "npm:8.27.4"
+    "@mui/x-data-grid": "npm:8.27.5"
+    "@mui/x-data-grid-pro": "npm:8.27.5"
     "@mui/x-internal-exceljs-fork": "npm:4.4.3"
     "@mui/x-internals": "npm:8.26.0"
     "@mui/x-license": "npm:8.26.0"
@@ -3108,17 +3108,17 @@ __metadata:
       optional: true
     "@emotion/styled":
       optional: true
-  checksum: 10c0/fc481cf75d4512183803a07be58b4eb5a1348cca0c1c608063feb4a1a991d38deae76a24bae85ba9a4ff7e8b1ce7f1b38161eef7b7c36c0f17e6f8621be41b75
+  checksum: 10c0/abc7103b43174cc65cb544d928223806e69a04049b62976b993f0d5fdb8d397ff49f93e5293fd9ee77b7e26477b8a125ae384472985b0bbeebecba376d4e8aa9
   languageName: node
   linkType: hard
 
-"@mui/x-data-grid-pro@npm:8.27.4":
-  version: 8.27.4
-  resolution: "@mui/x-data-grid-pro@npm:8.27.4"
+"@mui/x-data-grid-pro@npm:8.27.5":
+  version: 8.27.5
+  resolution: "@mui/x-data-grid-pro@npm:8.27.5"
   dependencies:
     "@babel/runtime": "npm:^7.28.4"
     "@mui/utils": "npm:^7.3.5"
-    "@mui/x-data-grid": "npm:8.27.4"
+    "@mui/x-data-grid": "npm:8.27.5"
     "@mui/x-internals": "npm:8.26.0"
     "@mui/x-license": "npm:8.26.0"
     clsx: "npm:^2.1.1"
@@ -3135,13 +3135,13 @@ __metadata:
       optional: true
     "@emotion/styled":
       optional: true
-  checksum: 10c0/a238594821bac3b79889c060171353e6bc4c8f1a47114c90f0fee76872c8af15119e50b89f125d496689d6550b9bd1ab07596f3955422ee7d9d35b0145c6c151
+  checksum: 10c0/cbe4e1be790da1bb810492a97e4676449447c24095da774605f93716ed6a95b01a06ac70ac8cad3b7732f682c04852783e74bb99a922803593ff805e96e06bc8
   languageName: node
   linkType: hard
 
-"@mui/x-data-grid@npm:8.27.4":
-  version: 8.27.4
-  resolution: "@mui/x-data-grid@npm:8.27.4"
+"@mui/x-data-grid@npm:8.27.5":
+  version: 8.27.5
+  resolution: "@mui/x-data-grid@npm:8.27.5"
   dependencies:
     "@babel/runtime": "npm:^7.28.4"
     "@mui/utils": "npm:^7.3.5"
@@ -3162,7 +3162,7 @@ __metadata:
       optional: true
     "@emotion/styled":
       optional: true
-  checksum: 10c0/0d6b448a4c37e45b5b145e553f0dd4ed1dbbaa62715c8c1488b521b936f4428d0869a928b5106e55a77730a484fe6a721560c47ee5f62cda83674e25aa6519a9
+  checksum: 10c0/cfc8e3f6cc1ef137f5b51246855067d0fbaac82ddff9388c3ccdefdfd2065cb7b4bf86ebae835ec92a11cc349817341d58bb9cffde9a0347f636348493a8afb5
   languageName: node
   linkType: hard
 
@@ -3795,6 +3795,13 @@ __metadata:
     "@sentry/bundler-plugin-core": "npm:5.1.1"
     "@sentry/rollup-plugin": "npm:5.1.1"
   checksum: 10c0/9318430b95592921290a64b134b634a429af9673acccc14d252a1683a937ea7cc56c69662c9f876c5cde1df242ea1e28323d14bba63d7ee76a0778ec8a2a2af1
+  languageName: node
+  linkType: hard
+
+"@socket.io/component-emitter@npm:~3.1.0":
+  version: 3.1.2
+  resolution: "@socket.io/component-emitter@npm:3.1.2"
+  checksum: 10c0/c4242bad66f67e6f7b712733d25b43cbb9e19a595c8701c3ad99cbeb5901555f78b095e24852f862fffb43e96f1d8552e62def885ca82ae1bb05da3668fd87d7
   languageName: node
   linkType: hard
 
@@ -4449,7 +4456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.57.0, @typescript-eslint/utils@npm:^8.48.0":
+"@typescript-eslint/utils@npm:8.57.0":
   version: 8.57.0
   resolution: "@typescript-eslint/utils@npm:8.57.0"
   dependencies:
@@ -5938,7 +5945,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4.4.3":
+"debug@npm:^4.4.3, debug@npm:~4.4.1":
   version: 4.4.3
   resolution: "debug@npm:4.4.3"
   dependencies:
@@ -6178,10 +6185,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enquire.js@npm:^2.1.6":
-  version: 2.1.6
-  resolution: "enquire.js@npm:2.1.6"
-  checksum: 10c0/3ab739ed0885b5dda973de3fe610d2e3ce261a3ee77321ee4c0c876294c1c37f87f6cccead3ee1de8ead24b31f730586847f89118f083e776677f7c3cd71abaa
+"engine.io-client@npm:~6.6.1":
+  version: 6.6.4
+  resolution: "engine.io-client@npm:6.6.4"
+  dependencies:
+    "@socket.io/component-emitter": "npm:~3.1.0"
+    debug: "npm:~4.4.1"
+    engine.io-parser: "npm:~5.2.1"
+    ws: "npm:~8.18.3"
+    xmlhttprequest-ssl: "npm:~2.1.1"
+  checksum: 10c0/d90bc32d614f67db9c198d1c26a787529f3038a7429c75e677f5495938cc45f9e89d435e8860bcfcc01db410e21d2f245b914f2fcbdb03ffd50d30f2aeec5143
+  languageName: node
+  linkType: hard
+
+"engine.io-parser@npm:~5.2.1":
+  version: 5.2.3
+  resolution: "engine.io-parser@npm:5.2.3"
+  checksum: 10c0/ed4900d8dbef470ab3839ccf3bfa79ee518ea8277c7f1f2759e8c22a48f64e687ea5e474291394d0c94f84054749fd93f3ef0acb51fa2f5f234cc9d9d8e7c536
   languageName: node
   linkType: hard
 
@@ -6736,18 +6756,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-storybook@npm:^10.2.17":
-  version: 10.2.17
-  resolution: "eslint-plugin-storybook@npm:10.2.17"
-  dependencies:
-    "@typescript-eslint/utils": "npm:^8.48.0"
-  peerDependencies:
-    eslint: ">=8"
-    storybook: ^10.2.17
-  checksum: 10c0/a45d3f94c18c66c4c9fff65fe5bf74de35e0d97b36755f62d56818db40a70f0931e99e9715d9392e4efec5aa2e7a1e76935a76305ce85d165312608ea972b31d
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-tss-unused-classes@npm:^1.0.3":
   version: 1.0.3
   resolution: "eslint-plugin-tss-unused-classes@npm:1.0.3"
@@ -7105,8 +7113,8 @@ __metadata:
     "@mui/styled-engine": "npm:^7.3.9"
     "@mui/system": "npm:^7.3.9"
     "@mui/utils": "npm:^7.3.9"
-    "@mui/x-charts-pro": "npm:^8.27.4"
-    "@mui/x-data-grid-premium": "npm:^8.27.4"
+    "@mui/x-charts-pro": "npm:^8.27.5"
+    "@mui/x-data-grid-premium": "npm:^8.27.5"
     "@mui/x-date-pickers": "npm:^8.27.2"
     "@mui/x-license": "npm:^8.26.0"
     "@popperjs/core": "npm:^2.11.8"
@@ -7153,7 +7161,6 @@ __metadata:
     eslint-plugin-react-compiler: "npm:19.1.0-rc.2"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.5.2"
-    eslint-plugin-storybook: "npm:^10.2.17"
     eslint-plugin-tss-unused-classes: "npm:^1.0.3"
     eslint-plugin-unused-imports: "npm:^4.4.1"
     fast-glob: "npm:^3.3.3"
@@ -7183,13 +7190,14 @@ __metadata:
     react-redux: "npm:^9.2.0"
     react-router: "npm:7.13.1"
     react-router-dom: "npm:7.13.1"
-    react-slick: "npm:^0.30.3"
+    react-slick: "npm:^0.31.0"
     react-timeago: "npm:^8.3.0"
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
     restructure: "npm:^3.0.2"
     semver: "npm:7.7.4"
     slick-carousel: "npm:^1.8.1"
+    socket.io-client: "npm:^4.8.3"
     terser: "npm:^5.46.0"
     tga: "npm:^1.0.7"
     tss-react: "npm:^4.9.20"
@@ -9819,19 +9827,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-slick@npm:^0.30.3":
-  version: 0.30.3
-  resolution: "react-slick@npm:0.30.3"
+"react-slick@npm:^0.31.0":
+  version: 0.31.0
+  resolution: "react-slick@npm:0.31.0"
   dependencies:
     classnames: "npm:^2.2.5"
-    enquire.js: "npm:^2.1.6"
     json2mq: "npm:^0.2.0"
     lodash.debounce: "npm:^4.0.8"
     resize-observer-polyfill: "npm:^1.5.0"
   peerDependencies:
     react: ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/7a4cc4f898ede6fd3a0b7ac48921c1021c7ed3bb1eee5d701b7c3d3d53b0d18d20e72aab1dcb8012ff13636b4927c4bcf243fb97258811a9511bed7ab5a6d27d
+  checksum: 10c0/ac006104323c61af6d8e208edb49038485458756b72c9e15622beef2700085bcdb1d21f028be1b3f199ff15616eab9d61a45aa09650c9ae1d72bf2a23be48616
   languageName: node
   linkType: hard
 
@@ -10740,6 +10747,28 @@ __metadata:
     dot-case: "npm:^3.0.4"
     tslib: "npm:^2.0.3"
   checksum: 10c0/ab19a913969f58f4474fe9f6e8a026c8a2142a01f40b52b79368068343177f818cdfef0b0c6b9558f298782441d5ca8ed5932eb57822439fad791d866e62cecd
+  languageName: node
+  linkType: hard
+
+"socket.io-client@npm:^4.8.3":
+  version: 4.8.3
+  resolution: "socket.io-client@npm:4.8.3"
+  dependencies:
+    "@socket.io/component-emitter": "npm:~3.1.0"
+    debug: "npm:~4.4.1"
+    engine.io-client: "npm:~6.6.1"
+    socket.io-parser: "npm:~4.2.4"
+  checksum: 10c0/76c0d86de0b636d0bf5011cf3425212c900f43dac632db6eb493816920cd035af7ddd92fea9a106b45eb347405953c0414eb3a5d465b180215e46fc8b61420b3
+  languageName: node
+  linkType: hard
+
+"socket.io-parser@npm:~4.2.4":
+  version: 4.2.5
+  resolution: "socket.io-parser@npm:4.2.5"
+  dependencies:
+    "@socket.io/component-emitter": "npm:~3.1.0"
+    debug: "npm:~4.4.1"
+  checksum: 10c0/fce2b7a76eed9babc7b4156e82e5cd478b0bc5eb877d52ae48aa0d90fe2d11be5a9e576fbc8bdbf3dd656863965ad133ba6c7d45172a1e020270e7c7891c1b35
   languageName: node
   linkType: hard
 
@@ -12074,10 +12103,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ws@npm:~8.18.3":
+  version: 8.18.3
+  resolution: "ws@npm:8.18.3"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 10c0/eac918213de265ef7cb3d4ca348b891a51a520d839aa51cdb8ca93d4fa7ff9f6ccb339ccee89e4075324097f0a55157c89fa3f7147bde9d8d7e90335dc087b53
+  languageName: node
+  linkType: hard
+
 "xmlchars@npm:^2.2.0":
   version: 2.2.0
   resolution: "xmlchars@npm:2.2.0"
   checksum: 10c0/b64b535861a6f310c5d9bfa10834cf49127c71922c297da9d4d1b45eeaae40bf9b4363275876088fbe2667e5db028d2cd4f8ee72eed9bede840a67d57dab7593
+  languageName: node
+  linkType: hard
+
+"xmlhttprequest-ssl@npm:~2.1.1":
+  version: 2.1.2
+  resolution: "xmlhttprequest-ssl@npm:2.1.2"
+  checksum: 10c0/70d60869323e823f473a238f78fd108437edbc3690ecd5859c39c83217080090a18899b272e515769c0d1f518cc64cbed6b6995b23fdd7ba13b297d530b6e631
   languageName: node
   linkType: hard
 

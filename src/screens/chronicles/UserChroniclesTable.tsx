@@ -66,7 +66,6 @@ const UserChroniclesTable = () => {
             style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 300 }}
         >
             <div className={classes.header}>
-                <Typography>Chronicles:</Typography>
                 <NewChronicleModal />
             </div>
             {isUninitialized ? (
@@ -122,7 +121,7 @@ const useStyles = makeStyles()((theme) => ({
     root: {},
     header: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'row-reverse',
         justifyContent: 'space-between',
         alignItems: 'center',
     },

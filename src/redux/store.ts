@@ -53,7 +53,7 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
 
 const appPersistConfig = {
     key: 'app',
-    storage: storage,
+    storage,
     version: appVersion,
     migrate: appMigrate,
 };
