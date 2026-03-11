@@ -26,6 +26,7 @@ const useAuthRouteHandler = () => {
         'privacy',
         '/login/social/google/callback',
         '/login/social/discord/callback',
+        '/chronicles',
     ];
 
     const isGuestPath = useMemo(() => {
