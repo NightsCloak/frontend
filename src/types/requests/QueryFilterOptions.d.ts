@@ -1,14 +1,25 @@
 type QueryFilterOptions = string;
 
-type QueryFilterOptionsBuilder = {
-    [key: string]: string | number | boolean;
-} & {
+type queryFilterProps = {
     sort?: string;
     include?: string;
-    load?: string;
+    load?: string | string[];
     limit?: number;
     page?: number;
     showTrashed?: boolean;
-    nameSearch?: string;
-    [key: string]: string | number | boolean | undefined | (string | number)[];
+    name?: string;
+    filters?: {
+        [key: string]: string | number | boolean | undefined;
+    };
+    filter?: string[];
+    tags?: string | string[];
+    between?: { start: string; end: string };
+    [key: string]:
+        | string
+        | number
+        | boolean
+        | undefined
+        | (string | number)
+        | { [key: string]: string | number | boolean | undefined }
+        | (string | number)[];
 };

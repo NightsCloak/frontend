@@ -2,8 +2,11 @@ import { createContext } from 'react';
 
 const initialState = {
     genresList: [],
+    refetchGenresList: () => {},
     regionsList: [],
+    refetchRegionsList: () => {},
     typesList: [],
+    refetchTypesList: () => {},
     chroniclesList: {
         data: [],
         links: {
@@ -23,6 +26,8 @@ const initialState = {
             total: 0,
         },
     },
+    getChroniclesList: () => {},
+    chroniclesListState: {},
 };
 
 export const ChroniclesContext = createContext<ChroniclesContextType>(initialState);

@@ -10,6 +10,7 @@ const initialState: UserState = {
         verified: null,
         darkMode: true,
         alertSounds: false,
+        listView: false,
     },
 };
 
@@ -29,6 +30,9 @@ const userSlice = createSlice({
                 alertSounds: action.payload ?? !state.settings.alertSounds,
             };
         },
+        toggleListView: (state, action: PayloadAction<boolean | undefined>) => {
+            state.settings = { ...state.settings, listView: action.payload ?? !state.settings.listView };
+        },
         logout: (state: Draft<UserState>) => {
             state.data = null!;
             state.name = null!;
@@ -37,6 +41,7 @@ const userSlice = createSlice({
                 verified: null,
                 darkMode: true,
                 alertSounds: false,
+                listView: false,
             };
         },
     },
@@ -50,6 +55,7 @@ const userSlice = createSlice({
                     verified: null,
                     darkMode: true,
                     alertSounds: false,
+                    listView: false,
                 };
             })
             .addMatcher(userApi.endpoints.getUser.matchFulfilled, (state: Draft<UserState>, { payload }) => {
@@ -59,6 +65,7 @@ const userSlice = createSlice({
                     verified: payload.is_verified,
                     darkMode: payload.dark_mode ?? state.settings.darkMode ?? true,
                     alertSounds: state.settings.alertSounds ?? false,
+                    listView: state.settings.listView ?? false,
                 };
                 state.data = payload;
             });
@@ -67,4 +74,4 @@ const userSlice = createSlice({
 
 export default userSlice;
 
-export const { logout, toggleDarkMode, toggleAlertSounds } = userSlice.actions;
+export const { logout, toggleDarkMode, toggleAlertSounds, toggleListView } = userSlice.actions;

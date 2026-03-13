@@ -6,5 +6,6 @@ interface UserState {
         verified: boolean | null;
         darkMode: boolean;
         alertSounds: boolean;
+        listView: boolean;
     };
 }

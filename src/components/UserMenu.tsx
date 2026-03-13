@@ -22,7 +22,6 @@ const UserMenu = () => {
     };
 
     const handleMenuClick: MouseEventHandler = (event) => {
-        console.log('menu', event);
         !anchorEl && setAnchorEl(event.currentTarget);
         anchorEl && setAnchorEl(null);
     };
@@ -42,34 +41,37 @@ const UserMenu = () => {
             <MenuList className={classes.menuList}>
                 {!auth.status && (
                     <>
-                        <MenuItem selected={location.pathname === '/login'} onClick={handleLoginNavigation}>
+                        <MenuItem
+                            key={'login'}
+                            selected={location.pathname === '/login'}
+                            onClick={handleLoginNavigation}
+                        >
                             Login
                         </MenuItem>
-                        <NCLink to={'/register'}>
+                        <NCLink key={'register'} to={'/register'}>
                             <MenuItem selected={location.pathname === '/register'}>register</MenuItem>
                         </NCLink>
                     </>
                 )}
-                {auth.status && (
-                    <>
-                        <MenuItem id={'user_menu'} onClick={handleMenuClick}>
-                            {user.name}
-                        </MenuItem>
-                        <Menu
-                            id={'user_menu'}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={() => setAnchorEl(null)}
-                            slotProps={{
-                                list: {
-                                    'aria-labelledby': 'basic-button',
-                                },
-                            }}
-                        >
-                            {menu.map((item) => item.element)}
-                        </Menu>
-                    </>
-                )}
+                {auth.status && [
+                    <MenuItem id={'user_menu'} onClick={handleMenuClick} key={'user_menu_anchor'}>
+                        {user.name}
+                    </MenuItem>,
+                    <Menu
+                        key={'user_menu'}
+                        id={'user_menu'}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={() => setAnchorEl(null)}
+                        slotProps={{
+                            list: {
+                                'aria-labelledby': 'basic-button',
+                            },
+                        }}
+                    >
+                        {menu.map((item) => item.element)}
+                    </Menu>,
+                ]}
             </MenuList>
         </div>
     );

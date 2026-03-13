@@ -1,45 +1,37 @@
-export type queryFilterProps = {
-    sort?: string;
-    include?: string;
-    load?: string;
-    limit?: number;
-    page?: number;
-    showTrashed?: boolean;
-    name?: string;
-    [key: string]: string | number | boolean | undefined | (string | number)[];
-};
-
 const queryFilterOptions = (options: queryFilterProps = {}) => {
     let queryString = '';
+    let first = true;
     for (const option in options) {
         if (option === 'showTrashed') {
-            if (options['showTrashed']) queryString += `${queryString.length ? '&' : '?'}filter[trashed]=only`;
+            if (options['showTrashed']) queryString += `${first ? '?' : '&'}filter[trashed]=only`;
         } else if (option === 'name') {
-            if (options['name']) queryString += `${queryString.length ? '&' : '?'}filter[name]=${options['name']}`;
+            if (options['name']) queryString += `${first ? '?' : '&'}filter[name]=${options['name']}`;
         } else if (option === 'tags') {
-            if (options['tags']) queryString += `${queryString.length ? '&' : '?'}filter[tags]=${options['tags']}`;
-        } else if (option === 'statuses') {
-            if (options['statuses'])
-                queryString += `${queryString.length ? '&' : '?'}filter[status]=${options['statuses']}`;
-        } else if (option === 'assigned') {
-            if (options['assigned']) queryString += `${queryString.length ? '&' : '?'}filter[assigned]=true`;
-        } else if (option === 'labeled' && options['labeled'] && !options['notLabeled']) {
-            queryString += `${queryString.length ? '&' : '?'}filter[labeled]=${options['labeled']}`;
-        } else if (option === 'notLabeled' && options['notLabeled'] && !options['labeled']) {
-            queryString += `${queryString.length ? '&' : '?'}filter[notLabeled]=${options['notLabeled']}`;
+            if (options['tags']) queryString += `${first ? '?' : '&'}filter[tags]=${options['tags']}`;
+        } else if (option === 'filters') {
+            for (const filter in options['filters']) {
+                queryString += `${first ? '?' : '&'}filter[${filter}]=${options['filters'][filter]}`;
+            }
+        } else if (option === 'between' && options.between) {
+            queryString += `${first ? '?' : '&'}filter[between][start]=${options.between.start}&filter[between][end]=${options.between.end}`;
         } else {
             const value = options[option];
             if (Array.isArray(options[option])) {
-                queryString += `${queryString.length ? '&' : '?'}${option}=${(value as Array<string | number>).join(',')}`;
+                queryString += `${first ? '?' : '&'}${option}=${(value as Array<string | number>).join(',')}`;
             } else if (options[option] !== undefined && options[option] !== null) {
-                queryString += `${queryString.length ? '&' : '?'}${option}=${options[option]}`;
+                queryString += `${first ? '?' : '&'}${option}=${options[option]}`;
             }
+        }
+
+        if (first) {
+            first = false;
         }
     }
 
     return queryString;
 };
 
+// @ts-expect-error none
 const queryFilterParser = (options: URLSearchParams) => {
     const queryState: queryFilterProps = {};
 
@@ -79,5 +71,3 @@ const queryFilterParser = (options: URLSearchParams) => {
 };
 
 export default queryFilterOptions;
-
-export { queryFilterParser, queryFilterOptions };

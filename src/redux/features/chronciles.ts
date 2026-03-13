@@ -17,20 +17,21 @@ const chronicle = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Chronicles', 'User'],
         }),
-        getChronicles: builder.query<ChronicleResponse, void>({
-            query: () => {
+        getChronicles: builder.mutation<ChronicleResponse, { options?: QueryFilterOptions }>({
+            query: ({ options }) => {
+                console.log('options1', options);
                 return {
-                    url: 'chronicles',
+                    url: `chronicles${options}`,
                     method: 'GET',
                 };
             },
         }),
-        getUserChronicles: builder.query<ChronicleResponse, void>({
-            query: () => ({
-                url: 'user/chronicles',
+        getUserChronicles: builder.mutation<ChronicleResponse, { options?: QueryFilterOptions }>({
+            query: ({ options }) => ({
+                url: `user/chronicles${options}`,
                 method: 'GET',
             }),
-            providesTags: ['Chronicles'],
+            invalidatesTags: ['Chronicles'],
         }),
         getUserChronicle: builder.query<Chronicle, string>({
             query: (chronicleId) => ({
@@ -99,8 +100,8 @@ export default chronicle;
 export const {
     useAddChronicleMutation,
     useDeleteChronicleMutation,
-    useGetChroniclesQuery,
-    useGetUserChroniclesQuery,
+    useGetChroniclesMutation,
+    useGetUserChroniclesMutation,
     useGetUserChronicleQuery,
     useGetChroniclesSearchQuery,
     useGetChronicleGenresListQuery,

@@ -8,6 +8,7 @@ type Chronicle = {
     avatar: string;
     avatar_route: string;
     genres: ChronicleGenresList[];
+    type: 'in-person' | 'hybrid' | 'virtual';
     created_at: string;
     updated_at: string;
 };

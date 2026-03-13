@@ -1,12 +1,24 @@
 import Typography from '@mui/material/Typography';
-import { DataGridPremium, GridColDef, GridToolbar } from '@mui/x-data-grid-premium';
+import { DataGridPremium, GridColDef } from '@mui/x-data-grid-premium';
 import { Box, Paper } from '@mui/material';
 import NCLink from '@/components/NCLink';
 import useChronicles from '@/hooks/useChronicles';
+import useMeta from '@/hooks/useMeta';
+import CustomToolbar from '@/components/CustomToolbar';
 
 const ChroniclesTable = () => {
-    const { chroniclesList } = useChronicles();
-
+    const { getChroniclesList, chroniclesListState } = useChronicles();
+    const {
+        data: chroniclesList,
+        rowLimit,
+        rowCount,
+        page,
+        pageLimit,
+        setPage,
+        setRowLimit,
+        setSortBy,
+        setNameSearchDebounce,
+    } = useMeta<ChronicleResponse>(getChroniclesList, chroniclesListState);
     const columns: GridColDef<Chronicle>[] = [
         {
             field: 'name',
@@ -24,15 +36,17 @@ const ChroniclesTable = () => {
             headerName: 'Genre',
             renderCell: ({ row }) =>
                 row?.genres?.map((genre, index, array) => (
-                    <>
-                        <Typography variant={'caption'}>
-                            {genre.name}
-                            {array.length - 1 > index && ','}
-                        </Typography>
-                        &nbsp;
-                    </>
+                    <Typography key={`${row.id}_${genre.value}`} variant={'caption'}>
+                        {genre.name}
+                        {array.length - 1 > index && `, `}
+                    </Typography>
                 )),
             minWidth: 250,
+        },
+        {
+            field: 'type',
+            headerName: 'Type',
+            valueFormatter: (value: Chronicle['type'], row) => value[0].toUpperCase() + value.slice(1),
         },
     ];
 
@@ -44,34 +58,6 @@ const ChroniclesTable = () => {
             style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 300 }}
         >
             <DataGridPremium
-                slots={{
-                    toolbar: GridToolbar,
-                    noRowsOverlay: () => (
-                        <Box
-                            style={{
-                                // height: '100%',
-                                flex: 1,
-                                flexDirection: 'column',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography color={'primary'}>No Chronicles Found</Typography>
-                        </Box>
-                    ),
-                }}
-                getRowHeight={() => 'auto'}
-                slotProps={{
-                    toolbar: {
-                        showQuickFilter: true,
-                        excelOptions: {
-                            disableToolbarButton: true,
-                        },
-                        printOptions: { disableToolbarButton: true },
-                        csvOptions: { disableToolbarButton: true },
-                    },
-                }}
                 pagination
                 pageSizeOptions={[10, 25, 50, 100]}
                 initialState={{
@@ -80,10 +66,57 @@ const ChroniclesTable = () => {
                 disableColumnFilter
                 disableColumnSelector
                 disableDensitySelector
+                showToolbar
                 density={'compact'}
-                loading={chroniclesList.data.length === 0}
+                loading={!chroniclesList}
                 columns={columns}
                 rows={chroniclesList?.data ?? []}
+                //Sorting
+                paginationMode={'server'}
+                sortingMode={'server'}
+                filterMode={'server'}
+                rowCount={rowCount}
+                paginationModel={{ pageSize: rowLimit, page: page.current - 1 }}
+                paginationMeta={{ hasNextPage: page.current < pageLimit }}
+                onPaginationModelChange={(paginationModel) => {
+                    setPage(paginationModel.page + 1);
+                    setRowLimit(paginationModel.pageSize);
+                }}
+                onSortModelChange={(sortModel) => {
+                    console.log('sortModel', sortModel);
+                    setSortBy(
+                        sortModel.reduce((previousValue, currentValue, index, array) => {
+                            const field = currentValue.field;
+                            console.log(
+                                'field',
+                                currentValue,
+                                `${index === 0 ? previousValue : `${previousValue},`}${currentValue.sort === 'desc' ? '-' : ''}${field}`
+                            );
+                            return `${index === 0 ? previousValue : `${previousValue},`}${currentValue.sort === 'desc' ? '-' : ''}${field}`;
+                        }, '')
+                    );
+                }}
+                onFilterModelChange={(filterModel) => {
+                    console.log('filterModel', filterModel);
+                    let filter = '';
+                    const filters = filterModel.items;
+                    let first = true;
+                    for (const item in filters) {
+                        if (filters[item].field === 'name') {
+                            filter += `${!first ? ',' : ''}${filters[item]}`;
+                            first = false;
+                        }
+                    }
+
+                    if (filterModel.quickFilterValues && filterModel.quickFilterValues.length > 0) {
+                        filter += `${!first ? ',' : ''}${filterModel.quickFilterValues.join(',')}`;
+                    }
+                    console.log('filter', filter);
+                    setNameSearchDebounce(filter);
+                }}
+                slots={{
+                    toolbar: CustomToolbar,
+                }}
             />
         </Box>
     );

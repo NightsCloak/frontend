@@ -24,6 +24,7 @@ import {
     FetchBaseQueryError as RTKFetchBaseQueryError,
     SerializedError as RTKSerializedError,
 } from '@reduxjs/toolkit/query/react';
+import type { customBaseQuery as OWBNCustomBaseQuery } from '@/redux/apiSlice';
 
 interface ImportMetaEnv {
     readonly VITE_APP: 'admin' | 'frontend';
@@ -63,7 +64,6 @@ declare global {
         readonly env: ImportMetaEnv;
     }
 
-
     type Theme = MuiTheme;
 
     interface ColorSelectionOptions {
@@ -102,4 +102,25 @@ declare global {
     type RefObject<T> = ReactRefObject<T>;
     type NCLocation<S> = ReactRoutertLocation<S>;
     type ThemeOptions = MuiThemeOptions;
+
+    type ResultType<T> = T extends Pagination & infer U ? U : T;
+    type OptionsType = {
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        triggerParams?: any;
+        showPagination?: boolean;
+        useSearch?: boolean;
+        useTrashed?: boolean;
+        sortSize?: boolean;
+        sortLastActive?: boolean;
+        sortName?: boolean;
+        sortFirst?: boolean;
+        sortLast?: boolean;
+        tags?: TypedUseQueryHookResult<Tag[], unknown, typeof OWBNCustomBaseQuery>;
+        initialTags?: string[];
+        include?: string;
+        queryStrings?: queryFilterProps;
+        skip?: boolean;
+        initialLimit?: number;
+        initialSortBy?: Sorting['by'];
+    };
 }

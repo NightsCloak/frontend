@@ -39,3 +39,8 @@ interface NCModalProps extends ModalOwnProps {
     icon?: React.ReactNode;
     iconLabel?: string;
 }
+
+interface Sorting {
+    direction: 'asc' | 'desc' | null | undefined;
+    by: 'created' | 'name' | 'trashed' | 'updated' | 'size' | 'first' | 'last' | 'active' | string | undefined;
+}

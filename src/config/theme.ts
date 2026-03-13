@@ -75,13 +75,6 @@ const theme = (prefersDarkMode: boolean): Theme =>
                 secondary: prefersDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0, 0, 0, 0.54)',
                 disabled: prefersDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.38)',
             },
-            nc: {
-                button: prefersDarkMode ? 'rgb(38,37,36)' : 'rgba(230, 232, 234, 1)',
-                divider: '#323232',
-                main: '#bb0a1e',
-                dark: 'rgb(130, 7, 21)',
-                light: 'rgb(200, 59, 75)',
-            },
             primary: {
                 main: '#bb0a1e',
             },
