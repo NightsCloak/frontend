@@ -8,8 +8,11 @@ import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useMeta from '@/hooks/useMeta';
 import CustomToolbar from '@/components/CustomToolbar';
+import NewChronicleModal from '@/screens/chronicles/modals/NewChronicleModal';
+import { makeStyles } from 'tss-react/mui';
 
 const UserChroniclesTable = () => {
+    const { classes } = useStyles();
     const [deleting, setDeleting] = useState<string | null>(null);
     const [getUserChronicles, userChroniclesState] = useGetUserChroniclesMutation();
     const [deleteChronicle, { isLoading: isDeleteChronicleLoading }] = useDeleteChronicleMutation();
@@ -92,6 +95,9 @@ const UserChroniclesTable = () => {
             p={2}
             style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 300 }}
         >
+            <div className={classes.header}>
+                <NewChronicleModal />
+            </div>
             <DataGridPremium
                 pagination
                 pageSizeOptions={[10, 25, 50, 100]}
@@ -146,7 +152,7 @@ const UserChroniclesTable = () => {
                     if (filterModel.quickFilterValues && filterModel.quickFilterValues.length > 0) {
                         filter += `${!first ? ',' : ''}${filterModel.quickFilterValues.join(',')}`;
                     }
-                    console.log('filter', filter);
+
                     setNameSearchDebounce(filter);
                 }}
                 slots={{
@@ -156,5 +162,15 @@ const UserChroniclesTable = () => {
         </Box>
     );
 };
+
+const useStyles = makeStyles()((theme) => ({
+    root: {},
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+}));
 
 export default UserChroniclesTable;

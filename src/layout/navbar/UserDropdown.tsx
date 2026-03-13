@@ -66,10 +66,10 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
 
     const handleClose = useCallback(() => setAnchorEl(null), []);
 
-    const navigateTo = useCallback((path: string) => {
+    const navigateTo = (path: string) => {
         setAnchorEl(null);
         navigate(path);
-    }, []);
+    };
 
     const logoutHandler = () => {
         dispatch(userLogout());
@@ -78,7 +78,7 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
         persistor.persist();
     };
 
-    const logout = useCallback(async () => {
+    const logout = async () => {
         setAnchorEl(null);
 
         if (import.meta.env.VITE_AUTH_FLOW === 'pkce') {
@@ -88,7 +88,7 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
             console.log('logout auth');
             logoutTrigger();
         }
-    }, []);
+    };
 
     useEffect(() => {
         if (isSuccess) {
@@ -98,6 +98,7 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
 
     useEffect(() => {
         if (location.pathname === '/home/account') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setSelection('settings');
             return;
         }
@@ -229,7 +230,7 @@ const UserDropdown: FC<UserDropdownProps> = ({ showName = true, ...props }) => {
                 // anchorPosition={{ left: 0, top: 100 }}
                 sx={(theme) => ({
                     '& .MuiPaper-root': {
-                        border: `1px solid ${theme.palette.nc.dark}80`,
+                        border: `1px solid ${theme.palette.primary.dark}80`,
                         // marginBottom: theme.spacing(2),
                     },
                 })}

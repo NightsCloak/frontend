@@ -21,7 +21,7 @@ const NCLink: FC<NCLinkProps> = ({ to, children, iconColor = true, ...props }) =
             className={classes.root}
             component={RouterLink}
             to={to}
-            style={{ color: active ? (theme.palette.nc?.main ?? '#ffffff') : '#ffffff' }}
+            style={{ color: active ? (theme.palette.primary.main ?? '#ffffff') : '#ffffff' }}
             {...props}
         >
             {children}
@@ -32,7 +32,7 @@ const NCLink: FC<NCLinkProps> = ({ to, children, iconColor = true, ...props }) =
 const useStyles = makeStyles<{ active: boolean; iconColor: boolean }>()((theme, { active, iconColor }) => ({
     root: {
         '& .MuiListItemIcon-root': {
-            color: active && iconColor ? theme.palette.nc?.main : '#ffffff',
+            color: active && iconColor ? theme.palette.primary?.main : '#ffffff',
         },
     },
 }));

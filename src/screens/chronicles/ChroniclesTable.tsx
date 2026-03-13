@@ -22,7 +22,7 @@ const ChroniclesTable = () => {
     const columns: GridColDef<Chronicle>[] = [
         {
             field: 'name',
-            headerName: 'Chronicle',
+            headerName: 'Name',
             minWidth: 250,
             renderCell: ({ row }) => <NCLink to={`/chronicles/${row.id}`}>{row.name}</NCLink>,
         },
@@ -101,9 +101,10 @@ const ChroniclesTable = () => {
                     let filter = '';
                     const filters = filterModel.items;
                     let first = true;
-                    for (const item in filters) {
-                        if (filters[item].field === 'name') {
-                            filter += `${!first ? ',' : ''}${filters[item]}`;
+                    for (const item of filters) {
+                        console.log('name');
+                        if (item.field === 'name') {
+                            filter += `${!first ? ',' : ''}${item.value}`;
                             first = false;
                         }
                     }
@@ -111,7 +112,7 @@ const ChroniclesTable = () => {
                     if (filterModel.quickFilterValues && filterModel.quickFilterValues.length > 0) {
                         filter += `${!first ? ',' : ''}${filterModel.quickFilterValues.join(',')}`;
                     }
-                    console.log('filter', filter);
+                    console.log('filter', filter.toString());
                     setNameSearchDebounce(filter);
                 }}
                 slots={{
