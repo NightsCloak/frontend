@@ -15,7 +15,7 @@ const ChroniclesDashboard = () => {
 };
 
 const useStyles = makeStyles()((theme) => ({
-    root: { display: 'flex', flex: 1, flexDirection: 'column', minHeight: 400, width: '90%' },
+    root: { display: 'flex', flex: 1, flexDirection: 'column', minHeight: 400 },
     header: { marginBottom: theme.spacing(2) },
 }));
 

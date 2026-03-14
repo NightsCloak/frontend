@@ -41,7 +41,14 @@ const UserChronicle = () => {
 };
 
 const useStyles = makeStyles()((theme) => ({
-    root: { display: 'flex', flexShrink: 1, flexDirection: 'column', padding: theme.spacing(2), minHeight: 400 },
+    root: {
+        display: 'flex',
+        flexShrink: 1,
+        flexDirection: 'column',
+        border: '1px solid red',
+        padding: theme.spacing(2),
+        minHeight: 400,
+    },
     header: { marginBottom: theme.spacing(2) },
 }));
 

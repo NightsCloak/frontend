@@ -146,12 +146,12 @@ const useStyles = makeStyles<{ isSmallScreen: boolean; auth: boolean; open: bool
             alignItems: auth ? undefined : 'center',
             height: '100%',
             width: '100%',
-            maxWidth: `calc(100vw - ${auth ? (open ? '200px' : theme.spacing(7)) : '0'} + 1px)`,
+            maxWidth: `calc(100vw - ${auth ? (open ? '200px' : theme.spacing(9)) : '0'} + 1px)`,
             transition: `all ${open ? theme.transitions.duration.enteringScreen : theme.transitions.duration.leavingScreen}ms ${theme.transitions.easing.sharp}`,
-            paddingBottom: theme.spacing(2),
             [theme.breakpoints.only('xs')]: {
                 padding: theme.spacing(2),
             },
+            padding: (!isSmallScreen && auth) || (!isSmallScreen && !auth) ? theme.spacing(2) : 0,
         },
     };
 });

@@ -74,9 +74,14 @@ const ToolsProvider = ({ children }: ToolsProps) => {
     };
 
     const handlePageChanged = useEffectEvent(() => {
-        updatePreviousLocation(location);
-        updateTabTitle(null);
-        updateTools(null);
+        if (location.pathname) {
+            updatePreviousLocation(location);
+            updateTabTitle(null);
+            updateTools(null);
+            if (!location.pathname.includes(previousLocation?.pathname)) {
+                updateBreadcrumbs([]);
+            }
+        }
     });
 
     useEffect(() => {
@@ -106,10 +111,11 @@ const ToolsProvider = ({ children }: ToolsProps) => {
     }, [tabTitle]);
 
     useEffect(() => {
-        if (location !== previousLocation) {
+        console.log('location changed', previousLocation?.pathname);
+        if (location?.pathname !== previousLocation?.pathname) {
             handlePageChanged();
         }
-    }, []);
+    }, [location.pathname]);
 
     return (
         <ToolsContext
