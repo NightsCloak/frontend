@@ -47,6 +47,7 @@ const EchoProvider = ({ children }: EchoProps) => {
                 wsPort: 6001,
                 wssPort: 6001,
                 forceTLS: import.meta.env.VITE_REVERB_TLS === 'true',
+                wsPath: import.meta.env.VITE_REVERB_PATH,
                 enableStats: false,
                 enabledTransports: ['ws', 'wss'],
                 channelAuthorization: {
