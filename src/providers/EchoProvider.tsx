@@ -44,8 +44,8 @@ const EchoProvider = ({ children }: EchoProps) => {
             clientRef.current = new Pusher(`${import.meta.env.VITE_REVERB_APP_KEY}`, {
                 cluster: 'NaN',
                 wsHost: import.meta.env.VITE_REVERB_URL,
-                wsPort: 6001,
-                wssPort: 6001,
+                wsPort: import.meta.env.VITE_REVERB_WS_PORT,
+                wssPort: import.meta.env.VITE_REVERB_WSS_PORT,
                 forceTLS: import.meta.env.VITE_REVERB_TLS === 'true',
                 wsPath: import.meta.env.VITE_REVERB_PATH,
                 enableStats: false,
