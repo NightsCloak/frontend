@@ -1,10 +1,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: nginx
+  name: nginx-gateway
   namespace: nginx-gateway
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: nginx-gateway
   listeners:
     - name: http
       protocol: HTTP
@@ -51,6 +51,8 @@ kind: Gateway
 metadata:
   name: nc-develop
   namespace: nc-develop
+  annotations: # This is the name of the ClusterIssuer created in the previous step
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   gatewayClassName: nginx
   listeners:

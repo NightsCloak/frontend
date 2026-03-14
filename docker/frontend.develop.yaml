@@ -63,23 +63,41 @@ spec:
   selector:
     app: frontend
 ---
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: nc-develop-route
+  name: develop-ingress
   namespace: nc-develop
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.org/proxy-connect-timeout: "30s"
+    nginx.org/proxy-read-timeout: "20s"
+    use-proxy-protocol: "true"
+    use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "x-referer-path, Content-Type, authorization, baggage, sentry-trace"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://nightscloak.dev, https://www.nightscloak.dev, http://localhost:5173"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
-  parentRefs:
-    - name: nc-develop
-      sectionName: https
-  hostnames:
-    - "nightscloak.dev"
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - nightscloak.dev
+        - www.nightscloak.dev
+      secretName: nc-develop-crt
   rules:
-    - matches:
-      - path:
-          type: PathPrefix
-          value: /(.*)
-      backendRefs:
-      - name: frontend
-        port: 80
+    - host: nightscloak.dev
+      http:
+        paths:
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
 

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Location, useLocation } from 'react-router';
 import BreadcrumbItem, { BreadcrumbItemProps } from '@/layout/navbar/BreadcrumbItem';
 import chimeFile from '/sounds/chime.wav?url';
@@ -10,13 +10,13 @@ const ToolsProvider = ({ children }: ToolsProps) => {
     const location = useLocation();
     const playSounds = useAppSelector((state) => state.user.settings.alertSounds);
     const dispatch = useAppDispatch();
-    const lastActivityTime = useRef<number>(Date.now());
+    const currentDate = useCallback(() => Date.now(), []);
+    const lastActivityTime = useRef<number>(currentDate());
     const [tools, setTools] = useState<ReactNode | null>(null);
     const [modal, setModal] = useState<ReactNode | null>(null);
     const [breadcrumbs, setBreadcrumbs] = useState<ReactNode | undefined>();
     const [previousLocation, updatePreviousLocation] = useState<Location>(null!);
     const [tabTitle, setTabTitle] = useState<ToolsContextType['tabTitle']>(null);
-    const [currentPath, setCurrentPath] = useState<string>('');
     const chime = useMemo(() => {
         const audio = new Audio(chimeFile);
         audio.volume = 0.3;
@@ -73,6 +73,12 @@ const ToolsProvider = ({ children }: ToolsProps) => {
         dispatch(setIdle(isInactive));
     };
 
+    const handlePageChanged = useEffectEvent(() => {
+        updatePreviousLocation(location);
+        updateTabTitle(null);
+        updateTools(null);
+    });
+
     useEffect(() => {
         const events = ['mousemove', 'mousedown', 'keydown', 'touchmove', 'touchstart'];
 
@@ -99,17 +105,11 @@ const ToolsProvider = ({ children }: ToolsProps) => {
         }
     }, [tabTitle]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (location !== previousLocation) {
-            //Page Changed
-            updatePreviousLocation(location);
-            if (location.pathname !== currentPath) {
-                updateTabTitle(null);
-                updateTools(null);
-                setCurrentPath(location.pathname);
-            }
+            handlePageChanged();
         }
-    }, [location]);
+    }, []);
 
     return (
         <ToolsContext

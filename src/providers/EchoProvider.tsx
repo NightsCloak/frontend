@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import Pusher, { ChannelAuthorizationCallback } from 'pusher-js';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import Echo, { Channel } from 'laravel-echo';
@@ -7,7 +7,6 @@ import { useTools } from '@/contexts/ToolsContext';
 import { setEchoStatus, setSocketId } from '@/redux/reducers/appSlice';
 import apiSlice from '@/redux/apiSlice';
 import { EchoContext } from '@/contexts/EchoContext';
-
 
 const EchoProvider = ({ children }: EchoProps) => {
     const [echoRef, setEchoRef] = useState<Echo<'reverb'> | null>(null);
@@ -19,6 +18,13 @@ const EchoProvider = ({ children }: EchoProps) => {
     const [broadcastingTrigger] = useBroadcastingMutation();
     const dispatch = useAppDispatch();
     const { playChime } = useTools();
+
+    const invalidateUser = () => dispatch(apiSlice.util.invalidateTags(['User']));
+
+    const onNotification = () => {
+        playChime();
+        invalidateUser();
+    };
 
     const customHandler = (
         { socketId, channelName }: { socketId: string; channelName: string },
@@ -33,32 +39,14 @@ const EchoProvider = ({ children }: EchoProps) => {
             .catch((failed: BasicError) => callback(new Error(failed.data.message), null));
     };
 
-    useEffect(() => {
-        if (disabled) {
-            return;
-        }
-
-        //User Logged out/lost session
-        if (!user.data?.id && privateChannel && socket === 'connected') {
-            echoRef?.leaveAllChannels();
-            setPrivateChannel(null);
-        }
-    }, [user.data?.id]);
-
-    //Setup State changed listener
-    useEffect(() => {
-        if (disabled) {
-            return;
-        }
-
+    const handleConnection = useEffectEvent(() => {
         if (!(clientRef.current instanceof Pusher)) {
-            clientRef.current = new Pusher(`${import.meta.env.VITE_PUSHER_APP_KEY}`, {
+            clientRef.current = new Pusher(`${import.meta.env.VITE_REVERB_APP_KEY}`, {
                 cluster: 'NaN',
-                wsPath: import.meta.env.VITE_PUSHER_APP_PATH,
-                wsHost: import.meta.env.VITE_URI,
-                wssPort: parseInt(import.meta.env.VITE_PUSHER_APP_WSS_PORT as string),
-                wsPort: parseInt(import.meta.env.VITE_PUSHER_APP_WS_PORT as string),
-                forceTLS: (import.meta.env.VITE_DEPLOY_ENV as string) !== 'local',
+                wsHost: import.meta.env.VITE_REVERB_URL,
+                wsPort: 6001,
+                wssPort: 6001,
+                forceTLS: import.meta.env.VITE_REVERB_TLS === 'true',
                 enableStats: false,
                 enabledTransports: ['ws', 'wss'],
                 channelAuthorization: {
@@ -77,6 +65,54 @@ const EchoProvider = ({ children }: EchoProps) => {
                 })
             );
         }
+    });
+
+    const handleUserPrivateChannel = useEffectEvent(() => {
+        if (!privateChannel) {
+            setPrivateChannel(echoRef?.private(`intract.user.${user.data.id}`) ?? null);
+            return;
+        }
+
+        privateChannel
+            ?.listen('.notification', onNotification)
+            .listen('.user.archived', invalidateUser)
+            .listen('.user.updated', invalidateUser)
+            .listen('.user.subscription.updated', invalidateUser);
+
+        return () => {
+            privateChannel
+                ?.stopListening('.notification', onNotification)
+                .stopListening('.user.archived', invalidateUser)
+                .stopListening('.user.updated', invalidateUser)
+                .stopListening('.user.subscription.updated', invalidateUser);
+            echoRef?.leave(`intract.user.${user.data.id}`);
+            setPrivateChannel(null);
+        };
+    });
+
+    const handleLogout = useEffectEvent(() => {
+        if (disabled) {
+            return;
+        }
+
+        //User Logged out/lost session
+        if (!user.data?.id && privateChannel && socket === 'connected') {
+            echoRef?.leaveAllChannels();
+            setPrivateChannel(null);
+        }
+    });
+
+    useEffect(() => {
+        handleLogout();
+    }, [user.data?.id]);
+
+    //Setup State changed listener
+    useEffect(() => {
+        if (disabled) {
+            return;
+        }
+
+        handleConnection();
 
         const onStateChanged = ({ current, _previous }: { current: string; _previous: 'string' }) => {
             dispatch(setEchoStatus(current));
@@ -98,33 +134,9 @@ const EchoProvider = ({ children }: EchoProps) => {
             return;
         }
 
-        if (!privateChannel) {
-            setPrivateChannel(echoRef?.private(`intract.user.${user.data.id}`) ?? null);
-            return;
-        }
+        const callback = handleUserPrivateChannel();
 
-        const invalidateUser = () => dispatch(apiSlice.util.invalidateTags(['User']));
-
-        const onNotification = () => {
-            playChime();
-            invalidateUser();
-        };
-
-        privateChannel
-            .listen('.notification', onNotification)
-            .listen('.user.archived', invalidateUser)
-            .listen('.user.updated', invalidateUser)
-            .listen('.user.subscription.updated', invalidateUser);
-
-        return () => {
-            privateChannel
-                .stopListening('.notification', onNotification)
-                .stopListening('.user.archived', invalidateUser)
-                .stopListening('.user.updated', invalidateUser)
-                .stopListening('.user.subscription.updated', invalidateUser);
-            echoRef?.leave(`intract.user.${user.data.id}`);
-            setPrivateChannel(null);
-        };
+        return callback ? callback() : undefined;
     }, [socket, privateChannel, user.data?.id]);
 
     return <EchoContext.Provider value={{ echo: echoRef, privateChannel }}>{children}</EchoContext.Provider>;

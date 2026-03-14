@@ -34,10 +34,12 @@ interface ImportMetaEnv {
     readonly VITE_PREFIX: string;
     readonly VITE_CLIENT_ID: string;
     readonly VITE_CLIENT_SECRET: string;
-    readonly VITE_PUSHER_APP_KEY: string;
-    readonly VITE_PUSHER_APP_WSS_PORT: string;
-    readonly VITE_PUSHER_APP_WS_PORT: string;
-    readonly VITE_PUSHER_APP_PATH: string;
+    readonly VITE_REVERB_APP_KEY: string;
+    readonly VITE_REVERB_WSS_PORT: string | null;
+    readonly VITE_REVERB_WS_PORT: string;
+    readonly VITE_REVERB_TLS: string;
+    readonly VITE_REVERB_URL: string;
+    readonly VITE_REVERB_PATH: string;
     readonly VITE_DEPLOY_ENV: string;
     readonly VITE_SENTRY: string;
     readonly VITE_SENTRY_TELEMETRY: string;
