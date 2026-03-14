@@ -4,11 +4,11 @@ metadata:
   name: frontend
   namespace: nc-develop
 spec:
-  replicas: 5
+  replicas: 1
   strategy:
     rollingUpdate:
-      maxSurge: 2
-      maxUnavailable: 2
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: frontend
