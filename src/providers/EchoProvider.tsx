@@ -68,27 +68,9 @@ const EchoProvider = ({ children }: EchoProps) => {
         }
     });
 
-    const handleUserPrivateChannel = useEffectEvent(() => {
-        if (!privateChannel) {
-            setPrivateChannel(echoRef?.private(`intract.user.${user.data.id}`) ?? null);
-            return;
-        }
-
-        privateChannel
-            ?.listen('.notification', onNotification)
-            .listen('.user.archived', invalidateUser)
-            .listen('.user.updated', invalidateUser)
-            .listen('.user.subscription.updated', invalidateUser);
-
-        return () => {
-            privateChannel
-                ?.stopListening('.notification', onNotification)
-                .stopListening('.user.archived', invalidateUser)
-                .stopListening('.user.updated', invalidateUser)
-                .stopListening('.user.subscription.updated', invalidateUser);
-            echoRef?.leave(`intract.user.${user.data.id}`);
-            setPrivateChannel(null);
-        };
+    const connectPrivateChannel = useEffectEvent(() => {
+        setPrivateChannel(echoRef?.private(`intract.user.${user.data.id}`) ?? null);
+        return;
     });
 
     const handleLogout = useEffectEvent(() => {
@@ -129,15 +111,33 @@ const EchoProvider = ({ children }: EchoProps) => {
         };
     }, []);
 
+    useEffect(() => {
+        if (privateChannel || !user.data?.id || socket !== 'connected' || disabled) {
+            return;
+        }
+        connectPrivateChannel();
+    }, [privateChannel, socket, user.data?.id]);
+
     //Connect to user's private channel once we are connected
     useEffect(() => {
-        if (disabled || !user.data?.id) {
+        if (!privateChannel || socket !== 'connected') {
             return;
         }
 
-        const callback = handleUserPrivateChannel();
-
-        return callback ? callback() : undefined;
+        privateChannel
+            ?.listen('.notification', onNotification)
+            .listen('.user.archived', invalidateUser)
+            .listen('.user.updated', invalidateUser)
+            .listen('.user.subscription.updated', invalidateUser);
+        return () => {
+            privateChannel
+                ?.stopListening('.notification', onNotification)
+                .stopListening('.user.archived', invalidateUser)
+                .stopListening('.user.updated', invalidateUser)
+                .stopListening('.user.subscription.updated', invalidateUser);
+            echoRef?.leave(`intract.user.${user.data.id}`);
+            setPrivateChannel(null);
+        };
     }, [socket, privateChannel, user.data?.id]);
 
     return <EchoContext.Provider value={{ echo: echoRef, privateChannel }}>{children}</EchoContext.Provider>;

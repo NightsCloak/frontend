@@ -74,7 +74,7 @@ const ToolsProvider = ({ children }: ToolsProps) => {
     };
 
     const handlePageChanged = useEffectEvent(() => {
-        if (location.pathname) {
+        if (location?.pathname) {
             updatePreviousLocation(location);
             updateTabTitle(null);
             updateTools(null);
